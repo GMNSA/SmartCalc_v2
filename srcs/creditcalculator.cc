@@ -4,8 +4,12 @@
 #include <QString>
 
 CreditCalculator::CreditCalculator()
-    : m_sumCredit(0), m_timeCredit(0), m_n_procentCredit(0), m_isMount(0),
-      m_isDifferent(0), m_s_data({0, 0, 0, 0}) {}
+    : m_sumCredit(0),
+      m_timeCredit(0),
+      m_n_procentCredit(0),
+      m_isMount(0),
+      m_isDifferent(0),
+      m_s_data({0, 0, 0, 0}) {}
 
 /*          ***** ***** ***** *****          */
 
@@ -60,11 +64,11 @@ QString CreditCalculator::infoMonthlyPayment() const {
   QString str;
 
   if (m_isDifferent) {
-    str = "Ежемесячный платеж:     " +
+    str = "Ежемесячный платеж:         " +
           QString("%L1").arg(m_s_data.mount, 0, 'f', 2) + " ... " +
           QString("%L1").arg(m_s_data.mount_last, 0, 'f', 2) + " руб.";
   } else {
-    str = "Ежемесячный платеж:     " +
+    str = "Ежемесячный платеж:         " +
           QString("%L1").arg(m_s_data.mount, 0, 'f', 2) + " руб.";
   }
   str = str.replace(",", " ");
@@ -77,7 +81,7 @@ QString CreditCalculator::infoMonthlyPayment() const {
 QString CreditCalculator::infoAccruedInterest() const {
   QString str;
 
-  str = "Начисленные проценты: " +
+  str = "Начисленные проценты:     " +
         QString("%L1").arg(m_s_data.procents, 0, 'f', 2) + " руб.";
   str = str.replace(",", " ");
   return (str);
@@ -88,9 +92,8 @@ QString CreditCalculator::infoAccruedInterest() const {
 QString CreditCalculator::infoDebgAndInterest() const {
   QString str;
 
-  str =
-      "Долг + проценты:      " + QString("%L1").arg(m_s_data.total, 0, 'f', 2) +
-      " руб.";
+  str = "Долг + проценты:                    " +
+        QString("%L1").arg(m_s_data.total, 0, 'f', 2) + " руб.";
   str = str.replace(",", " ");
 
   return (str);

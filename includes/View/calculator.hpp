@@ -1,5 +1,5 @@
-#ifndef SRC_INCLUDES_VIEW_MAINWINDOW_HPP_
-#define SRC_INCLUDES_VIEW_MAINWINDOW_HPP_
+#ifndef INCLUDES_VIEW_CALCULATOR_HPP_
+#define INCLUDES_VIEW_CALCULATOR_HPP_
 
 #include <QMainWindow>
 
@@ -9,16 +9,16 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class Calculator;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class Calculator : public QMainWindow {
   Q_OBJECT
 
  public:
-  explicit MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+  explicit Calculator(QWidget *parent = nullptr);
+  ~Calculator();
 
  signals:
   void signal_reset_data();
@@ -69,7 +69,7 @@ class MainWindow : public QMainWindow {
   void formatText();
 
  private:
-  Ui::MainWindow *ui;
+  Ui::Calculator *ui;
 
   int m_is_clear;
   QString m_str;
@@ -109,4 +109,4 @@ class MainWindow : public QMainWindow {
 
   void connection_credit();
 };
-#endif  // SRC_INCLUDES_VIEW_MAINWINDOW_HPP_
+#endif  // INCLUDES_VIEW_CALCULATOR_HPP_

@@ -58,3 +58,4 @@ ui
 FOR_EXAMPLE
 BUILD
 src
+.cache

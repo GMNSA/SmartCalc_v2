@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Calculator</class>
+ <widget class="QMainWindow" name="Calculator">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Calculator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -1182,7 +1182,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>menubar</sender>
    <signal>triggered(QAction*)</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>Calculator</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

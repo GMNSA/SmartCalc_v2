@@ -25,20 +25,20 @@ set(PROJECT_HEADERS
     includes/calculationsmartcalc.hpp
     includes/creditcalculator.hpp
     includes/View/dialoggraph.hpp
-    includes/View/mainwindow.hpp
+    includes/View/calculator.hpp
     code_c/s21_credit_calc.h
     code_c/s21_smart_calc.h
     code_c/s21_stack.h
 )
 
 set(PROJECT_SOURCES
-    srcs/calculationsmartcalc.cpp
-    srcs/creditcalculator.cpp
-    srcs/View/dialoggraph.cpp
-    srcs/View/mainwindow.cpp
-    srcs/main.cpp
+    srcs/calculationsmartcalc.cc
+    srcs/creditcalculator.cc
+    srcs/View/dialoggraph.cc
+    srcs/View/calculator.cc
+    srcs/main.cc
     srcs/View/dialoggraph.ui
-    srcs/View/mainwindow.ui
+    srcs/View/calculator.ui
     code_c/s21_credit_calc.c
     code_c/s21_smart_calc.c
     code_c/s21_stack.c
@@ -58,7 +58,7 @@ else()
 endif()
 
 # add_subdirectory(lib)
-# add_subdirectory(test)
+add_subdirectory(tests)
 
 target_include_directories(SmartCalc
   PUBLIC

@@ -1,8 +1,9 @@
 #ifndef SRC_CODE_C_S21_SMART_CALC_H_
 #define SRC_CODE_C_S21_SMART_CALC_H_
 
-#include "s21_stack.h"
 #include <stdlib.h>
+
+#include "s21_stack.h"
 
 #define BUFF_STR_CHAR 2
 
@@ -30,4 +31,4 @@ char *str_to_postfix(char *str_);
  */
 char *calculate_notation(char const *str_);
 
-#endif // SRC_CODE_C_S21_SMART_CALC_H_
+#endif  // SRC_CODE_C_S21_SMART_CALC_H_

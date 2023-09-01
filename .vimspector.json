@@ -15,7 +15,7 @@
       "adapter": "vscode-cpptools",
       "configuration": {
         "request": "launch",
-        "program": "tests/BUILD/bin/testMatrixOOP",
+        "program": "BUILD/bin_test/tst_model_calculator",
         "cwd": "${workspaceRoot}",
         "args": [ "*${args:--update-gadget-config}" ],
         "justMyCode#json": "${justMyCode:true}"
