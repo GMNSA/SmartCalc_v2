@@ -438,142 +438,96 @@ TEST_F(ModelCalculatorTest, TestStrToPostfix) {
 // -- -- -- --
 
 TEST_F(ModelCalculatorTest, TestStringToStack) {
-  // QString str = "21 22 23 24";
-  // QString res = "";
-  // QStack<QString> stack;
+  QString str = "21 22 23 24";
+  QString res = "";
+  QStack<QString> stack;
 
-  // stack = StringToStack(str);
+  stack = StringToStack(str);
 
-  // EXPECT_TRUE(!stack.isEmpty());
-  // EXPECT_EQ(stack.size(), 4);
+  EXPECT_TRUE(!stack.isEmpty());
+  EXPECT_EQ(stack.size(), 4);
 
-  // res = stack.pop();
-  // EXPECT_EQ(res, "24");
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "24");
 
-  //   /* *****  ***** */
-  //
-  //   str = "21 22 23 24  ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 0);
-  //   ck_assert_int_eq(stack->size, 4);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "24");
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = "21 22 23 24        ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 0);
-  //   ck_assert_int_eq(stack->size, 4);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "24");
-  //   res = free_str(res);
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "23");
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = "       21 22 23 24        ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 0);
-  //   ck_assert_int_eq(stack->size, 4);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "24");
-  //   res = free_str(res);
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "23");
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = "1 ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 0);
-  //   ck_assert_int_eq(stack->size, 1);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_str_eq(res, "1");
-  //   res = free_str(res);
-  //   res = pop_stack(&stack);
-  //   ck_assert_ptr_eq(res, NULL);
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = "  ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 1);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_ptr_eq(res, NULL);
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = " ";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 1);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_ptr_eq(res, NULL);
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
-  //
-  //   /* *****  ***** */
-  //
-  //   str = "";
-  //   stack = string_to_stack(str);
-  //
-  //   ck_assert_int_eq(is_empty_stack(stack), 1);
-  //
-  // #if IS_TEST_TURN_ON
-  //   print_stack(stack);
-  // #endif
-  //   res = pop_stack(&stack);
-  //   ck_assert_ptr_eq(res, NULL);
-  //   res = free_str(res);
-  //
-  //   free_stack(&stack);
+  /* *****  ***** */
+  stack.clear();
+
+  str = "21 22 23 24  ";
+  stack = StringToStack(str);
+
+  EXPECT_FALSE(stack.isEmpty());
+  EXPECT_EQ(stack.size(), 4);
+
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "24");
+
+  /* *****  ***** */
+
+  str = "21 22 23 24        ";
+  stack = StringToStack(str);
+
+  EXPECT_FALSE(stack.isEmpty());
+  EXPECT_EQ(stack.size(), 4);
+
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "24");
+
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "23");
+
+  /* *****  ***** */
+
+  str = "       21 22 23 24        ";
+  stack = StringToStack(str);
+
+  EXPECT_FALSE(stack.isEmpty());
+  EXPECT_EQ(stack.size(), 4);
+
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "24");
+
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "23");
+
+  /* *****  ***** */
+
+  stack.clear();
+  str = "1 ";
+  stack = StringToStack(str);
+  EXPECT_FALSE(stack.isEmpty());
+  EXPECT_EQ(stack.size(), 1);
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_EQ(res, "1");
+  for (auto const &t : stack) qDebug() << "res: " << t;
+
+  res.clear();
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_TRUE(res.isEmpty());
+
+  /* *****  ***** */
+
+  str = "  ";
+  stack = StringToStack(str);
+  EXPECT_TRUE(stack.isEmpty());
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_TRUE(res.isEmpty());
+
+  /* *****  ***** */
+
+  str = " ";
+  stack = StringToStack(str);
+  EXPECT_TRUE(stack.isEmpty());
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_TRUE(res.isEmpty());
+
+  /* *****  ***** */
+
+  str = "";
+  stack = StringToStack(str);
+  EXPECT_TRUE(stack.isEmpty());
+  if (!stack.isEmpty()) res = stack.pop();
+  EXPECT_TRUE(res.isEmpty());
 }
 
 // ----------------------------------------------------------------------------

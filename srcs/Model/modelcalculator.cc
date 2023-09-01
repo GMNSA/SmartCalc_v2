@@ -297,7 +297,9 @@ QStack<QString> ModelCalculator::StringToStack(QString const &str) {
   QStack<QString> tmp;
   auto split_str = str.split(' ');
 
-  for (auto &word : split_str) tmp.push_back(word);
+  for (auto &word : split_str) {
+    if (!word.isEmpty()) tmp.push_back(word);
+  }
 
   return tmp;
 }
