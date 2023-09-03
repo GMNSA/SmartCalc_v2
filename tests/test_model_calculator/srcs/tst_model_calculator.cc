@@ -3,14 +3,19 @@
 #include <gtest/gtest.h>
 
 #include <QHash>
+#include <QRegularExpression>
 #include <QStack>
+
+bool ModelCalculatorTest::get_error() const {
+  return model_calculator_->get_error();
+}
 
 QStack<QString> ModelCalculatorTest::get_stack() const {
   return model_calculator_->get_stack();
 }
 
-QString ModelCalculatorTest::CalculateNotation(QString str) {
-  return model_calculator_->CalculateNotation(str);
+bool ModelCalculatorTest::IsNumber(QString const &str) const {
+  return model_calculator_->IsNumber(str);
 }
 
 qint64 ModelCalculatorTest::Priority(QChar ch) {
@@ -56,12 +61,39 @@ QStack<QString> ModelCalculatorTest::StringToStack(QString const &str) {
   return model_calculator_->StringToStack(str);
 }
 
+double ModelCalculatorTest::CalculateNumbersMul(double num1, QString const &str,
+                                                double num2) {
+  model_calculator_->ResetError();
+  return model_calculator_->CalculateNumbersMul(num1, str, num2);
+}
+
+QString ModelCalculatorTest::CalculateNotation(QString str) {
+  return model_calculator_->CalculateNotation(str);
+}
+
+QString ModelCalculatorTest::RoundNum(QString str) {
+  return model_calculator_->RoundNum(str);
+}
+
 // ----------------------------------------------------------------------------
 
+TEST_F(ModelCalculatorTest, TestIsNumber) {
+  auto res = IsNumber("4293");
+  EXPECT_TRUE(res);
+
+  res = IsNumber("42.93");
+  EXPECT_TRUE(res);
+
+  res = IsNumber("42.9g3");
+  EXPECT_FALSE(res);
+}
+
+// -- -- -- --
+
 TEST_F(ModelCalculatorTest, TestPriority) {
-  QChar sign = '*';
-  qint64 res = Priority(sign);
-  qDebug() << "res: " << res;
+  // QChar sign = '*';
+  // qint64 res = Priority(sign);
+  // qDebug() << "res: " << res;
 }
 
 // -- -- -- --
@@ -146,7 +178,7 @@ TEST_F(ModelCalculatorTest, TestFindStr) {
   n = FindStr(str, needle, i);
   EXPECT_EQ(n, 0);
 
-  /* *****  ***** */
+  // -- -- -- --
   str = "cos(2 * x)";
   needle = "cos";
   i = 0;
@@ -244,33 +276,25 @@ TEST_F(ModelCalculatorTest, TestIsFindInStackBrackets) {
 
   EXPECT_EQ(res, 0);
 
-  /* *****  ***** */
+  // -- -- -- --
   s.push_back("(");
   res = IsFindInStackBrackets(s);
   EXPECT_EQ(res, 1);
 
-  /* *****  ***** */
+  // -- -- -- --
 
   s.clear();
   res = IsFindInStackBrackets(s);
   EXPECT_EQ(res, 0);
 
-  /* *****  ***** */
+  // -- -- -- --
 
   s.push_back(")");
   res = IsFindInStackBrackets(s);
   EXPECT_EQ(res, 1);
   s.clear();
 
-  /* *****  ***** */
-
-  s.push_back(")");
-  s.push_back("there");
-  res = IsFindInStackBrackets(s);
-  EXPECT_EQ(res, 1);
-  s.clear();
-
-  /* *****  ***** */
+  // -- -- -- --
 
   s.push_back(")");
   s.push_back("there");
@@ -278,7 +302,15 @@ TEST_F(ModelCalculatorTest, TestIsFindInStackBrackets) {
   EXPECT_EQ(res, 1);
   s.clear();
 
-  /* *****  ***** */
+  // -- -- -- --
+
+  s.push_back(")");
+  s.push_back("there");
+  res = IsFindInStackBrackets(s);
+  EXPECT_EQ(res, 1);
+  s.clear();
+
+  // -- -- -- --
 
   res = IsFindInStackBrackets(s);
   EXPECT_EQ(res, 0);
@@ -301,135 +333,135 @@ TEST_F(ModelCalculatorTest, TestStrToPostfix) {
   res = StrToPostfix("3 + 4 * 2 / (1 - 5) ^ 2");
   EXPECT_EQ(res, "3 4 2 * 1 5 - 2 ^ / +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("398 + 4487 * 224 / (128 - 548) ^ 20");
   EXPECT_EQ(res, "398 4487 224 * 128 548 - 20 ^ / +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("3.98 + 4 * 2.0 / (1.5 - 5) ^ 2");
   EXPECT_EQ(res, "3.98 4 2.0 * 1.5 5 - 2 ^ / +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(3 + 4) * (2 / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 4 + 2 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(3 + 4) * ((2) / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 4 + 2 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(3 + 4) * ((2.8) / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 4 + 2.8 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((2.8) / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 ~ 4 + 2.8 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((-2.8) / (-1 - 5) ^ +2)");
   EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 ~ 5 - ^ / 2 + *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((-2.8) / (-1 - 5) ^ +(2))");
   EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 ~ 5 - ^ / 2 + *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((-2.8) / (-1 - 5) ^ +(2)");
   EXPECT_TRUE(res.isEmpty());
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
   EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("-(122.33 + 33)");
   EXPECT_EQ(res, "122.33 33 + ~");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("-(122 + 33) + 28 - ((22 - 3) + (33 - 2))");
   EXPECT_EQ(res, "122 33 + ~ 28 + 22 3 - 33 2 - + -");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("-(-42)+1");
   EXPECT_EQ(res, "42 ~ ~ 1 +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("2 / (3 - (4 + (5 * 6))) ");
   EXPECT_EQ(res, "2 3 4 5 6 * + - /");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("-( -(129.0000000) * 6 )");
   EXPECT_EQ(res, "129.0000000 ~ 6 * ~");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(atn(8)*sqrt(4))+((ln(88.2)*ln(8.3))-3)");
   EXPECT_EQ(res, "8 atn 4 sqrt * 88.2 ln 8.3 ln * 3 - +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(aton(8)*sqrt(4))+((ln(88.2)*ln(8.3))-3)");
   EXPECT_TRUE(res.isEmpty());
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(atn(8)*sqrt(4))+((ln(88.2)*ln(8.3)) - 3)");
   EXPECT_EQ(res, "8 atn 4 sqrt * 88.2 ln 8.3 ln * 3 - +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(-3 + 6) * -2");
   EXPECT_EQ(res, "3 ~ 6 + 2 ~ *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(84 + x * (x - 473.938 * x - (x / x)))");
   EXPECT_EQ(res, "84 x x 473.938 x * - x x / - * +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix(
       "(84 + x * (x - 473.938 * x - (x / x * atn(x)))) + cos(x) * mod(87.44)");
   EXPECT_EQ(res,
             "84 x x 473.938 x * - x x / x atn * - * + x cos 87.44 mod * +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("(84+x*(x-473.938*x-(x/x*atn(x))))+cos(x)*mod(87.44)");
   EXPECT_EQ(res,
             "84 x x 473.938 x * - x x / x atn * - * + x cos 87.44 mod * +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("((x * x / x + 0.1)) + (x * x * x * x * x)");
   EXPECT_EQ(res, "x x * x / 0.1 + x x * x * x * x * +");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("alg(1) * atn(2)");
   EXPECT_EQ(res, "1 alg 2 atn *");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("3--3");
   EXPECT_TRUE(res.isEmpty());
@@ -450,7 +482,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_EQ(res, "24");
 
-  /* *****  ***** */
+  // -- -- -- --
   stack.clear();
 
   str = "21 22 23 24  ";
@@ -462,7 +494,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_EQ(res, "24");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   str = "21 22 23 24        ";
   stack = StringToStack(str);
@@ -476,7 +508,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_EQ(res, "23");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   str = "       21 22 23 24        ";
   stack = StringToStack(str);
@@ -490,7 +522,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_EQ(res, "23");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   stack.clear();
   str = "1 ";
@@ -499,13 +531,12 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   EXPECT_EQ(stack.size(), 1);
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_EQ(res, "1");
-  for (auto const &t : stack) qDebug() << "res: " << t;
 
   res.clear();
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_TRUE(res.isEmpty());
 
-  /* *****  ***** */
+  // -- -- -- --
 
   str = "  ";
   stack = StringToStack(str);
@@ -513,7 +544,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_TRUE(res.isEmpty());
 
-  /* *****  ***** */
+  // -- -- -- --
 
   str = " ";
   stack = StringToStack(str);
@@ -521,7 +552,7 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   if (!stack.isEmpty()) res = stack.pop();
   EXPECT_TRUE(res.isEmpty());
 
-  /* *****  ***** */
+  // -- -- -- --
 
   str = "";
   stack = StringToStack(str);
@@ -530,6 +561,417 @@ TEST_F(ModelCalculatorTest, TestStringToStack) {
   EXPECT_TRUE(res.isEmpty());
 }
 
+// -- -- -- --
+
+TEST_F(ModelCalculatorTest, Test_CalculateNumbersMul) {
+  double res = CalculateNumbersMul(33, "*", 2);
+  EXPECT_NEAR(res, 66.0, 0.001);
+  EXPECT_FALSE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(33.5, "+", 2);
+  EXPECT_NEAR(res, 35.5, 0.001);
+  EXPECT_FALSE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(33.5, "-", 2);
+  EXPECT_NEAR(res, 31.5, 0.001);
+  EXPECT_FALSE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(33.5, "/", 2);
+  EXPECT_NEAR(res, 16.75, 0.001);
+  EXPECT_FALSE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(1.6, "%", 1.2);
+  EXPECT_NEAR(res, 0.4, 0.001);
+  EXPECT_FALSE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(1.6, NULL, 1.2);
+  EXPECT_NEAR(res, 0, 0.001);
+  EXPECT_TRUE(get_error());
+
+  // -- -- -- --
+
+  res = CalculateNumbersMul(1.6, "kdgh", 1.2);
+  EXPECT_NEAR(res, 0, 0.001);
+  EXPECT_TRUE(get_error());
+}
+
+// -- -- -- --
+
+TEST_F(ModelCalculatorTest, RoundNum) {
+  QString res = RoundNum("3243.42394");
+  EXPECT_EQ(res, "3243.42394");
+
+  res = RoundNum("243.42394");
+  EXPECT_EQ(res, "243.42394");
+
+  res = RoundNum("243.42394558");
+  EXPECT_EQ(res, "243.4239455");
+}
+
+// -- -- -- --
+
+TEST_F(ModelCalculatorTest, TestCalculateNotation) {
+  QString res = CalculateNotation("3 ~ 6 + 2 ~ *");
+  EXPECT_EQ(res, "-6");
+
+  res = CalculateNotation("");
+  EXPECT_EQ(res, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(8 + 2 * 5) / (1 + 3 * 2 - 4)");
+  EXPECT_EQ(res, "8 2 5 * + 1 3 2 * + 4 - /");
+  QString pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "6");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
+
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
+
+  pols = CalculateNotation(res);
+
+  EXPECT_EQ(pols, "-0.175");
+
+  // -- -- -- --
+
+  res = StrToPostfix("35 * (54 - 9)");
+  pols.clear();
+  EXPECT_EQ(res, "35 54 9 - *");
+
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "1575");
+
+  // -- -- -- --
+
+  res = StrToPostfix("4 ^ 2");
+  pols.clear();
+  EXPECT_EQ(res, "4 2 ^");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "16");
+
+  // -- -- -- --
+
+  res = StrToPostfix("4 ^ 2 + (2* 3.8) - 3");
+  pols.clear();
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "20.6");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(76.3 - 7.8 * 44.002) - ((87 / 3.8) + 9.9 - 4)");
+  pols.clear();
+
+  EXPECT_EQ(res, "76.3 7.8 44.002 * - 87 3.8 / 9.9 + 4 - -");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-295.7103368");
+
+  // -- -- -- --
+
+  res = StrToPostfix("acs(1) + ln(44.2) * asn(1)");
+  pols = CalculateNotation(res);
+
+  EXPECT_EQ(pols, "5.9513149");
+  // -- -- -- --
+
+  res = StrToPostfix("((84.998  * 3.94 * 2.2) - (778.9) ^ 2)");
+  pols.clear();
+  EXPECT_EQ(res, "84.998 3.94 * 2.2 * 778.9 2 ^ -");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-605948.4473359");
+
+  // -- -- -- --
+
+  res = StrToPostfix("849.938 * sin(44) + 74.9 * ((40.9 * cos(20.8)) - 57.8)");
+  EXPECT_EQ(res, "849.938 44 sin * 74.9 40.9 20.8 cos * 57.8 - * +");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-5449.4537614");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3 + 6) * -2");
+  pols.clear();
+  EXPECT_EQ(res, "3 ~ 6 + 2 ~ *");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-6");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3 + 4) * ((2.8) / (1 - 5) ^ 2)");
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 1 5 - 2 ^ / *");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "0.175");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3 + (4.9483 / 3.9)) * ((sin(2.8)) / (1 - 5) ^ 2)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-0.0362458");
+
+  // -- -- -- --
+
+  res = StrToPostfix("atn(sin(49.99)) * 30.8");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-8.1800322");
+
+  // -- -- -- --
+
+  res = StrToPostfix("atn(log(9.39)) * 30.8 * sin(9)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "9.7933808");
+
+  // -- -- -- --
+
+  res = StrToPostfix("acs(1) + ln(44.2) * asn(1)");
+  pols = CalculateNotation(res);
+
+  EXPECT_EQ(pols, "5.9513149");
+
+  // -- -- -- --
+
+  res = StrToPostfix("tan(3.94) * 392.2 / (2.8 + 4.93992) * 2");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "104.0164484");
+
+  // -- -- -- --
+
+  res = StrToPostfix("atn(sin(49.99)) * 30.8");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-8.1800322");
+
+  // -- -- -- --
+
+  res = StrToPostfix("sqrt(49.29) * ((((34.2 - 2) - 44.9) * 2.843) / 4.83)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-52.4822999");
+
+  // -- -- -- --
+
+  res = StrToPostfix("cos(1)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "0.5403023");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-0.175");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(-3+ 4)* ((-2.8)/(1-5) ^ 2)");
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-0.175");
+
+  // -- -- -- --
+
+  res = StrToPostfix("sin(2)*cos(2)*3+4*(25-5)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(res, "2 sin 2 cos * 3 * 4 25 5 - * +");
+
+  // -- -- -- --
+
+  res = StrToPostfix("sin(2)*cos(2)*");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("sin(2)*cos(2)*");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("32 * / 90- 1");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("32 % 3");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "2");
+
+  // -- -- -- --
+
+  res = StrToPostfix("32.939 % 3.329");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "2.978");
+
+  // -- -- -- --
+
+  res = StrToPostfix("3/+");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("cos(3) /cos(8)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "6.8040705");
+
+  // -- -- -- --
+
+  res = StrToPostfix("asn(0.3) /asn(0.8)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "0.3285821");
+
+  // -- -- -- --
+
+  res = StrToPostfix("sin(8.3) / sin(0.1)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "9.036772");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(tan(8.3)*atn(0.1))");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-0.2084447");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(acs(0.5)*ln(8.8))");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "2.2773946");
+
+  // -- -- -- --
+
+  res = StrToPostfix("(acs(0.5)^ln(8.8))");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "1.1054962");
+
+  // -- -- -- --
+
+  res = StrToPostfix("atn(0.3) + (-10) * sin(-10)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-5.1487543");
+
+  // -- -- -- --
+
+  res = StrToPostfix("*2");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("-(-42)+1");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "43");
+
+  // -- -- -- --
+
+  res = StrToPostfix("kk");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("2 + asn");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("kk");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "error");
+
+  // -- -- -- --
+
+  res = StrToPostfix("849.938 * sin(44) + 74.9 * ((40.9 * cos(20.8)) - 57.8)");
+  EXPECT_EQ(res, "849.938 44 sin * 74.9 40.9 20.8 cos * 57.8 - * +");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "-5449.4537614");
+
+  // -- -- -- --
+
+  res = StrToPostfix("((2 + 3) * (asn(0.3) + 3))");
+  EXPECT_EQ(res, "2 3 + 0.3 asn 3 + *");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "16.5234632");
+
+  // -- -- -- --
+
+  res = StrToPostfix("-(-(12 / 9 * 3) * 6)");
+  pols = CalculateNotation(res);
+  EXPECT_EQ(pols, "23.9999999");
+}
+
+// ----------------------------------------------------------------------------
+
+TEST_F(ModelCalculatorTest, TestArifmeticOperation) {
+  QString res = StrToPostfix("(-3 + 4) * ((2.8) / (1 - 5) ^ 2)");
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 1 5 - 2 ^ / *");
+  QString pol = CalculateNotation(res);
+
+  res = StrToPostfix("tan(-10)");
+  pol = NULL;
+
+  EXPECT_EQ(res, "10 ~ tan");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "-0.6483608");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("tan(-9)");
+  pol.clear();
+  EXPECT_EQ(res, "9 ~ tan");
+
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "0.4523156");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("tan(-8)");
+  pol.clear();
+  EXPECT_EQ(res, "8 ~ tan");
+
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "6.7997114");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("tan(-7)");
+  pol.clear();
+  EXPECT_EQ(res, "7 ~ tan");
+
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "-0.8714479");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("*2");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "error");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("**2");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "error");
+
+  /* *****  ***** */
+
+  res = StrToPostfix("2*");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "error");
+
+  /* *****  ***** */
+}
 // ----------------------------------------------------------------------------
 
 int main(int argc, char **argv) {

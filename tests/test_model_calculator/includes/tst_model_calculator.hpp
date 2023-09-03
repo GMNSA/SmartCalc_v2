@@ -27,8 +27,9 @@ class ModelCalculatorTest : public ::testing::Test {
     if (model_calculator_) delete model_calculator_;
   }
 
+  bool get_error() const;
   QStack<QString> get_stack() const;
-  QString CalculateNotation(QString str);
+  bool IsNumber(QString const &str) const;
   qint64 Priority(QChar ch);
   bool IsSign(QChar ch);
   bool IsMathFunction(QString str);
@@ -39,6 +40,9 @@ class ModelCalculatorTest : public ::testing::Test {
   bool IsFindInStackBrackets(QStack<QString> const &stack);
   QString StrToPostfix(QString const &str);
   QStack<QString> StringToStack(QString const &str);
+  double CalculateNumbersMul(double num1, QString const &str, double num2);
+  QString CalculateNotation(QString str);
+  QString RoundNum(QString str);
 
   // put in any custom data members that you need
  private:

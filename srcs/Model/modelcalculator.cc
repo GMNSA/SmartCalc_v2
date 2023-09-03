@@ -1,17 +1,137 @@
 #include "../../includes/Model/modelcalculator.hpp"
 
+#include <cmath>
+
+#include "qmath.h"
+
 namespace ns_model {
 
 ModelCalculator::ModelCalculator() : is_error_(false) {}
 
 ModelCalculator::~ModelCalculator() {}
 
+void ModelCalculator::ResetError() { is_error_ = 0; }
+
+// -- -- -- --
+
+bool ModelCalculator::get_error() const { return is_error_; }
+
+// -- -- -- --
+
 QStack<QString> ModelCalculator::get_stack() const { return stack_; }
 
 // -- -- -- --
 
+bool ModelCalculator::IsNumber(QString const &str) const {
+  QRegularExpression re("^[-]?[0-9]+(\\.[0-9]+)?$");
+  bool res = re.match(str).hasMatch();
+
+  return res;
+}
+
+// -- -- -- --
+
 QString ModelCalculator::CalculateNotation(QString const &str) {
-  return str.toUpper();
+  QString p_result;
+  is_error_ = 0;
+  double tmp_num = 0;
+  Q_UNUSED(tmp_num);
+  Q_UNUSED(str);
+  sp_tmp_data_.clear();
+
+  if (!str.isEmpty()) {
+    sp_str_split_ = StringToStack(str);
+    QString p_tmp = NULL;
+    QString p_one_arg = NULL;
+    QString p_two_arg = NULL;
+    QString p_sign_arg = NULL;
+
+    ReverseStack(&sp_str_split_, sp_str_split_.size());
+
+    for (auto const &word : sp_str_split_) {
+      Q_UNUSED(word);
+
+      p_tmp = sp_str_split_.top();
+      sp_tmp_data_.push_back(p_tmp);
+
+      //   // qDebug() << "-----";
+      //   // for (auto const &word : sp_tmp_data_) qDebug() << "WORD: " <<
+      //   word;
+
+      if (!(sp_tmp_data_.isEmpty())) {
+        if (sp_tmp_data_.size() >= 2 && p_tmp[0] == '~') {
+          sp_tmp_data_.pop();
+          p_one_arg = sp_tmp_data_.pop();
+          tmp_num = p_one_arg.toDouble();
+
+          tmp_num = CalculateNumbersMul(0, "-", tmp_num);
+          p_tmp = QString::number(tmp_num, 'g', 16);
+          // p_tmp = QString("%1").arg(tmp_num, 0, 'g', 20);
+          sp_tmp_data_.push_back(p_tmp);
+
+          p_one_arg.clear();
+          p_tmp.clear();
+        } else if (sp_tmp_data_.size() >= 2 && IsMathFunction(p_tmp)) {
+          p_sign_arg = sp_tmp_data_.pop();
+          p_one_arg = sp_tmp_data_.pop();
+
+          if (!IsNumber(p_one_arg)) is_error_ = 1;
+
+          tmp_num = CalculateStrNumbersSingle(p_one_arg, p_sign_arg);
+          if (std::isnan(tmp_num)) is_error_ = 1;
+          p_tmp = QString::number(tmp_num, 'g', 16);
+          // p_tmp = QString("%1").arg(tmp_num, 0, 'g', 20);
+          // p_tmp.setNum(tmp_num, 'g', 7);
+          sp_tmp_data_.push_back(p_tmp);
+          p_sign_arg.clear();
+          p_one_arg.clear();
+          p_two_arg.clear();
+          p_tmp.clear();
+
+        } else if (sp_tmp_data_.size() >= 3 && IsSign(p_tmp[0])) {
+          p_sign_arg = sp_tmp_data_.pop();
+          p_two_arg = sp_tmp_data_.pop();
+          p_one_arg = sp_tmp_data_.pop();
+
+          if (!IsNumber(p_two_arg) || !IsNumber(p_one_arg)) is_error_ = 1;
+
+          tmp_num = CalculateNumbersMul(p_one_arg.toDouble(), p_sign_arg,
+                                        p_two_arg.toDouble());
+          p_tmp.setNum(tmp_num, 'f', 12);
+          sp_tmp_data_.push_back(p_tmp);
+
+          p_sign_arg.clear();
+          p_one_arg.clear();
+          p_two_arg.clear();
+          p_tmp.clear();
+        }
+      }
+
+      if (is_error_) {
+        break;
+      }
+      sp_str_split_.pop();
+    }
+
+  } else {
+    is_error_ = 1;
+  }
+
+  if (sp_tmp_data_.size() == 1 && !is_error_) {
+    p_result = sp_tmp_data_.pop();
+    // remove_zeros(p_result, LIMIT_SIZE_STR_ERROR, &is_error);
+  } else {
+    p_result = "error";
+  }
+
+  // for (auto const &word : sp_tmp_data_) qDebug() << "WORD: " << word;
+
+  // p_result = RoundNum(p_result);
+  p_result = p_result.left(p_result.indexOf('.') + 8);
+  p_result.remove(QRegularExpression("[.]?0+$"));
+  // trim_str_num(p_result, 7);
+
+  return (p_result);
 }
 
 // -- -- -- --
@@ -275,6 +395,8 @@ QString ModelCalculator::StrToPostfix(QString const &str) {
   return (res);
 }
 
+// -- -- -- --
+
 QHash<QString, qint64> ModelCalculator::GetNumberFromString(QString str,
                                                             qint64 i_begin) {
   QString tmp = "";
@@ -302,6 +424,111 @@ QStack<QString> ModelCalculator::StringToStack(QString const &str) {
   }
 
   return tmp;
+}
+
+// -- -- -- --
+
+double ModelCalculator::CalculateNumbersMul(double num1, QString const &str,
+                                            double num2) {
+  double res = 0.0;
+
+  if (!str.isEmpty() && is_error_ != true) {
+    if (str == "+") {
+      res = num1 + num2;
+    } else if (str == "-") {
+      res = num1 - num2;
+    } else if (str == "/") {
+      res = num1 / num2;
+    } else if (str == "*") {
+      res = num1 * num2;
+    } else if (str == "^") {
+      res = pow(num1, num2);
+    } else if (str == "%") {
+      res = fmod(num1, num2);
+    } else {
+      is_error_ = 1;
+    }
+  } else {
+    is_error_ = 1;
+  }
+
+  return res;
+}
+
+// -- -- -- --
+
+double ModelCalculator::CalculateStrNumbersSingle(QString const &str_num,
+                                                  QString const &str) {
+  double res = 0;
+
+  if (!str_num.isEmpty() && (is_error_) == false) {
+    QString tmp;
+    if (str == "sin") {
+      res = std::sin(str_num.toDouble());
+    } else if (str == "cos") {
+      res = std::cos(str_num.toDouble());
+    } else if (str == "tan") {
+      res = std::tan(str_num.toDouble());
+    } else if (str == "acs") {
+      res = std::acos(str_num.toDouble());
+    } else if (str == "asn") {
+      res = std::asin(str_num.toDouble());
+    } else if (str == "atn") {
+      res = std::atan(str_num.toDouble());
+    } else if (str == "sqrt") {
+      res = std::sqrt(str_num.toDouble());
+    } else if (str == "ln") {
+      res = std::log(str_num.toDouble());
+    } else if (str == "log") {
+      res = std::log10(str_num.toDouble());
+    } else {
+      is_error_ = true;
+    }
+  } else {
+    is_error_ = true;
+  }
+
+  return res;
+}
+
+QString ModelCalculator::RoundNum(QString str) {
+  int i = 8;
+  bool is_begin = 0;
+  QString res;
+
+  for (auto const &t : str) {
+    res += t;
+    if (t == '.') {
+      is_begin = 1;
+    }
+
+    if (is_begin) {
+      --i;
+      if (i == 0) break;
+    }
+  }
+
+  return res;
+}
+
+// -- -- -- --
+
+QString ModelCalculator::RemoveZeros(QString str) {
+  QString res;
+  if (!str.isEmpty()) {
+    qint64 n_str = str.size();
+
+    for (unsigned i = n_str; i > 0 && (str[i] == '0' || str[i] == '.'); --i) {
+      if (str[i] == '0' && i > 1) {
+        str[i] = '\0';
+      } else if (str[i] == '.') {
+        str[i] = '\0';
+        i = 1;
+      }
+    }
+  }
+
+  return res;
 }
 
 }  // namespace ns_model
