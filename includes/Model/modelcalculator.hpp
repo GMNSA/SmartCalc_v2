@@ -1,6 +1,8 @@
 #ifndef INCLUDES_MODEL_MODELCALCULATOR_HPP_
 #define INCLUDES_MODEL_MODELCALCULATOR_HPP_
 
+#define FOR_TEST_ = 0
+
 #include <QHash>
 #include <QStack>
 
@@ -16,15 +18,23 @@ class ModelCalculator : public IModel {
 
   virtual ~ModelCalculator();
 
+  QString CalculateNotation(QString const &str) override;
+
+#ifdef FOR_TEST_
+
+ public:
+#else
+
+ private:
+#endif  // FOR_TEST_
   void ResetError();
   bool get_error() const;
   QStack<QString> get_stack() const;
   bool IsNumber(QString const &str) const;
-  QString CalculateNotation(QString const &str) override;
-  qint64 Priority(QChar ch);
-  bool IsSign(QChar ch);
-  bool IsMathFunction(QString str);
-  bool IsCustomNumber(QString str);
+  qint64 Priority(QChar const &ch);
+  bool IsSign(QChar const &ch);
+  bool IsMathFunction(QString const &str);
+  bool IsCustomNumber(QString const &str);
   qint64 FindStr(QString const &str, QString const &needle, qint64 i_begin);
   qint64 AddMathFunction(QString const &src, qint64 i_begin);
   QHash<QString, qint64> GetNumberFromString(QString str, qint64 i_begin);
@@ -33,8 +43,6 @@ class ModelCalculator : public IModel {
   QStack<QString> StringToStack(QString const &str);
   double CalculateNumbersMul(double num1, QString const &str, double num2);
   double CalculateStrNumbersSingle(QString const &str_num, QString const &str);
-  QString RoundNum(QString str);
-  QString RemoveZeros(QString str);
 
   template <typename T>
   void ReverseStack(QStack<T> *stack, qint64 n_stack);

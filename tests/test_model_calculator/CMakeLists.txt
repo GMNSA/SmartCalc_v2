@@ -11,6 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin_test)
 set(OUT_NAME tst_model_calculator)
 
 set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror")
+add_definitions(-FOR_TEST_)
 
 # find_package(QT NAMES Qt6 REQUIRED COMPONENTS Test)
 #find_package(Qt${QT_VERSION_MAJOR} COMPONENTS REQUIRED  Test)

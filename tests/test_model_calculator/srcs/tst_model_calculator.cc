@@ -18,19 +18,19 @@ bool ModelCalculatorTest::IsNumber(QString const &str) const {
   return model_calculator_->IsNumber(str);
 }
 
-qint64 ModelCalculatorTest::Priority(QChar ch) {
+qint64 ModelCalculatorTest::Priority(QChar const &ch) {
   return model_calculator_->Priority(ch);
 }
 
-bool ModelCalculatorTest::IsSign(QChar ch) {
+bool ModelCalculatorTest::IsSign(QChar const &ch) {
   return model_calculator_->IsSign(ch);
 }
 
-bool ModelCalculatorTest::IsMathFunction(QString str) {
+bool ModelCalculatorTest::IsMathFunction(QString const &str) {
   return model_calculator_->IsMathFunction(str);
 }
 
-bool ModelCalculatorTest::IsCustomNumber(QString str) {
+bool ModelCalculatorTest::IsCustomNumber(QString const &str) {
   return model_calculator_->IsCustomNumber(str);
 }
 
@@ -69,10 +69,6 @@ double ModelCalculatorTest::CalculateNumbersMul(double num1, QString const &str,
 
 QString ModelCalculatorTest::CalculateNotation(QString str) {
   return model_calculator_->CalculateNotation(str);
-}
-
-QString ModelCalculatorTest::RoundNum(QString str) {
-  return model_calculator_->RoundNum(str);
 }
 
 // ----------------------------------------------------------------------------
@@ -607,19 +603,6 @@ TEST_F(ModelCalculatorTest, Test_CalculateNumbersMul) {
 
 // -- -- -- --
 
-TEST_F(ModelCalculatorTest, RoundNum) {
-  QString res = RoundNum("3243.42394");
-  EXPECT_EQ(res, "3243.42394");
-
-  res = RoundNum("243.42394");
-  EXPECT_EQ(res, "243.42394");
-
-  res = RoundNum("243.42394558");
-  EXPECT_EQ(res, "243.4239455");
-}
-
-// -- -- -- --
-
 TEST_F(ModelCalculatorTest, TestCalculateNotation) {
   QString res = CalculateNotation("3 ~ 6 + 2 ~ *");
   EXPECT_EQ(res, "-6");
@@ -925,7 +908,7 @@ TEST_F(ModelCalculatorTest, TestArifmeticOperation) {
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "-0.6483608");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("tan(-9)");
   pol.clear();
@@ -934,7 +917,7 @@ TEST_F(ModelCalculatorTest, TestArifmeticOperation) {
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "0.4523156");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("tan(-8)");
   pol.clear();
@@ -943,7 +926,7 @@ TEST_F(ModelCalculatorTest, TestArifmeticOperation) {
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "6.7997114");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("tan(-7)");
   pol.clear();
@@ -952,25 +935,25 @@ TEST_F(ModelCalculatorTest, TestArifmeticOperation) {
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "-0.8714479");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("*2");
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "error");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("**2");
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "error");
 
-  /* *****  ***** */
+  // -- -- -- --
 
   res = StrToPostfix("2*");
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "error");
 
-  /* *****  ***** */
+  // -- -- -- --
 }
 // ----------------------------------------------------------------------------
 

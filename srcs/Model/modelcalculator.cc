@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include "qmath.h"
-
 namespace ns_model {
 
 ModelCalculator::ModelCalculator() : is_error_(false) {}
@@ -54,10 +52,6 @@ QString ModelCalculator::CalculateNotation(QString const &str) {
       p_tmp = sp_str_split_.top();
       sp_tmp_data_.push_back(p_tmp);
 
-      //   // qDebug() << "-----";
-      //   // for (auto const &word : sp_tmp_data_) qDebug() << "WORD: " <<
-      //   word;
-
       if (!(sp_tmp_data_.isEmpty())) {
         if (sp_tmp_data_.size() >= 2 && p_tmp[0] == '~') {
           sp_tmp_data_.pop();
@@ -66,7 +60,6 @@ QString ModelCalculator::CalculateNotation(QString const &str) {
 
           tmp_num = CalculateNumbersMul(0, "-", tmp_num);
           p_tmp = QString::number(tmp_num, 'g', 16);
-          // p_tmp = QString("%1").arg(tmp_num, 0, 'g', 20);
           sp_tmp_data_.push_back(p_tmp);
 
           p_one_arg.clear();
@@ -80,8 +73,6 @@ QString ModelCalculator::CalculateNotation(QString const &str) {
           tmp_num = CalculateStrNumbersSingle(p_one_arg, p_sign_arg);
           if (std::isnan(tmp_num)) is_error_ = 1;
           p_tmp = QString::number(tmp_num, 'g', 16);
-          // p_tmp = QString("%1").arg(tmp_num, 0, 'g', 20);
-          // p_tmp.setNum(tmp_num, 'g', 7);
           sp_tmp_data_.push_back(p_tmp);
           p_sign_arg.clear();
           p_one_arg.clear();
@@ -119,24 +110,19 @@ QString ModelCalculator::CalculateNotation(QString const &str) {
 
   if (sp_tmp_data_.size() == 1 && !is_error_) {
     p_result = sp_tmp_data_.pop();
-    // remove_zeros(p_result, LIMIT_SIZE_STR_ERROR, &is_error);
   } else {
     p_result = "error";
   }
 
-  // for (auto const &word : sp_tmp_data_) qDebug() << "WORD: " << word;
-
-  // p_result = RoundNum(p_result);
   p_result = p_result.left(p_result.indexOf('.') + 8);
   p_result.remove(QRegularExpression("[.]?0+$"));
-  // trim_str_num(p_result, 7);
 
   return (p_result);
 }
 
 // -- -- -- --
 
-qint64 ModelCalculator::Priority(QChar ch_) {
+qint64 ModelCalculator::Priority(QChar const &ch_) {
   qint64 res = 0;
 
   if (ch_ == '(' || ch_ == ')')
@@ -159,7 +145,7 @@ qint64 ModelCalculator::Priority(QChar ch_) {
 
 // -- -- -- --
 
-bool ModelCalculator::IsSign(QChar ch) {
+bool ModelCalculator::IsSign(QChar const &ch) {
   bool is_res = 0;
 
   if (ch == '^')
@@ -182,7 +168,7 @@ bool ModelCalculator::IsSign(QChar ch) {
 
 // -- -- -- --
 
-bool ModelCalculator::IsMathFunction(QString str) {
+bool ModelCalculator::IsMathFunction(QString const &str) {
   bool res = 0;
 
   if (!str.isEmpty()) {
@@ -202,7 +188,7 @@ bool ModelCalculator::IsMathFunction(QString str) {
 
 // -- -- -- --
 
-bool ModelCalculator::IsCustomNumber(QString str) {
+bool ModelCalculator::IsCustomNumber(QString const &str) {
   bool res = 1;
 
   for (QChar const &let : str) {
@@ -246,45 +232,31 @@ qint64 ModelCalculator::AddMathFunction(QString const &src, qint64 i_begin) {
 
   if (!src.isEmpty()) {
     if ((res = FindStr(src, "cos", i_begin)) != -1) {
-      // push_stack(stack, "cos");
       stack_.push_back("cos");
     } else if ((res = FindStr(src, "sin", i_begin)) != -1) {
       stack_.push_back("sin");
-      // push_stack(stack, "sin");
     } else if ((res = FindStr(src, "alg", i_begin)) != -1) {
       stack_.push_back("alg");
-      // push_stack(stack, "alg");
     } else if ((res = FindStr(src, "tan", i_begin)) != -1) {
       stack_.push_back("tan");
-      // push_stack(stack, "tan");
     } else if ((res = FindStr(src, "acs", i_begin)) != -1) {
       stack_.push_back("acs");
-      // push_stack(stack, "acs");
     } else if ((res = FindStr(src, "asn", i_begin)) != -1) {
       stack_.push_back("asn");
-      // push_stack(stack, "asn");
     } else if ((res = FindStr(src, "atn", i_begin)) != -1) {
       stack_.push_back("atn");
-      // push_stack(stack, "atn");
     } else if ((res = FindStr(src, "sqrt", i_begin)) != -1) {
       stack_.push_back("sqrt");
-      // push_stack(stack, "sqrt");
     } else if ((res = FindStr(src, "ln", i_begin)) != -1) {
       stack_.push_back("ln");
-      // push_stack(stack, "ln");
     } else if ((res = FindStr(src, "log", i_begin)) != -1) {
       stack_.push_back("log");
-      // push_stack(stack, "log");
     } else if ((res = FindStr(src, "mod", i_begin)) != -1) {
       stack_.push_back("mod");
-      // push_stack(stack, "mod");
     }
-
-    // *i_begin = res != -1 ? res : *i_begin;
   }
   if (res == -1) is_error_ = true;
 
-  // return (res);
   return res != -1 ? (unsigned)res : i_begin;
 }
 
@@ -336,7 +308,6 @@ QString ModelCalculator::StrToPostfix(QString const &str) {
         }
       } else if (c.isLetter()) {
         i = AddMathFunction(str, i);
-        // if (add_math_function(str_, &i, &s) == -1) is_error = 1;
       } else if (c == '(') {
         stack_.push_back("(");
       } else if (c == ')') {
@@ -349,7 +320,6 @@ QString ModelCalculator::StrToPostfix(QString const &str) {
         if (stack_.isEmpty() || (stack_.last() != "(")) {
           is_error_ = 1;
         }
-        // stack_.clear();
         stack_.pop();
       } else if (IsSign(c) && Priority(c)) {
         op = c;
@@ -486,46 +456,6 @@ double ModelCalculator::CalculateStrNumbersSingle(QString const &str_num,
     }
   } else {
     is_error_ = true;
-  }
-
-  return res;
-}
-
-QString ModelCalculator::RoundNum(QString str) {
-  int i = 8;
-  bool is_begin = 0;
-  QString res;
-
-  for (auto const &t : str) {
-    res += t;
-    if (t == '.') {
-      is_begin = 1;
-    }
-
-    if (is_begin) {
-      --i;
-      if (i == 0) break;
-    }
-  }
-
-  return res;
-}
-
-// -- -- -- --
-
-QString ModelCalculator::RemoveZeros(QString str) {
-  QString res;
-  if (!str.isEmpty()) {
-    qint64 n_str = str.size();
-
-    for (unsigned i = n_str; i > 0 && (str[i] == '0' || str[i] == '.'); --i) {
-      if (str[i] == '0' && i > 1) {
-        str[i] = '\0';
-      } else if (str[i] == '.') {
-        str[i] = '\0';
-        i = 1;
-      }
-    }
   }
 
   return res;

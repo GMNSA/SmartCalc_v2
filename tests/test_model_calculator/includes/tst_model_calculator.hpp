@@ -30,10 +30,10 @@ class ModelCalculatorTest : public ::testing::Test {
   bool get_error() const;
   QStack<QString> get_stack() const;
   bool IsNumber(QString const &str) const;
-  qint64 Priority(QChar ch);
-  bool IsSign(QChar ch);
-  bool IsMathFunction(QString str);
-  bool IsCustomNumber(QString str);
+  qint64 Priority(QChar const &ch);
+  bool IsSign(QChar const &ch);
+  bool IsMathFunction(QString const &str);
+  bool IsCustomNumber(QString const &str);
   qint64 FindStr(QString const &str, QString const &needle, qint64 i);
   qint64 AddMathFunction(QString const &src, qint64 i_begin);
   QHash<QString, qint64> GetNumberFromString(QString str, qint64 i_begin);
@@ -42,7 +42,6 @@ class ModelCalculatorTest : public ::testing::Test {
   QStack<QString> StringToStack(QString const &str);
   double CalculateNumbersMul(double num1, QString const &str, double num2);
   QString CalculateNotation(QString str);
-  QString RoundNum(QString str);
 
   // put in any custom data members that you need
  private:
