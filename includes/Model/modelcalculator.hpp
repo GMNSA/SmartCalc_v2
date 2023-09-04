@@ -1,12 +1,12 @@
 #ifndef INCLUDES_MODEL_MODELCALCULATOR_HPP_
 #define INCLUDES_MODEL_MODELCALCULATOR_HPP_
 
-#define FOR_TEST_ = 0
-
 #include <QHash>
 #include <QStack>
 
 #include "./imodel.hpp"
+#include "./polishnotation.hpp"
+#include "./validatetext.hpp"
 
 namespace ns_model {
 
@@ -18,55 +18,21 @@ class ModelCalculator : public IModel {
 
   virtual ~ModelCalculator();
 
-  QString CalculateNotation(QString const &str) override;
-
-#ifdef FOR_TEST_
-
- public:
-#else
-
- private:
-#endif  // FOR_TEST_
-  void ResetError();
-  bool get_error() const;
-  QStack<QString> get_stack() const;
-  bool IsNumber(QString const &str) const;
-  qint64 Priority(QChar const &ch);
-  bool IsSign(QChar const &ch);
-  bool IsMathFunction(QString const &str);
-  bool IsCustomNumber(QString const &str);
-  qint64 FindStr(QString const &str, QString const &needle, qint64 i_begin);
-  qint64 AddMathFunction(QString const &src, qint64 i_begin);
-  QHash<QString, qint64> GetNumberFromString(QString str, qint64 i_begin);
-  bool IsFindInStackBrackets(QStack<QString> const &stack);
-  QString StrToPostfix(QString const &str);
-  QStack<QString> StringToStack(QString const &str);
-  double CalculateNumbersMul(double num1, QString const &str, double num2);
-  double CalculateStrNumbersSingle(QString const &str_num, QString const &str);
-
-  template <typename T>
-  void ReverseStack(QStack<T> *stack, qint64 n_stack);
-
-  // -- -- -- --
+  // -- override --
+  QString Calculate(QString const &str) override;
+  void AddValue(QString const &str) override;
+  void SetBrackets(QString const &str, bool const is_smart,
+                   bool is_checked) override;
+  void Reset() override;
 
  private:
-  bool is_error_;
-  QStack<QString> stack_;
-  QString str_data_tmp_;
-  QStack<QString> sp_str_split_;
-  QStack<QString> sp_tmp_data_;
+  QString raw_text_;
+  QString ready_text_;
+  PolishNotation *polish_notation_;
+  ValidateText *validator_text_;
 };
 
 // ----------------------------------------------------------------------------
-
-template <typename T>
-void ModelCalculator::ReverseStack(QStack<T> *stack, qint64 n_stack) {
-  QStack<T> tmp;
-  if (stack && n_stack <= stack->size()) {
-    while (!stack->isEmpty()) tmp.push_back(stack->pop());
-  }
-  *stack = tmp;
-}
 
 };  // namespace ns_model
 

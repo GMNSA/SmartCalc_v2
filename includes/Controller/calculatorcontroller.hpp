@@ -5,10 +5,8 @@
 
 class CalculatorController : public ICalculatorController {
  public:
-  CalculatorController() = default;
-  virtual ~CalculatorController() {}
-
- protected:
+  CalculatorController();
+  virtual ~CalculatorController();
 };
 
 #endif  // INCLUDES_CONTROLLER_CALCULATORCONTROLLER_HPP_

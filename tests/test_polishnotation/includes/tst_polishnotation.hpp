@@ -1,7 +1,8 @@
-#ifndef TESTS_TEST_MODEL_CALCULATOR_INCLUDES_TST_MODEL_CALCULATOR_HPP_
-#define TESTS_TEST_MODEL_CALCULATOR_INCLUDES_TST_MODEL_CALCULATOR_HPP_
+#ifndef TESTS_TEST_POLISHNOTATION_INCLUDES_TST_POLISHNOTATION_HPP_
+#define TESTS_TEST_POLISHNOTATION_INCLUDES_TST_POLISHNOTATION_HPP_
 
 #include <gtest/gtest.h>
+#include <gtest/gtest_prod.h>
 
 #include <QDebug>
 
@@ -44,8 +45,10 @@ class PolishNotationTest : public ::testing::Test {
   QString CalculateNotation(QString str);
 
   // put in any custom data members that you need
- private:
+ public:
   ns_model::PolishNotation *model_calculator_;
+
+  friend class PolishNotation;
 };
 
-#endif  // TESTS_TEST_MODEL_CALCULATOR_INCLUDES_TST_MODEL_CALCULATOR_HPP_
+#endif  // TESTS_TEST_POLISHNOTATION_INCLUDES_TST_POLISHNOTATION_HPP_

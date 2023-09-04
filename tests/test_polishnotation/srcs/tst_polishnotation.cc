@@ -1,4 +1,4 @@
-#include "../includes/tst_model_calculator.hpp"
+#include "../includes/tst_polishnotation.hpp"
 
 #include <gtest/gtest.h>
 
