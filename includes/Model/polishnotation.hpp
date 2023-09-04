@@ -17,6 +17,7 @@ class PolishNotation {
 
  public:
   void ResetError();
+  void Reset();
   bool get_error() const;
   QStack<QString> get_stack() const;
   bool IsNumber(QString const &str) const;
@@ -45,6 +46,7 @@ class PolishNotation {
   QString str_data_tmp_;
   QStack<QString> sp_str_split_;
   QStack<QString> sp_tmp_data_;
+  QString text_;
 
  private:
   friend class PolishNotationTest;

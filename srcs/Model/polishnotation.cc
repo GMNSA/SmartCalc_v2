@@ -13,6 +13,17 @@ void PolishNotation::ResetError() { is_error_ = 0; }
 
 // -- -- -- --
 
+void PolishNotation::Reset() {
+  ResetError();
+  stack_.clear();
+  str_data_tmp_.clear();
+  sp_str_split_.clear();
+  sp_tmp_data_.clear();
+  text_.clear();
+}
+
+// -- -- -- --
+
 bool PolishNotation::get_error() const { return is_error_; }
 
 // -- -- -- --

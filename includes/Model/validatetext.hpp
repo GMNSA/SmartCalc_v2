@@ -18,7 +18,7 @@ class ValidateText {
   void set_text(QString const &str);
   QString get_text() const;
   bool IsValid() const;
-  void ResetText();
+  void Reset();
   QString FixedForDisplayRepeat(QString str);
   QString ReplaceDummyFunctions(QString str);
   bool IsSign(QChar const &ch_);

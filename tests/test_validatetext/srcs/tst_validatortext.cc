@@ -65,7 +65,7 @@ TEST_F(ValidatorTextTest, TestSmartBrackets) {
   res = validator_text_->get_text();
   EXPECT_EQ(res, "(3.2 + 4.8) / 8 * (13.2 + 7.77)");
 
-  validator_text_->ResetText();
+  validator_text_->Reset();
   res = validator_text_->get_text();
   EXPECT_EQ(res, "");
 
@@ -102,7 +102,7 @@ TEST_F(ValidatorTextTest, TestSimpleBrackets) {
 
   res = validator_text_->get_text();
   EXPECT_EQ(res, "(3.2 + 4.8(");
-  validator_text_->ResetText();
+  validator_text_->Reset();
 
   // -- -- -- --
 

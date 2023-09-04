@@ -5,8 +5,8 @@
 namespace ns_model {
 
 ModelCalculator::ModelCalculator()
-    : raw_text_(""),
-      ready_text_(""),
+    : display_text_(""),
+      calculated_text_(""),
       polish_notation_(new PolishNotation()),
       validator_text_(new ValidateText()) {}
 
@@ -15,15 +15,17 @@ ModelCalculator::~ModelCalculator() {
   if (validator_text_) delete validator_text_;
 }
 
-QString ModelCalculator::Calculate(QString const &str) {
-  return polish_notation_->CalculateNotation(str);
+void ModelCalculator::Calculate(QString const &str) {
+  calculated_text_ = polish_notation_->CalculateNotation(str);
 }
+
+QString ModelCalculator::GetResult() const { return calculated_text_; };
 
 void ModelCalculator::AddValue(QString const &str) {
   // TODO(_who): I will need think about reset_text validator and reset text
   // model text.
   validator_text_->AddTextToStr(str);
-  validator_text_->get_text();
+  display_text_ = validator_text_->get_text();
 }
 
 void ModelCalculator::SetBrackets(QString const &str, bool const is_smart,
@@ -35,5 +37,10 @@ void ModelCalculator::SetBrackets(QString const &str, bool const is_smart,
 void ModelCalculator::Reset() {
   // TODO(_who): release reset ...
   qDebug() << "RESET MODEL CALCULATOR.";
+  validator_text_->Reset();
+  polish_notation_->Reset();
 }
+
+QString ModelCalculator::FixTextDisplay() const { return display_text_; }
+
 }  // namespace ns_model

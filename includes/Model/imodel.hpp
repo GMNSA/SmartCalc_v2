@@ -9,11 +9,13 @@ class IModel {
  public:
   virtual ~IModel() {}
 
-  virtual QString Calculate(QString const &str) = 0;
+  virtual void Calculate(QString const &str) = 0;
+  virtual QString GetResult() const = 0;
   virtual void AddValue(QString const &str) = 0;
   virtual void SetBrackets(QString const &str, bool const is_smart,
                            bool is_checked) = 0;
   virtual void Reset() = 0;
+  virtual QString FixTextDisplay() const = 0;
 };
 
 }  // namespace ns_model

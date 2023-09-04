@@ -19,15 +19,17 @@ class ModelCalculator : public IModel {
   virtual ~ModelCalculator();
 
   // -- override --
-  QString Calculate(QString const &str) override;
+  void Calculate(QString const &str) override;
+  QString GetResult() const override;
   void AddValue(QString const &str) override;
   void SetBrackets(QString const &str, bool const is_smart,
                    bool is_checked) override;
   void Reset() override;
+  QString FixTextDisplay() const override;
 
  private:
-  QString raw_text_;
-  QString ready_text_;
+  QString display_text_;
+  QString calculated_text_;
   PolishNotation *polish_notation_;
   ValidateText *validator_text_;
 };

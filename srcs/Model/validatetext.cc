@@ -71,9 +71,10 @@ bool ValidateText::IsValid() const { return is_valid_; }
 
 // ----------------------------------------------------------------------------
 
-void ValidateText::ResetText() {
+void ValidateText::Reset() {
   text_.clear();
   is_clear_ = 1;
+  is_valid_ = 1;
   // TODO(_who): perhaps you need to assign 0 to text
 }
 
