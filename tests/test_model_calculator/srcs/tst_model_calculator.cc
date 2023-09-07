@@ -32,6 +32,11 @@ void ModalCalculatorTest::AddValue(QString const &str) {
 QString ModalCalculatorTest::FixTextDisplay() const {
   return model_calculator_->FixTextDisplay();
 }
+
+// -- -- -- --
+
+void ModalCalculatorTest::Reset() { model_calculator_->Reset(); }
+
 // ----------------------------------------------------------------------------
 
 TEST_F(ModalCalculatorTest, TestChangeSign) {
@@ -109,6 +114,40 @@ TEST_F(ModalCalculatorTest, TestChangeSign) {
   ChangeSign();
   res = FixTextDisplay();
   EXPECT_EQ(res, "-(-(2 * 2) + 8 + sin(19) + cos(20))");
+
+  // -- -- -- --
+
+  Reset();
+
+  AddValue("0");
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "0");
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-0");
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "0");
+  AddValue("+");
+  AddValue("8");
+  res = FixTextDisplay();
+  Calculate();
+  res = GetResult();
+  EXPECT_EQ(res, "8");
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-8");
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "8");
+  AddValue("3");
+  AddValue("2");
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "832");
+  ChangeSign();
+  res = FixTextDisplay();
+  qDebug() << "res: " << res;
+  EXPECT_EQ(res, "-832");
 }
 
 // ----------------------------------------------------------------------------

@@ -32,6 +32,7 @@ class ModalCalculatorTest : public ::testing::Test {
   QString FixTextDisplay() const;
   QString Calculate(QString const &str = "", QString const &x = "");
   void ChangeSign();
+  void Reset();
   // put in any custom data members that you need
  private:
   ns_model::ModelCalculator *model_calculator_;

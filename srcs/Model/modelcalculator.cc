@@ -195,7 +195,6 @@ void ModelCalculator::ChangeSign() {
     } else if (display_text_[0] != '-') {
       if (reMatch.hasMatch()) {
         AddMinux(&display_text_);
-        display_text_ = tmp;
       } else {
         AddBrackets(&display_text_);
       }
