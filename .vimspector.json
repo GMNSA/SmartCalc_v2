@@ -15,7 +15,7 @@
       "adapter": "vscode-cpptools",
       "configuration": {
         "request": "launch",
-        "program": "BUILD/bin_test/tst_polishnotation",
+        "program": "BUILD/bin_test/tst_model_calculator",
         "cwd": "${workspaceRoot}",
         "args": [ "*${args:--update-gadget-config}" ],
         "justMyCode#json": "${justMyCode:true}"

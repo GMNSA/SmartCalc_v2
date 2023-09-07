@@ -22,6 +22,7 @@ class CalculatorController : public ICalculatorController {
   QString GetTextRepeatDisplay() const override;
   void DelOne() override;
   bool IsGraph() const override;
+  void ChangeSign() override;
 
  private:
   ns_model::IModel *model_;

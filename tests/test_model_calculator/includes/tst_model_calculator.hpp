@@ -27,7 +27,11 @@ class ModalCalculatorTest : public ::testing::Test {
     if (model_calculator_) delete model_calculator_;
   }
 
+  QString GetResult() const;
+  void AddValue(QString const &str);
+  QString FixTextDisplay() const;
   QString Calculate(QString const &str = "", QString const &x = "");
+  void ChangeSign();
   // put in any custom data members that you need
  private:
   ns_model::ModelCalculator *model_calculator_;

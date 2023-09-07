@@ -213,45 +213,45 @@ void Calculator::on_buttonLogClicked() {
 // -------------------------------------------
 
 void Calculator::on_buttonChangeClicked() {
-  qDebug() << "on_buttonChangeClicked";
-  QString tmp;
-  QRegularExpression re;
-  QRegularExpressionMatch reMatch = re.match("\\d");
+  //  QString tmp;
+  //  QRegularExpression re;
+  //  QRegularExpressionMatch reMatch = re.match("\\d");
 
-  if (!display_text_.isEmpty()) {
-    if (display_text_.size() == 1) {
-      if (display_text_[0].isDigit()) {
-        tmp = "-" + display_text_;
-      } else {
-        tmp = "-(" + display_text_ + ")";
-      }
-      display_text_ = tmp;
-    } else if (display_text_.size() >= 4) {
-      if (display_text_[0] == '-' && display_text_[1] == '(' &&
-          display_text_[display_text_.size() - 1] == ')') {
-        display_text_.remove(display_text_.size() - 1, 1);
-        display_text_.remove(1, 1);
-        display_text_.remove(0, 1);
-      } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
-                 display_text_[display_text_.size() - 1].isDigit()) {
-        display_text_.remove(0, 1);
-      } else {
-        tmp = "-(" + display_text_ + ")";
-        display_text_ = tmp;
-      }
-    } else if (display_text_[0] != '-') {
-      if (reMatch.hasMatch()) {
-        tmp = "-" + display_text_;
-        display_text_ = tmp;
-      } else {
-        tmp = "-(" + display_text_ + ")";
-        display_text_ = tmp;
-      }
-    } else if (display_text_[0] == '-') {
-      display_text_.remove(0, 1);
-    }
-  }
-  ui->display->setText(display_text_);
+  //  if (!display_text_.isEmpty()) {
+  //    if (display_text_.size() == 1) {
+  //      if (display_text_[0].isDigit()) {
+  //        tmp = "-" + display_text_;
+  //      } else {
+  //        tmp = "-(" + display_text_ + ")";
+  //      }
+  //      display_text_ = tmp;
+  //    } else if (display_text_.size() >= 4) {
+  //      if (display_text_[0] == '-' && display_text_[1] == '(' &&
+  //          display_text_[display_text_.size() - 1] == ')') {
+  //        display_text_.remove(display_text_.size() - 1, 1);
+  //        display_text_.remove(1, 1);
+  //        display_text_.remove(0, 1);
+  //      } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
+  //                 display_text_[display_text_.size() - 1].isDigit()) {
+  //        display_text_.remove(0, 1);
+  //      } else {
+  //        tmp = "-(" + display_text_ + ")";
+  //        display_text_ = tmp;
+  //      }
+  //    } else if (display_text_[0] != '-') {
+  //      if (reMatch.hasMatch()) {
+  //        tmp = "-" + display_text_;
+  //        display_text_ = tmp;
+  //      } else {
+  //        tmp = "-(" + display_text_ + ")";
+  //        display_text_ = tmp;
+  //      }
+  //    } else if (display_text_[0] == '-') {
+  //      display_text_.remove(0, 1);
+  //    }
+  //  }
+  calculator_->ChangeSign();
+  ui->display->setText(calculator_->GetTextDisplay());
 }
 
 // -------------------------------------------

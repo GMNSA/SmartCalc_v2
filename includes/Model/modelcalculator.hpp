@@ -31,6 +31,13 @@ class ModelCalculator : public IModel {
   void DelOne() override;
   bool IsGraph() const override;
   void ReplaceX(QString *str, QString const &x) override;
+  void ChangeSign() override;
+
+ private:
+  void RemoveBrackets(QString *str);
+  void AddBrackets(QString *str);
+  void AddMinux(QString *str);
+  void RemoveMinux(QString *str);
 
  private:
   QString display_text_;

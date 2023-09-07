@@ -19,6 +19,7 @@ class ICalculatorController {
   virtual QString GetTextRepeatDisplay() const = 0;
   virtual void DelOne() = 0;
   virtual bool IsGraph() const = 0;
+  virtual void ChangeSign() = 0;
 
  protected:
 };

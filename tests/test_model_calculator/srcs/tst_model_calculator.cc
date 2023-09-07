@@ -11,6 +11,106 @@ QString ModalCalculatorTest::Calculate(QString const &str, QString const &x) {
   return model_calculator_->GetResult();
 }
 
+// -- -- -- --
+
+QString ModalCalculatorTest::GetResult() const {
+  return model_calculator_->GetResult();
+}
+
+// -- -- -- --
+
+void ModalCalculatorTest::ChangeSign() { model_calculator_->ChangeSign(); }
+
+// -- -- -- --
+
+void ModalCalculatorTest::AddValue(QString const &str) {
+  model_calculator_->AddValue(str);
+}
+
+// -- -- -- --
+
+QString ModalCalculatorTest::FixTextDisplay() const {
+  return model_calculator_->FixTextDisplay();
+}
+// ----------------------------------------------------------------------------
+
+TEST_F(ModalCalculatorTest, TestChangeSign) {
+  AddValue("2");
+  AddValue("*");
+  AddValue("2");
+  QString res = FixTextDisplay();
+  EXPECT_EQ(res, "2 * 2");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2)");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "2 * 2");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2)");
+  AddValue("+");
+  AddValue("8");
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(-(2 * 2) + 8)");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8");
+
+  // -- -- -- --
+
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8");
+  AddValue("+");
+  AddValue("sin(");
+  AddValue("19");
+  AddValue(")");
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8 + sin(19)");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(-(2 * 2) + 8 + sin(19))");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8 + sin(19)");
+  AddValue("+");
+  AddValue("cos(");
+  AddValue("20");
+  AddValue(")");
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(2 * 2) + 8 + sin(19) + cos(20)");
+
+  // -- -- -- --
+
+  ChangeSign();
+  res = FixTextDisplay();
+  EXPECT_EQ(res, "-(-(2 * 2) + 8 + sin(19) + cos(20))");
+}
+
 // ----------------------------------------------------------------------------
 
 TEST_F(ModalCalculatorTest, TestXCoordinates) {

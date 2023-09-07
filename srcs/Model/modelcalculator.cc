@@ -153,4 +153,103 @@ void ModelCalculator::ReplaceX(QString *str, QString const &x) {
 
 // ----------------------------------------------------------------------------
 
+void ModelCalculator::ChangeSign() {
+  QRegularExpression re;
+  QRegularExpressionMatch reMatch = re.match("\\d");
+
+  QString tmp;
+  bool is_find = 0;
+  unsigned n_str = 0;
+
+  if (!display_text_.isEmpty()) {
+    if (display_text_.size() == 1) {
+      if (display_text_[0].isDigit())
+        AddMinux(&display_text_);
+      else
+        AddBrackets(&display_text_);
+    } else if (display_text_.size() >= 4) {
+      if (display_text_[0] == '-' && display_text_[1] == '(' &&
+          display_text_[display_text_.size() - 1] == ')') {
+        n_str = display_text_.length() - 1;
+        for (unsigned i = n_str - 1; i > 0; --i) {
+          if (display_text_[i] == '(' && i > 0 &&
+              display_text_[i - 1].isLetter()) {
+            AddBrackets(&display_text_);
+            is_find = true;
+            break;
+          } else if (display_text_[i] == ')') {
+            RemoveBrackets(&display_text_);
+            is_find = true;
+            break;
+          }
+        }
+
+        if (!is_find) RemoveBrackets(&display_text_);
+
+      } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
+                 display_text_[display_text_.size() - 1].isDigit()) {
+        display_text_.remove(0, 1);
+      } else {
+        AddBrackets(&display_text_);
+      }
+    } else if (display_text_[0] != '-') {
+      if (reMatch.hasMatch()) {
+        AddMinux(&display_text_);
+        display_text_ = tmp;
+      } else {
+        AddBrackets(&display_text_);
+      }
+    } else if (display_text_[0] == '-') {
+      RemoveMinux(&display_text_);
+    }
+  }
+
+  validator_text_->set_text(display_text_);
+  display_text_ = validator_text_->get_text();
+}
+
+// ----------------------------------------------------------------------------
+
+void ModelCalculator::RemoveBrackets(QString *str) {
+  if (str) {
+    unsigned n_str = str->length() - 1;
+
+    if (n_str >= 3 && str->at(0) == '-' && str->at(1) == '(' &&
+        str->at(n_str) == ')') {
+      str->remove(display_text_.size() - 1, 1);
+      str->remove(1, 1);
+      str->remove(0, 1);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+
+void ModelCalculator::AddBrackets(QString *str) {
+  if (str) {
+    QString tmp = "-(" + display_text_ + ")";
+    display_text_ = tmp;
+  }
+}
+
+// ----------------------------------------------------------------------------
+
+void ModelCalculator::AddMinux(QString *str) {
+  if (str) {
+    QString tmp = "-" + display_text_;
+    display_text_ = tmp;
+  }
+}
+
+// ----------------------------------------------------------------------------
+
+void ModelCalculator::RemoveMinux(QString *str) {
+  if (str) {
+    unsigned n_str = str->length() - 1;
+    if (n_str > 0 && str->at(0) == '-') display_text_.remove(0, 1);
+  }
+}
+
+// ----------------------------------------------------------------------------
+
 }  // namespace ns_model

@@ -59,4 +59,8 @@ void CalculatorController::DelOne() { model_->DelOne(); }
 
 bool CalculatorController::IsGraph() const { return model_->IsGraph(); }
 
+// ----------------------------------------------------------------------------
+
+void CalculatorController::ChangeSign() { model_->ChangeSign(); }
+
 }  // namespace ns_simple_controller

@@ -22,6 +22,7 @@ class IModel {
 
   virtual bool IsGraph() const = 0;
   virtual void ReplaceX(QString *str, QString const &x) = 0;
+  virtual void ChangeSign() = 0;
 };
 
 }  // namespace ns_model
