@@ -6,51 +6,23 @@
 
 #include "./ui_calculator.h"
 
-int is_left_bracket(QString str_) {
-  int n_left = 0;
-  int n_right = 0;
-
-  for (auto const &i : str_) {
-    if (i == '(')
-      ++n_left;
-    else if (i == ')')
-      ++n_right;
-  }
-
-  return (n_left > n_right ? 1 : 0);
-}
-
-// -------------------------------------------
-
-int is_sign(QChar ch_) {
-  int res = 0;
-  if (ch_ == '*')
-    res = 1;
-  else if (ch_ == '/')
-    res = 1;
-  else if (ch_ == '-')
-    res = 1;
-  else if (ch_ == '+')
-    res = 1;
-  else if (ch_ == '^')
-    res = 1;
-  else if (ch_ == '%')
-    res = 1;
-
-  return (res);
-}
-
 // *******************************************
 
-Calculator::Calculator(QWidget *parent)
+Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
+                       QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::Calculator),
       m_is_clear(1),
-      m_str(""),
-      m_calc(),
-      m_graph(nullptr) {
+      display_text_(),
+      calculator_(controller),
+      m_graph(nullptr),
+      m_credit(),
+      min_x_(-10),
+      max_x_(10) {
   ui->setupUi(this);
   ui->checkBox_smart->setCheckState(Qt::CheckState::Checked);
+  ui->lineEdit_x_2->clear();
+  ui->lineEdit_x_3->clear();
 
   if (!(m_graph = new DialogGraph(this))) ui->menubar->close();
 
@@ -59,7 +31,7 @@ Calculator::Calculator(QWidget *parent)
 
   connection_configurations();
 
-  if (m_is_clear) m_str = "0";
+  if (m_is_clear) display_text_ = "0";
 }
 
 // -------------------------------------------
@@ -68,227 +40,279 @@ Calculator::~Calculator() { delete ui; }
 
 // -------------------------------------------
 
-void Calculator::on_button0Clicked() { add_text_to_str("0"); }
+void Calculator::on_button0Clicked() {
+  calculator_->AddValue("0");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_button1Clicked() { add_text_to_str("1"); }
+void Calculator::on_button1Clicked() {
+  calculator_->AddValue("1");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_button2Clicked() { add_text_to_str("2"); }
+void Calculator::on_button2Clicked() {
+  calculator_->AddValue("2");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
-void Calculator::on_button3Clicked() { add_text_to_str("3"); }
+void Calculator::on_button3Clicked() {
+  calculator_->AddValue("3");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
-void Calculator::on_button4Clicked() { add_text_to_str("4"); }
-
-// -------------------------------------------
-
-void Calculator::on_button5Clicked() { add_text_to_str("5"); }
-
-// -------------------------------------------
-
-void Calculator::on_button6Clicked() { add_text_to_str("6"); }
-
-// -------------------------------------------
-
-void Calculator::on_button7Clicked() { add_text_to_str("7"); }
+void Calculator::on_button4Clicked() {
+  calculator_->AddValue("4");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_button8Clicked() { add_text_to_str("8"); }
+void Calculator::on_button5Clicked() {
+  calculator_->AddValue("5");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_button9Clicked() { add_text_to_str("9"); }
+void Calculator::on_button6Clicked() {
+  calculator_->AddValue("6");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonDotClicked() { add_text_to_str("."); }
+void Calculator::on_button7Clicked() {
+  calculator_->AddValue("7");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonXClicked() { add_text_to_str("x"); }
+void Calculator::on_button8Clicked() {
+  calculator_->AddValue("8");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonPClicked() { add_text_to_str("π"); }
+void Calculator::on_button9Clicked() {
+  calculator_->AddValue("9");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
+
+// -------------------------------------------
+
+void Calculator::on_buttonDotClicked() {
+  calculator_->AddValue(".");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
+
+// -------------------------------------------
+
+void Calculator::on_buttonXClicked() {
+  calculator_->AddValue("x");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
+
+// -------------------------------------------
+
+void Calculator::on_buttonPClicked() {
+  calculator_->AddValue("π");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
 void Calculator::on_buttonCeClicked() {
-  m_str.clear();
-  m_is_clear = 1;
-  m_str = "0";
-  reset_data_str();
-  ui->display_repeat->setText("");
+  calculator_->Reset();
+  ResetDisplay("0");
+  ResetRepeatDisplay("");
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonDelClicked() {
-  int n_str = m_str.size();
-  m_str = m_str.trimmed();
-
-  if (m_str.endsWith("cos(")) {
-    m_str.remove(n_str - 4, n_str);
-  } else if (m_str.endsWith("sin(")) {
-    m_str.remove(n_str - 4, n_str);
-  } else if (m_str.endsWith("tan(")) {
-    m_str.remove(n_str - 4, n_str);
-  } else if (m_str.endsWith("acos(")) {
-    m_str.remove(n_str - 5, n_str);
-  } else if (m_str.endsWith("asin(")) {
-    m_str.remove(n_str - 5, n_str);
-  } else if (m_str.endsWith("atan(")) {
-    m_str.remove(n_str - 5, n_str);
-  } else if (m_str.endsWith("sqrt(")) {
-    m_str.remove(n_str - 5, n_str);
-  } else if (m_str.endsWith("ln(")) {
-    m_str.remove(n_str - 3, n_str);
-  } else if (m_str.endsWith("log(")) {
-    m_str.remove(n_str - 4, n_str);
-  } else {
-    m_str.chop(1);
-  }
-
-  if (m_str.size() == 0) {
-    m_str = "0";
-    m_is_clear = 1;
-  }
-  reset_data_str();
+  calculator_->DelOne();
+  ResetDisplay(calculator_->GetTextDisplay());
 }
 
 // -------------------------------------------
 
-void Calculator::on_buttonCosClicked() { add_text_to_str("cos("); }
+void Calculator::on_buttonCosClicked() {
+  calculator_->AddValue("cos(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonSinClicked() { add_text_to_str("sin("); }
+void Calculator::on_buttonSinClicked() {
+  calculator_->AddValue("sin(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonTanClicked() { add_text_to_str("tan("); }
+void Calculator::on_buttonTanClicked() {
+  calculator_->AddValue("tan(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonAcosClicked() { add_text_to_str("acos("); }
+void Calculator::on_buttonAcosClicked() {
+  calculator_->AddValue("acos(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonAsinClicked() { add_text_to_str("asin("); }
+void Calculator::on_buttonAsinClicked() {
+  calculator_->AddValue("asin(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonAtanClicked() { add_text_to_str("atan("); }
+void Calculator::on_buttonAtanClicked() {
+  calculator_->AddValue("atan(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonSqrtClicked() { add_text_to_str("sqrt("); }
+void Calculator::on_buttonSqrtClicked() {
+  calculator_->AddValue("sqrt(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonPowClicked() { add_text_to_str("^"); }
+void Calculator::on_buttonPowClicked() {
+  calculator_->AddValue("^");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonLnClicked() { add_text_to_str("ln("); }
+void Calculator::on_buttonLnClicked() {
+  calculator_->AddValue("ln(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonLogClicked() { add_text_to_str("log("); }
+void Calculator::on_buttonLogClicked() {
+  calculator_->AddValue("log(");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
 void Calculator::on_buttonChangeClicked() {
+  qDebug() << "on_buttonChangeClicked";
   QString tmp;
   QRegularExpression re;
   QRegularExpressionMatch reMatch = re.match("\\d");
 
-  if (!m_str.isEmpty()) {
-    if (m_str.size() == 1) {
-      if (m_str[0].isDigit()) {
-        tmp = "-" + m_str;
+  if (!display_text_.isEmpty()) {
+    if (display_text_.size() == 1) {
+      if (display_text_[0].isDigit()) {
+        tmp = "-" + display_text_;
       } else {
-        tmp = "-(" + m_str + ")";
+        tmp = "-(" + display_text_ + ")";
       }
-      m_str = tmp;
-    } else if (m_str.size() >= 4) {
-      if (m_str[0] == '-' && m_str[1] == '(' &&
-          m_str[m_str.size() - 1] == ')') {
-        m_str.remove(m_str.size() - 1, 1);
-        m_str.remove(1, 1);
-        m_str.remove(0, 1);
-      } else if (m_str[0] == '-' && m_str[1].isDigit() &&
-                 m_str[m_str.size() - 1].isDigit()) {
-        m_str.remove(0, 1);
+      display_text_ = tmp;
+    } else if (display_text_.size() >= 4) {
+      if (display_text_[0] == '-' && display_text_[1] == '(' &&
+          display_text_[display_text_.size() - 1] == ')') {
+        display_text_.remove(display_text_.size() - 1, 1);
+        display_text_.remove(1, 1);
+        display_text_.remove(0, 1);
+      } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
+                 display_text_[display_text_.size() - 1].isDigit()) {
+        display_text_.remove(0, 1);
       } else {
-        tmp = "-(" + m_str + ")";
-        m_str = tmp;
+        tmp = "-(" + display_text_ + ")";
+        display_text_ = tmp;
       }
-    } else if (m_str[0] != '-') {
+    } else if (display_text_[0] != '-') {
       if (reMatch.hasMatch()) {
-        tmp = "-" + m_str;
-        m_str = tmp;
+        tmp = "-" + display_text_;
+        display_text_ = tmp;
       } else {
-        tmp = "-(" + m_str + ")";
-        m_str = tmp;
+        tmp = "-(" + display_text_ + ")";
+        display_text_ = tmp;
       }
-    } else if (m_str[0] == '-') {
-      m_str.remove(0, 1);
+    } else if (display_text_[0] == '-') {
+      display_text_.remove(0, 1);
     }
   }
-  ui->display->setText(m_str);
+  ui->display->setText(display_text_);
 }
 
 // -------------------------------------------
 
-void Calculator::on_buttonSumClicked() { add_text_to_str(" + "); }
+void Calculator::on_buttonSumClicked() {
+  calculator_->AddValue(" + ");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonSubClicked() { add_text_to_str(" - "); }
+void Calculator::on_buttonSubClicked() {
+  calculator_->AddValue(" - ");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonMulClicked() { add_text_to_str(" * "); }
+void Calculator::on_buttonMulClicked() {
+  calculator_->AddValue(" * ");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonDivClicked() { add_text_to_str(" / "); }
+void Calculator::on_buttonDivClicked() {
+  calculator_->AddValue(" / ");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
-void Calculator::on_buttonModClicked() { add_text_to_str("%"); }
+void Calculator::on_buttonModClicked() {
+  calculator_->AddValue("%");
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
-void Calculator::on_buttonBracketLeftClicked() { setBrackets("("); }
+// ----------------------------------------------------------------------------
 
-void Calculator::on_buttonBracketRightClicked() { setBrackets(")"); }
+void Calculator::on_buttonBracketLeftClicked() {
+  calculator_->SetBrackets("(", ui->checkBox_smart->checkState(),
+                           ui->checkBox_smart->isChecked());
+  ResetDisplay(calculator_->GetTextDisplay());
+}
+
+// ----------------------------------------------------------------------------
+
+void Calculator::on_buttonBracketRightClicked() {
+  calculator_->SetBrackets(")", ui->checkBox_smart->checkState(),
+                           ui->checkBox_smart->isChecked());
+  ResetDisplay(calculator_->GetTextDisplay());
+}
 
 // -------------------------------------------
 
 void Calculator::on_buttonEqualClicked() {
-  int is_graph = 0;
-  m_str = ui->display->toPlainText();
-  m_str = fixedForDisplay2(m_str);
-  ui->display_repeat->setText(m_str);
-  m_str = fixedString(m_str);
+  CalculateSimple();
+  ResetDisplay(calculator_->GetData());
+  ui->display_repeat->setText(calculator_->GetTextRepeatDisplay());
 
-  checkXData();
-
-  if (m_str.indexOf("x") != -1) {
-    m_strForGraph = m_str;
-    m_str.replace(QString("x"), QString::number(m_graph->x()));
-    is_graph = 1;
-  }
-
-  m_str = m_calc.calculate(m_str);
-  ui->display->setText(m_str);
-
-  if (is_graph && m_str != "error" && m_str != "na") {
-    openGraphic();
-  }
+  if (calculator_->IsGraph()) openGraphic();
 }
 
 // -------------------------------------------
@@ -297,7 +321,16 @@ void Calculator::on_buttonGraphClicked() { m_graph->show(); }
 
 // -------------------------------------------
 
+void Calculator::CalculateSimple() {
+  calculator_->Calculate("", QString::number(m_graph->x()));
+  ui->display->setText(calculator_->GetData());
+}
+
+// ----------------------------------------------------------------------------
+
 void Calculator::on_buttonCalculationCredit() { calculateCredit(); }
+
+// ----------------------------------------------------------------------------
 
 void Calculator::formatText() {
   QString num = ui->lineEdit_sumCredit->text().replace(" ", "");
@@ -309,83 +342,23 @@ void Calculator::formatText() {
 
 // -------------------------------------------
 
-QString Calculator::fixedString(QString str_) {
-  QString res;
+void Calculator::ResetDisplay(QString const &str) { ui->display->setText(str); }
 
-  if (str_.indexOf("atan") != -1) {
-    str_ = str_.replace("atan", "atn");
-  } else if (str_.indexOf("asin") != -1) {
-    str_ = str_.replace("asin", "asn");
-  } else if (str_.indexOf("acos") != -1) {
-    str_ = str_.replace("acos", "acs");
-  } else if (str_.indexOf("π") != -1) {
-    str_ = str_.replace("π", QString::number(M_PI));
-  }
+// ----------------------------------------------------------------------------
 
-  res = str_;
-
-  return (res);
+void Calculator::ResetRepeatDisplay(QString const &str) {
+  ui->display_repeat->setText(str);
 }
-
-// -------------------------------------------
-
-QString Calculator::fixedForDisplay2(QString str_) {
-  QString res;
-  unsigned n_str = 0;
-  QChar before = '\0';
-  QChar current = '\0';
-  QChar after = '\0';
-
-  str_.replace(" ", "");
-  n_str = str_.size();
-
-  for (unsigned i = 0; i < n_str; ++i) {
-    before = current;
-    current = str_[i];
-
-    if (i + 1 != n_str)
-      after = str_[i + 1];
-    else
-      after = '\0';
-
-    if (is_sign(current)) {
-      if ((before == '\0' || before == '(') &&
-          (after.isDigit() || after == '\0' || after == ')')) {
-        res += str_[i];
-      } else if ((before == ')' || before.isDigit() || before.isLetter()) &&
-                 (after.isDigit() || after.isLetter())) {
-        res += ' ';
-        res += str_[i];
-        res += ' ';
-      } else if ((before.isDigit() || before == ')') && after == '(') {
-        res += ' ';
-        res += str_[i];
-        res += ' ';
-      } else if ((before == '(') && after == '(') {
-        res += ' ';
-        res += str_[i];
-      } else {
-        res += str_[i];
-      }
-    } else {
-      res += str_[i];
-    }
-  }
-
-  return (res);
-}
-
-// -------------------------------------------
-
-void Calculator::reset_data_str() { ui->display->setText(m_str); }
 
 // -------------------------------------------
 
 void Calculator::openGraphic() {
-  m_graph->setStrNum(m_strForGraph);
-  m_graph->show();
+  m_graph->setStrNum(calculator_->GetDatatGraph());
   checkXData();
+  m_graph->show();
   m_graph->openGraphic();
+
+  qDebug() << "result text: " << calculator_->GetData();
 }
 
 // -------------------------------------------
@@ -393,33 +366,17 @@ void Calculator::openGraphic() {
 void Calculator::checkXData() {
   m_graph->setX(ui->lineEdit_x->text().toDouble());
 
-  if (!ui->lineEdit_x_2->text().isEmpty())
+  if (!ui->lineEdit_x_2->text().isEmpty()) {
     m_graph->setXMin(ui->lineEdit_x_2->text().toDouble());
-  else
-    m_graph->setXMin(X_MIN);
-
-  if (!ui->lineEdit_x_3->text().isEmpty())
-    m_graph->setXMax(ui->lineEdit_x_3->text().toDouble());
-  else
-    m_graph->setXMax(X_MAX);
-}
-
-// -------------------------------------------
-
-void Calculator::add_text_to_str(QString str_) {
-  if ((m_is_clear == 1 || m_str == "error" || m_str == "na")) {
-    if (str_ == " + " || str_ == " / " || str_ == " * " || str_ == ".") {
-      m_is_clear = 0;
-      m_str += str_;
-    } else {
-      m_str = str_;
-      m_is_clear = 0;
-    }
   } else {
-    m_str += str_;
+    m_graph->setXMin(min_x_);
   }
-  m_str = fixedForDisplay2(m_str);
-  reset_data_str();
+
+  if (!ui->lineEdit_x_3->text().isEmpty()) {
+    m_graph->setXMax(ui->lineEdit_x_3->text().toDouble());
+  } else {
+    m_graph->setXMax(max_x_);
+  }
 }
 
 // -------------------------------------------
@@ -464,27 +421,6 @@ void Calculator::calculateCredit() {
   ui->label_one->setText(m_credit.infoMonthlyPayment());
   ui->label_two->setText(m_credit.infoAccruedInterest());
   ui->label_three->setText(m_credit.infoDebgAndInterest());
-}
-
-// -------------------------------------------
-
-void Calculator::setBrackets(QString str_) {
-  bool isSmart = ui->checkBox_smart->checkState();
-  qDebug() << "smart: " << isSmart;
-
-  if (!isSmart) {
-    add_text_to_str(str_);
-  } else {
-    int n_brackets = is_left_bracket(m_str);
-
-    if (ui->checkBox_smart->isChecked()) {
-      if (n_brackets == 0) {
-        add_text_to_str("(");
-      } else {
-        add_text_to_str(")");
-      }
-    }
-  }
 }
 
 // -------------------------------------------

@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "../calculationsmartcalc.hpp"
+#include "../Controller/icalculatorcontroller.hpp"
 #include "../creditcalculator.hpp"
 #include "./dialoggraph.hpp"
 
@@ -17,7 +17,9 @@ class Calculator : public QMainWindow {
   Q_OBJECT
 
  public:
-  explicit Calculator(QWidget *parent = nullptr);
+  explicit Calculator(
+      ns_simple_controller::ICalculatorController *controller = nullptr,
+      QWidget *parent = nullptr);
   ~Calculator();
 
  signals:
@@ -72,11 +74,13 @@ class Calculator : public QMainWindow {
   Ui::Calculator *ui;
 
   int m_is_clear;
-  QString m_str;
+  QString display_text_;
   QString m_strForGraph;
-  CalculationSmartCalc m_calc;
+  ns_simple_controller::ICalculatorController *calculator_;
   DialogGraph *m_graph;
   CreditCalculator m_credit;
+  int min_x_;
+  int max_x_;
 
 #ifdef FOR_TEST
 
@@ -86,20 +90,22 @@ class Calculator : public QMainWindow {
  private:
 #endif
 
-  QString fixedString(QString str_);
-  QString fixedForDisplay2(QString str_);
+  // QString fixedString(QString str_);
+  // QString fixedForDisplay2(QString str_);
 
-  void reset_data_str();
+  void ResetDisplay(QString const &str);
+  void ResetRepeatDisplay(QString const &str);
   void openGraphic();
   void checkXData();
 
-  void add_text_to_str(QString str_);
+  // void add_text_to_str(QString str_);
   void settingsCredit();
   void settingsGraph();
 
+  void CalculateSimple();
   void calculateCredit();
 
-  void setBrackets(QString str_);
+  // void setBrackets(QString str_);
 
   void connection_configurations();
   void connection_num();

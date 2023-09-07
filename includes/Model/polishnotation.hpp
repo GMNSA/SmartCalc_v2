@@ -33,6 +33,7 @@ class PolishNotation {
   QStack<QString> StringToStack(QString const &str);
   double CalculateNumbersMul(double num1, QString const &str, double num2);
   double CalculateStrNumbersSingle(QString const &str_num, QString const &str);
+  void ZerosRemove(QString *str);
 
   // -- templates  --
   template <typename T>

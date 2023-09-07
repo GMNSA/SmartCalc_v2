@@ -127,7 +127,8 @@ QString PolishNotation::CalculateNotation(QString const &str) {
   }
 
   p_result = p_result.left(p_result.indexOf('.') + 8);
-  p_result.remove(QRegularExpression("[.]?0+$"));
+  ZerosRemove(&p_result);
+  // if (p_result != "0") p_result.remove(QRegularExpression("[.][^1-9]?0+$"));
 
   return (p_result);
 }
@@ -471,6 +472,23 @@ double PolishNotation::CalculateStrNumbersSingle(QString const &str_num,
   }
 
   return res;
+}
+
+// ----------------------------------------------------------------------------
+
+void PolishNotation::ZerosRemove(QString *str) {
+  if (str) {
+    unsigned n_str = str->length() - 1;
+    for (int i = n_str; i > 0 && (str->at(i) == '0' || str->at(i) == '.');
+         --i) {
+      if (str->at(i) == '0' && i > 1) {
+        str->truncate(i);
+      } else if (str->at(i) == '.') {
+        str->truncate(i);
+        i = 1;
+      }
+    }
+  }
 }
 
 }  // namespace ns_model

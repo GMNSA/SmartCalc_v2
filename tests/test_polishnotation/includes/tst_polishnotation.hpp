@@ -10,7 +10,7 @@
 
 class PolishNotationTest : public ::testing::Test {
  public:
-  PolishNotationTest() : model_calculator_(new ns_model::PolishNotation) {
+  PolishNotationTest() : polish_notation_(new ns_model::PolishNotation) {
     // initialization code here
   }
 
@@ -25,7 +25,7 @@ class PolishNotationTest : public ::testing::Test {
 
   ~PolishNotationTest() {
     // cleanup any pending stuff, but no exceptions allowed
-    if (model_calculator_) delete model_calculator_;
+    if (polish_notation_) delete polish_notation_;
   }
 
   bool get_error() const;
@@ -43,10 +43,11 @@ class PolishNotationTest : public ::testing::Test {
   QStack<QString> StringToStack(QString const &str);
   double CalculateNumbersMul(double num1, QString const &str, double num2);
   QString CalculateNotation(QString str);
+  void ZerosRemove(QString *str);
 
   // put in any custom data members that you need
  public:
-  ns_model::PolishNotation *model_calculator_;
+  ns_model::PolishNotation *polish_notation_;
 
   friend class PolishNotation;
 };

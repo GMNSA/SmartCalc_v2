@@ -5,11 +5,11 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/polishnotation.hpp"
+#include "../../../includes/Model/modelcalculator.hpp"
 
-class PolishNotationTest : public ::testing::Test {
+class ModalCalculatorTest : public ::testing::Test {
  public:
-  PolishNotationTest() : model_calculator_(new ns_model::PolishNotation) {
+  ModalCalculatorTest() : model_calculator_(new ns_model::ModelCalculator) {
     // initialization code here
   }
 
@@ -22,30 +22,15 @@ class PolishNotationTest : public ::testing::Test {
     // ok to through exceptions from here if need be
   }
 
-  ~PolishNotationTest() {
+  ~ModalCalculatorTest() {
     // cleanup any pending stuff, but no exceptions allowed
     if (model_calculator_) delete model_calculator_;
   }
 
-  bool get_error() const;
-  QStack<QString> get_stack() const;
-  bool IsNumber(QString const &str) const;
-  qint64 Priority(QChar const &ch);
-  bool IsSign(QChar const &ch);
-  bool IsMathFunction(QString const &str);
-  bool IsCustomNumber(QString const &str);
-  qint64 FindStr(QString const &str, QString const &needle, qint64 i);
-  qint64 AddMathFunction(QString const &src, qint64 i_begin);
-  QHash<QString, qint64> GetNumberFromString(QString str, qint64 i_begin);
-  bool IsFindInStackBrackets(QStack<QString> const &stack);
-  QString StrToPostfix(QString const &str);
-  QStack<QString> StringToStack(QString const &str);
-  double CalculateNumbersMul(double num1, QString const &str, double num2);
-  QString CalculateNotation(QString str);
-
+  QString Calculate(QString const &str = "", QString const &x = "");
   // put in any custom data members that you need
  private:
-  ns_model::PolishNotation *model_calculator_;
+  ns_model::ModelCalculator *model_calculator_;
 };
 
 #endif  // TESTS_TEST_MODEL_CALCULATOR_INCLUDES_TST_MODEL_CALCULATOR_HPP_

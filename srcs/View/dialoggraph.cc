@@ -1,6 +1,7 @@
 #include "../../includes/View/dialoggraph.hpp"
 
 #include "./ui_dialoggraph.h"
+
 #define NUM_OF_GRID 12
 #define GRID_ACCURACY_F "%.2f"
 #define GRID_ACCURACY_E "%.1e"
@@ -32,6 +33,11 @@ DialogGraph::DialogGraph(QWidget *parent)
       m_num_of_grid(10),
       m_scene(nullptr) {
   ui->setupUi(this);
+
+  qDebug() << "x min: " << m_xMin;
+  qDebug() << "x max: " << m_xMax;
+  qDebug() << "x : " << m_x;
+  qDebug() << "str num : " << m_strNum;
 
   createDialog();
 
@@ -72,7 +78,10 @@ void DialogGraph::setWidth(double width) { m_width = width; }
 
 /*          ***** ***** ***** *****          */
 
-void DialogGraph::setStrNum(const QString &strNum) { m_strNum = strNum; }
+void DialogGraph::setStrNum(const QString &strNum) {
+  m_strNum = strNum;
+  qDebug() << "str num: " << m_strNum;
+}
 
 /*          ***** ***** ***** *****          */
 

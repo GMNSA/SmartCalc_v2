@@ -22,20 +22,30 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(PROJECT_HEADERS
-    includes/calculationsmartcalc.hpp
+    includes/Model/imodel.hpp
+    includes/Model/modelcalculator.hpp
+    includes/Model/polishnotation.hpp
+    includes/Model/validatetext.hpp
+    includes/Controller/icalculatorcontroller.hpp
+    includes/Controller/calculatorcontroller.hpp
     includes/creditcalculator.hpp
     includes/View/dialoggraph.hpp
     includes/View/calculator.hpp
+    includes/calculationsmartcalc.hpp
     code_c/s21_credit_calc.h
     code_c/s21_smart_calc.h
     code_c/s21_stack.h
 )
 
 set(PROJECT_SOURCES
-    srcs/calculationsmartcalc.cc
-    srcs/creditcalculator.cc
+    srcs/Model/modelcalculator.cc
+    srcs/Model/polishnotation.cc
+    srcs/Model/validatetext.cc
+    srcs/Controller/calculatorcontroller.cc
     srcs/View/dialoggraph.cc
     srcs/View/calculator.cc
+    srcs/creditcalculator.cc
+    srcs/calculationsmartcalc.cc
     srcs/main.cc
     srcs/View/dialoggraph.ui
     srcs/View/calculator.ui

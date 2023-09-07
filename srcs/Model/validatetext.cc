@@ -2,13 +2,29 @@
 
 namespace ns_model {
 
-ValidateText::ValidateText(QString const &str) : text_(str) {}
+ValidateText::ValidateText(QString const &str)
+    : text_(str), is_valid_(1), is_clear_(1), is_graph_(0) {}
 
 // ----------------------------------------------------------------------------
 
 void ValidateText::AddTextToStr(QString const &str) {
-  if ((is_clear_ == 1 || text_ == "error" || text_ == "na")) {
-    if (str == " + " || str == " / " || str == " * " || str == ".") {
+  AddText(str);
+  // if (display_text_.indexOf("x") != -1) {
+  //   m_strForGraph = display_text_;
+  //   display_text_.replace(QString("x"), QString::number(m_graph->x()));
+  //   is_graph = true;
+  // }
+  text_ = ReplaceDummyFunctions(text_);
+  text_ = FixedText(text_);
+}
+
+// ----------------------------------------------------------------------------
+
+void ValidateText::AddText(QString const &str) {
+  QString tmp_num = str.trimmed();
+  if ((is_clear_ == 1 || text_ == "error" || text_ == "na" || text_ == "0")) {
+    if (tmp_num == "+" || tmp_num == "/" || tmp_num == "*" || tmp_num == "." ||
+        tmp_num == "-" || tmp_num == "%") {
       is_clear_ = 0;
       text_ += str;
     } else {
@@ -18,8 +34,6 @@ void ValidateText::AddTextToStr(QString const &str) {
   } else {
     text_ += str;
   }
-  text_ = FixedForDisplayRepeat(text_);
-  // reset_data_str();
 }
 
 // ----------------------------------------------------------------------------
@@ -59,7 +73,10 @@ bool ValidateText::IsLeftBracket(QString const &str) {
 
 // ----------------------------------------------------------------------------
 
-void ValidateText::set_text(QString const &str) { text_ = str; }
+void ValidateText::set_text(QString const &str) {
+  if (!str.isEmpty()) is_clear_ = 0;
+  text_ = str;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -80,7 +97,7 @@ void ValidateText::Reset() {
 
 // ----------------------------------------------------------------------------
 
-QString ValidateText::FixedForDisplayRepeat(QString str) {
+QString ValidateText::FixedText(QString str) {
   QString res;
   unsigned n_str = 0;
   QChar before = '\0';
@@ -165,6 +182,10 @@ bool ValidateText::IsSign(QChar const &ch_) {
 
   return (res);
 }
+
+// ----------------------------------------------------------------------------
+
+void ValidateText::set_clear(bool const is_clear) { is_clear_ = is_clear; }
 
 // ----------------------------------------------------------------------------
 

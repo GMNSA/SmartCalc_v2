@@ -7,67 +7,71 @@
 #include <QStack>
 
 bool PolishNotationTest::get_error() const {
-  return model_calculator_->get_error();
+  return polish_notation_->get_error();
 }
 
 QStack<QString> PolishNotationTest::get_stack() const {
-  return model_calculator_->get_stack();
+  return polish_notation_->get_stack();
 }
 
 bool PolishNotationTest::IsNumber(QString const &str) const {
-  return model_calculator_->IsNumber(str);
+  return polish_notation_->IsNumber(str);
 }
 
 qint64 PolishNotationTest::Priority(QChar const &ch) {
-  return model_calculator_->Priority(ch);
+  return polish_notation_->Priority(ch);
 }
 
 bool PolishNotationTest::IsSign(QChar const &ch) {
-  return model_calculator_->IsSign(ch);
+  return polish_notation_->IsSign(ch);
 }
 
 bool PolishNotationTest::IsMathFunction(QString const &str) {
-  return model_calculator_->IsMathFunction(str);
+  return polish_notation_->IsMathFunction(str);
 }
 
 bool PolishNotationTest::IsCustomNumber(QString const &str) {
-  return model_calculator_->IsCustomNumber(str);
+  return polish_notation_->IsCustomNumber(str);
 }
 
 qint64 PolishNotationTest::FindStr(QString const &str, QString const &needle,
                                    qint64 i) {
-  return model_calculator_->FindStr(str, needle, i);
+  return polish_notation_->FindStr(str, needle, i);
 }
 
 qint64 PolishNotationTest::AddMathFunction(QString const &src, qint64 i_begin) {
-  return model_calculator_->AddMathFunction(src, i_begin);
+  return polish_notation_->AddMathFunction(src, i_begin);
 }
 
 QHash<QString, qint64> PolishNotationTest::GetNumberFromString(QString str,
                                                                qint64 i_begin) {
-  return model_calculator_->GetNumberFromString(str, i_begin);
+  return polish_notation_->GetNumberFromString(str, i_begin);
 }
 
 bool PolishNotationTest::IsFindInStackBrackets(QStack<QString> const &stack) {
-  return model_calculator_->IsFindInStackBrackets(stack);
+  return polish_notation_->IsFindInStackBrackets(stack);
 }
 
 QString PolishNotationTest::StrToPostfix(QString const &str) {
-  return model_calculator_->StrToPostfix(str);
+  return polish_notation_->StrToPostfix(str);
 }
 
 QStack<QString> PolishNotationTest::StringToStack(QString const &str) {
-  return model_calculator_->StringToStack(str);
+  return polish_notation_->StringToStack(str);
 }
 
 double PolishNotationTest::CalculateNumbersMul(double num1, QString const &str,
                                                double num2) {
-  model_calculator_->ResetError();
-  return model_calculator_->CalculateNumbersMul(num1, str, num2);
+  polish_notation_->ResetError();
+  return polish_notation_->CalculateNumbersMul(num1, str, num2);
 }
 
 QString PolishNotationTest::CalculateNotation(QString str) {
-  return model_calculator_->CalculateNotation(str);
+  return polish_notation_->CalculateNotation(str);
+}
+
+void PolishNotationTest::ZerosRemove(QString *str) {
+  polish_notation_->ZerosRemove(str);
 }
 
 // ----------------------------------------------------------------------------
@@ -83,15 +87,93 @@ TEST_F(PolishNotationTest, TestIsNumber) {
   EXPECT_FALSE(res);
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
+
+TEST_F(PolishNotationTest, TestRemoveZeros) {
+  QString src = "30.0000";
+
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30");
+
+  // -- -- -- --
+
+  src = "30.3000";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30.3");
+
+  // -- -- -- --
+
+  src = "30.3300";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30.33");
+
+  // -- -- -- --
+
+  src = "30.3390";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30.339");
+
+  // -- -- -- --
+
+  src = "30.3390";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30.339");
+
+  // -- -- -- --
+
+  src = "30.3391";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "30.3391");
+
+  // -- -- -- --
+
+  src = "0";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "0");
+
+  // -- -- -- --
+
+  src = "x";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "x");
+
+  // -- -- -- --
+
+  src = "0.0";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "0");
+
+  // -- -- -- --
+
+  src = "0.03";
+  ZerosRemove(&src);
+  EXPECT_EQ(src, "0.03");
+}
+
+// ----------------------------------------------------------------------------
+TEST_F(PolishNotationTest, TestFirstTest) {
+  QString res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
+  qDebug() << "1: " << res;
+  EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
+  QString pols = CalculateNotation(res);
+  qDebug() << "2: " << pols;
+  EXPECT_EQ(pols, "-0.175");
+}
+
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestPriority) {
   // QChar sign = '*';
   // qint64 res = Priority(sign);
   // qDebug() << "res: " << res;
+  //
+  // QString res = StrToPostfix("0");
+  // EXPECT_EQ(res, "0");
+  // QString pol = CalculateNotation(res);
+  // EXPECT_EQ(pol, "0");
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestIsSign) {
   // Exercises the Xyz feature of Foo.
@@ -106,7 +188,7 @@ TEST_F(PolishNotationTest, TestIsSign) {
   EXPECT_FALSE(IsSign('!'));
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, IsMathFunction) {
   EXPECT_FALSE(IsMathFunction("llog"));
@@ -126,7 +208,7 @@ TEST_F(PolishNotationTest, IsMathFunction) {
   EXPECT_TRUE(IsMathFunction("log"));
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestIsCustomNumber) {
   EXPECT_FALSE(IsCustomNumber("39a28"));
@@ -141,7 +223,7 @@ TEST_F(PolishNotationTest, TestIsCustomNumber) {
   EXPECT_TRUE(IsCustomNumber("49920.0042"));
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestFindStr) {
   QString str = "there is no spoon.";
@@ -182,7 +264,7 @@ TEST_F(PolishNotationTest, TestFindStr) {
   EXPECT_EQ(n, 2);
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestAddMathFunctions) {
   QStack<QString> dest;
@@ -227,7 +309,7 @@ TEST_F(PolishNotationTest, TestAddMathFunctions) {
   EXPECT_EQ(tmp, "");
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestGetNumberFromString) {
   QString str = "t32.42 8th";
@@ -257,7 +339,7 @@ TEST_F(PolishNotationTest, TestGetNumberFromString) {
   EXPECT_EQ(res.begin().value(), 9);
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestIsFindInStackBrackets) {
   QStack<QString> s;
@@ -462,7 +544,7 @@ TEST_F(PolishNotationTest, TestStrToPostfix) {
   EXPECT_TRUE(res.isEmpty());
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestStringToStack) {
   QString str = "21 22 23 24";
@@ -558,7 +640,7 @@ TEST_F(PolishNotationTest, TestStringToStack) {
 
 // -- -- -- --
 
-TEST_F(PolishNotationTest, Test_CalculateNumbersMul) {
+TEST_F(PolishNotationTest, TestCalculateNumbersMul) {
   double res = CalculateNumbersMul(33, "*", 2);
   EXPECT_NEAR(res, 66.0, 0.001);
   EXPECT_FALSE(get_error());
@@ -595,12 +677,18 @@ TEST_F(PolishNotationTest, Test_CalculateNumbersMul) {
 
   // -- -- -- --
 
+  res = CalculateNumbersMul(1.6, "", 1.2);
+  EXPECT_NEAR(res, 0, 0.001);
+  EXPECT_TRUE(get_error());
+
+  // -- -- -- --
+
   res = CalculateNumbersMul(1.6, "kdgh", 1.2);
   EXPECT_NEAR(res, 0, 0.001);
   EXPECT_TRUE(get_error());
 }
 
-// -- -- -- --
+// ----------------------------------------------------------------------------
 
 TEST_F(PolishNotationTest, TestCalculateNotation) {
   QString res = CalculateNotation("3 ~ 6 + 2 ~ *");
@@ -901,7 +989,7 @@ TEST_F(PolishNotationTest, TestArifmeticOperation) {
   QString pol = CalculateNotation(res);
 
   res = StrToPostfix("tan(-10)");
-  pol = NULL;
+  pol.clear();
 
   EXPECT_EQ(res, "10 ~ tan");
   pol = CalculateNotation(res);
@@ -952,8 +1040,43 @@ TEST_F(PolishNotationTest, TestArifmeticOperation) {
   pol = CalculateNotation(res);
   EXPECT_EQ(pol, "error");
 
+  res = StrToPostfix("2 + 2");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "4");
+
+  res = StrToPostfix("0");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "0");
+
   // -- -- -- --
+
+  res = StrToPostfix("9");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "9");
+
+  // -- -- -- --
+
+  res = StrToPostfix("10");
+  pol = CalculateNotation(res);
+  EXPECT_EQ(pol, "10");
 }
+
+// ----------------------------------------------------------------------------
+
+TEST_F(PolishNotationTest, TestXCoordinates) {
+  QString res = StrToPostfix("2 * 2");
+  qDebug() << "str_to_post: " << res;
+  EXPECT_EQ(res, "2 2 *");
+
+  QString pol = CalculateNotation(res);
+  qDebug() << "calculate_notation: " << pol;
+  EXPECT_EQ(pol, "4");
+
+  res = StrToPostfix("2 * 2 + x");
+  qDebug() << "str_to_post: " << res;
+  EXPECT_EQ(res, "2 2 * x +");
+}
+
 // ----------------------------------------------------------------------------
 
 int main(int argc, char **argv) {
