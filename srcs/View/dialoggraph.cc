@@ -24,6 +24,8 @@ namespace s21 {
 // int equalDouble(double a_, double b_) { return (fabs(a_ - b_) < 1e-7); }
 //
 
+double DialogGraph::inf_ = 1.0 / 0.0;
+
 // -----------------------------------------------------------------------------
 
 DialogGraph::DialogGraph(
@@ -31,40 +33,40 @@ DialogGraph::DialogGraph(
     QWidget *parent)
     : QDialog(parent),
       ui(new Ui::DialogGraph),
-      m_width(0),
-      m_height(0),
-      m_xMin(-3),
-      m_xMax(20),
+      width_(0),
+      height_(0),
+      x_min_(-3),
+      x_max_(20),
       m_x(0),
-      m_scale(0),
+      scale_(0),
       isError_(0),
-      m_num_of_grid(10),
-      m_scene(nullptr),
+      num_of_grid_(10),
+      scene_(nullptr),
       calculator_(calculator_controller) {
   ui->setupUi(this);
 
-  createDialog();
+  CreateDialog();
 
-  connection_configurations();
+  ConnectionConfigurations();
 }
 
 // ----------------------------------------------------------------------------
 
 DialogGraph::~DialogGraph() {
-  if (m_scene) delete m_scene;
+  if (scene_) delete scene_;
   if (ui) delete ui;
 }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::resetData() {
-  createDialog();
+void DialogGraph::ResetData() {
+  CreateDialog();
 
-  m_scale = 0;
+  scale_ = 0;
   isError_ = 0;
   m_res = 0;
-  m_width = 0;
-  m_height = 0;
+  width_ = 0;
+  height_ = 0;
 }
 
 // ----------------------------------------------------------------------------
@@ -76,17 +78,17 @@ void DialogGraph::on_buttonCloseClicked() {
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setHeigth(double heigth) { m_height = heigth; }
+void DialogGraph::SetHeight(double heigth) { height_ = heigth; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setWidth(double width) { m_width = width; }
+void DialogGraph::SetWidth(double width) { width_ = width; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setStrNum(const QString &strNum) {
-  m_strNum = strNum;
-  qDebug() << "str num: " << m_strNum;
+void DialogGraph::SetStrNum(const QString &strNum) {
+  str_num_ = strNum;
+  qDebug() << "str num: " << str_num_;
 }
 
 // ----------------------------------------------------------------------------
@@ -95,46 +97,45 @@ double DialogGraph::x() const { return m_x; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setX(double x) { m_x = x; }
+void DialogGraph::set_x(double x) { m_x = x; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::openGraphic() {
-  resetData();
-  dataConversion();
+void DialogGraph::OpenGraphic() {
+  ResetData();
+  DataConversion();
 
-  if (isError_ || m_xMax <= m_xMin) {
+  if (isError_ || x_max_ <= x_min_) {
   } else {
-    m_scene->clear();
+    scene_->clear();
     QPen graphLine(Qt::darkGreen);
     graphLine.setWidthF(0.5);
-    drawField(m_scene);
-    double x = m_xMin;
+    DrawField(scene_);
+    double x = x_min_;
     double moveX = 0.02;
-    double y = calclulateXCustom(m_strNum, x, m_scale) - m_res;
+    double y = CalculateXCustom(str_num_, x, scale_) - m_res;
     double y1 = 0;
 
-    for (int i = -m_width * 50; i <= m_width * 50; ++i, x += moveX) {
-      y1 = calclulateXCustom(m_strNum, x + moveX, m_scale) - m_res;
-      if (y >= -m_height && y <= m_height && y1 >= -m_height &&
-          y1 <= m_height) {
+    for (int i = -width_ * 50; i <= width_ * 50; ++i, x += moveX) {
+      y1 = CalculateXCustom(str_num_, x + moveX, scale_) - m_res;
+      if (y >= -height_ && y <= height_ && y1 >= -height_ && y1 <= height_) {
         if (std::isnan(y1) || y1 == 0) continue;
-        m_scene->addLine(x, -y, x + moveX, -y1, graphLine);
+        scene_->addLine(x, -y, x + moveX, -y1, graphLine);
       }
       y = y1;
     }
 
-    ui->graphicsView->setScene(m_scene);
+    ui->graphicsView->setScene(scene_);
   }
 }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::dataConversion() {
-  setWidth((ui->graphicsView->width() - OFFSET_WIDTH) / 2.0);
-  setHeigth((ui->graphicsView->height() - OFFSET_HEIGHT) / 2.0);
-  QString r = QString("((%1) + (%2)) / 2.0").arg(m_xMax).arg(m_xMin);
-  m_res = calclulateX(m_strNum, r).toDouble();
+void DialogGraph::DataConversion() {
+  SetWidth((ui->graphicsView->width() - OFFSET_WIDTH) / 2.0);
+  SetHeight((ui->graphicsView->height() - OFFSET_HEIGHT) / 2.0);
+  QString r = QString("((%1) + (%2)) / 2.0").arg(x_max_).arg(x_min_);
+  m_res = CalculateX(str_num_, r).toDouble();
   int count = 0;
   double res0 = 0;
   double res1 = 0;
@@ -147,95 +148,95 @@ void DialogGraph::dataConversion() {
     else
       count *= 10;
 
-    r = QString("((%1) + (%2)) / 2 + %3").arg(m_xMax).arg(m_xMin).arg(count);
-    res0 = calclulateX(m_strNum, r).toDouble();
-    r = QString("((%1) + (%2)) / 2 - %3").arg(m_xMax).arg(m_xMin).arg(count);
-    res1 = calclulateX(m_strNum, r).toDouble();
+    r = QString("((%1) + (%2)) / 2 + %3").arg(x_max_).arg(x_min_).arg(count);
+    res0 = CalculateX(str_num_, r).toDouble();
+    r = QString("((%1) + (%2)) / 2 - %3").arg(x_max_).arg(x_min_).arg(count);
+    res1 = CalculateX(str_num_, r).toDouble();
     if (!std::isnormal((res0) && std::isnormal(res1))) res0 = 0;
     if (!std::isnormal(res1) && std::isnormal(res0)) res1 = 0;
     m_res = (res0 + res1) / 2;
   }
 
   if (!std::isfinite(m_res)) m_res = 0;
-  if (!m_xMin && !m_xMax) {
-    m_xMax += fabs(m_res) + 2 * M_PI + count;
-    m_xMin -= fabs(m_res) + 2 * M_PI + count;
+  if (!x_min_ && !x_max_) {
+    x_max_ += fabs(m_res) + 2 * M_PI + count;
+    x_min_ -= fabs(m_res) + 2 * M_PI + count;
     m_res = 0;
-  } else if (fabs(m_res) < m_xMax / 2) {
+  } else if (fabs(m_res) < x_max_ / 2) {
     m_res = 0;
   }
 
-  m_scale = 2 * m_width / (m_xMax - m_xMin);
-  m_xMax *= m_scale;
-  m_xMin *= m_scale;
-  m_res *= m_scale;
+  scale_ = 2 * width_ / (x_max_ - x_min_);
+  x_max_ *= scale_;
+  x_min_ *= scale_;
+  m_res *= scale_;
 }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::drawField(QGraphicsScene *scene_) {
+void DialogGraph::DrawField(QGraphicsScene *scene_) {
   QPen gridLine(Qt::black);
   QPen axisLine(Qt::black);
   axisLine.setWidthF(1.5);
-  scene_->addLine(m_xMin, m_height, m_xMax, m_height, axisLine);
-  scene_->addLine(m_xMin, -m_height, m_xMin, m_height, axisLine);
+  scene_->addLine(x_min_, height_, x_max_, height_, axisLine);
+  scene_->addLine(x_min_, -height_, x_min_, height_, axisLine);
   QString gridTxt;
-  double gridMove = 2 * m_width / m_num_of_grid;
-  double gridP = m_xMin + gridMove;
+  double gridMove = 2 * width_ / num_of_grid_;
+  double gridP = x_min_ + gridMove;
   gridLine.setWidthF(0.2);
 
-  for (unsigned count = 1; count < m_num_of_grid; ++count, gridP += gridMove) {
-    gridTxt = QString::number(gridP / m_scale, 'f', 2);
+  for (unsigned count = 1; count < num_of_grid_; ++count, gridP += gridMove) {
+    gridTxt = QString::number(gridP / scale_, 'f', 2);
     QGraphicsTextItem *p_xp =
-        new QGraphicsTextItem(gridTxt, qobject_cast<QGraphicsItem *>(m_scene));
-    p_xp->setPos(gridP, m_height);
-    scene_->addLine(gridP, -m_height, gridP, m_height, gridLine);
-    scene_->addLine(gridP, m_height - 10, gridP, m_height, axisLine);
+        new QGraphicsTextItem(gridTxt, qobject_cast<QGraphicsItem *>(scene_));
+    p_xp->setPos(gridP, height_);
+    scene_->addLine(gridP, -height_, gridP, height_, gridLine);
+    scene_->addLine(gridP, height_ - 10, gridP, height_, axisLine);
     scene_->addItem((QGraphicsItem *)(p_xp));
   }
 
-  gridMove = 2 * m_height / m_num_of_grid;
-  gridP = m_height - gridMove;
+  gridMove = 2 * height_ / num_of_grid_;
+  gridP = height_ - gridMove;
 
   gridLine.setWidthF(0.2);
-  for (int count = m_num_of_grid; count > 1; --count, gridP -= gridMove) {
-    gridTxt = QString::number((-gridP + m_res) / m_scale, 'f', 2);
+  for (int count = num_of_grid_; count > 1; --count, gridP -= gridMove) {
+    gridTxt = QString::number((-gridP + m_res) / scale_, 'f', 2);
     QGraphicsTextItem *p_y =
-        new QGraphicsTextItem(gridTxt, qobject_cast<QGraphicsItem *>(m_scene));
+        new QGraphicsTextItem(gridTxt, qobject_cast<QGraphicsItem *>(scene_));
 
-    p_y->setPos(m_xMin, gridP);
-    scene_->addLine(m_xMin, gridP, m_xMax, gridP, gridLine);
-    scene_->addLine(m_xMin, gridP, m_xMin + 10, gridP, axisLine);
+    p_y->setPos(x_min_, gridP);
+    scene_->addLine(x_min_, gridP, x_max_, gridP, gridLine);
+    scene_->addLine(x_min_, gridP, x_min_ + 10, gridP, axisLine);
     scene_->addItem(p_y);
   }
 }
 
 // ----------------------------------------------------------------------------
 
-double DialogGraph::xMax() const { return m_xMax; }
+double DialogGraph::get_x_max() const { return x_max_; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setXMax(double xMax) { m_xMax = xMax; }
+void DialogGraph::set_x_max(double XMax) { x_max_ = XMax; }
 
 // ----------------------------------------------------------------------------
 
-double DialogGraph::xMin() const { return m_xMin; }
+double DialogGraph::get_x_min() const { return x_min_; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::setXMin(double xMin) { m_xMin = xMin; }
+void DialogGraph::set_x_min(double Xmin) { x_min_ = Xmin; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::connection_configurations() {
+void DialogGraph::ConnectionConfigurations() {
   connect(ui->btn_close, &QPushButton::clicked, this,
           &DialogGraph::on_buttonCloseClicked);
 }
 
 // ----------------------------------------------------------------------------
 
-QString DialogGraph::calclulateX(QString str_, QString x_) {
+QString DialogGraph::CalculateX(QString str_, QString x_) {
   QString res;
 
   if (isError_) {
@@ -253,7 +254,7 @@ QString DialogGraph::calclulateX(QString str_, QString x_) {
 
 // ----------------------------------------------------------------------------
 
-double DialogGraph::calclulateXCustom(QString str_, double x_, double scale_) {
+double DialogGraph::CalculateXCustom(QString str_, double x_, double scale_) {
   QString res;
   double x = 0;
   double xRes = x_ / scale_;
@@ -263,7 +264,7 @@ double DialogGraph::calclulateXCustom(QString str_, double x_, double scale_) {
 
   if (res == "error" || res == "na" || res == "-na") {
     isError_ = 1;
-    x = INF;
+    x = DialogGraph::inf_;
   } else {
     x = res.toDouble() * scale_;
   }
@@ -272,14 +273,14 @@ double DialogGraph::calclulateXCustom(QString str_, double x_, double scale_) {
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::createDialog() {
-  if (m_scene != nullptr) {
-    delete m_scene;
-    m_scene = nullptr;
+void DialogGraph::CreateDialog() {
+  if (scene_ != nullptr) {
+    delete scene_;
+    scene_ = nullptr;
   }
 
-  if (!(m_scene = new QGraphicsScene(ui->graphicsView))) this->close();
-  m_scene->setParent(this);
+  if (!(scene_ = new QGraphicsScene(ui->graphicsView))) this->close();
+  scene_->setParent(this);
 }
 
 }  // namespace s21

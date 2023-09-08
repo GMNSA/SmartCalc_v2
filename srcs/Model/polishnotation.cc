@@ -326,8 +326,7 @@ QString PolishNotation::StrToPostfix(QString const &str) {
         if (c == ')' && prev_ch == '(') is_error_ = 1;
         while (!stack_.isEmpty() && stack_.last() != "(" && !is_error_) {
           tmp = stack_.pop();
-          res += " ";
-          res += tmp;
+          res += " " + tmp;
         }
         if (stack_.isEmpty() || (stack_.last() != "(")) {
           is_error_ = 1;

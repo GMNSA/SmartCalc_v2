@@ -322,27 +322,27 @@ void Calculator::ResetRepeatDisplay(QString const &str) {
 // -------------------------------------------
 
 void Calculator::openGraphic() {
-  m_graph->setStrNum(calculator_->GetDatatGraph());
+  m_graph->SetStrNum(calculator_->GetDatatGraph());
   checkXData();
   m_graph->show();
-  m_graph->openGraphic();
+  m_graph->OpenGraphic();
 }
 
 // -------------------------------------------
 
 void Calculator::checkXData() {
-  m_graph->setX(ui->lineEdit_x->text().toDouble());
+  m_graph->set_x(ui->lineEdit_x->text().toDouble());
 
   if (!ui->lineEdit_x_2->text().isEmpty()) {
-    m_graph->setXMin(ui->lineEdit_x_2->text().toDouble());
+    m_graph->set_x_min(ui->lineEdit_x_2->text().toDouble());
   } else {
-    m_graph->setXMin(min_x_);
+    m_graph->set_x_min(min_x_);
   }
 
   if (!ui->lineEdit_x_3->text().isEmpty()) {
-    m_graph->setXMax(ui->lineEdit_x_3->text().toDouble());
+    m_graph->set_x_max(ui->lineEdit_x_3->text().toDouble());
   } else {
-    m_graph->setXMax(max_x_);
+    m_graph->set_x_max(max_x_);
   }
 }
 

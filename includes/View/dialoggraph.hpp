@@ -24,26 +24,26 @@ class DialogGraph : public QDialog {
       QWidget *parent = nullptr);
   ~DialogGraph();
 
-  void resetData();
+  void ResetData();
 
-  double xMin() const;
-  void setXMin(double xMin);
+  double get_x_min() const;
+  void set_x_min(double Xmin);
 
-  double xMax() const;
-  void setXMax(double xMax);
+  double get_x_max() const;
+  void set_x_max(double XMax);
 
   double x() const;
-  void setX(double x);
+  void set_x(double x);
 
-  void openGraphic();
+  void OpenGraphic();
 
-  void dataConversion();
-  void drawField(QGraphicsScene *scene_);
+  void DataConversion();
+  void DrawField(QGraphicsScene *scene_);
 
-  void setStrNum(const QString &strNum);
+  void SetStrNum(const QString &strNum);
 
-  void setWidth(double width);
-  void setHeigth(double heigth);
+  void SetWidth(double width);
+  void SetHeight(double heigth);
 
  private:
   Ui::DialogGraph *ui;
@@ -52,19 +52,19 @@ class DialogGraph : public QDialog {
   void on_buttonCloseClicked();
 
  private:
-  QString m_strNum;
-  double m_width;
-  double m_height;
-  double m_xMin;
-  double m_xMax;
+  QString str_num_;
+  double width_;
+  double height_;
+  double x_min_;
+  double x_max_;
   double m_x;
-  double m_scale;
+  double scale_;
   bool isError_;
   double m_res;
-  unsigned m_num_of_grid;
-
-  QGraphicsScene *m_scene;
+  unsigned num_of_grid_;
+  QGraphicsScene *scene_;
   ns_simple_controller::ICalculatorController *calculator_;
+  static double inf_;
 
 #ifdef FOR_TEST
 
@@ -73,14 +73,11 @@ class DialogGraph : public QDialog {
 
  private:
 #endif
-  void connection_configurations();
-
-  QString calclulateX(QString str_, QString x_);
-  double calclulateXCustom(QString str_, double x_, double scale_);
-
-  void dataCoordinates();
-
-  void createDialog();
+  void ConnectionConfigurations();
+  QString CalculateX(QString str_, QString x_);
+  double CalculateXCustom(QString str_, double x_, double scale_);
+  void DataCoordinates();
+  void CreateDialog();
 };
 
 }  // namespace s21
