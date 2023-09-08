@@ -1,10 +1,10 @@
-#ifndef DIALOGGRAPH_HPP
-#define DIALOGGRAPH_HPP
+#ifndef INCLUDES_VIEW_DIALOGGRAPH_HPP_
+#define INCLUDES_VIEW_DIALOGGRAPH_HPP_
 
 #include <QDialog>
-
-#include "calculationsmartcalc.hpp"
 #include <QGraphicsScene>
+
+#include "../Controller/icalculatorcontroller.hpp"
 
 #define X_MIN -10
 #define X_MAX 10
@@ -13,11 +13,15 @@ namespace Ui {
 class DialogGraph;
 }
 
+namespace s21 {
+
 class DialogGraph : public QDialog {
   Q_OBJECT
 
-public:
-  explicit DialogGraph(QWidget *parent = nullptr);
+ public:
+  explicit DialogGraph(
+      ns_simple_controller::ICalculatorController *calculator_controller,
+      QWidget *parent = nullptr);
   ~DialogGraph();
 
   void resetData();
@@ -41,13 +45,13 @@ public:
   void setWidth(double width);
   void setHeigth(double heigth);
 
-private:
+ private:
   Ui::DialogGraph *ui;
 
-private slots:
+ private slots:
   void on_buttonCloseClicked();
 
-private:
+ private:
   QString m_strNum;
   double m_width;
   double m_height;
@@ -55,27 +59,30 @@ private:
   double m_xMax;
   double m_x;
   double m_scale;
-  bool m_isError;
+  bool isError_;
   double m_res;
   unsigned m_num_of_grid;
 
   QGraphicsScene *m_scene;
-  CalculationSmartCalc m_calculator;
+  ns_simple_controller::ICalculatorController *calculator_;
 
 #ifdef FOR_TEST
-public:
+
+ public:
 #else
-private:
+
+ private:
 #endif
   void connection_configurations();
 
-  QString calclulateX(QString str_, QString x_, bool &isError_);
-  double calclulateXCustom(QString str_, double x_, double scale_,
-                           bool &isError_);
+  QString calclulateX(QString str_, QString x_);
+  double calclulateXCustom(QString str_, double x_, double scale_);
 
   void dataCoordinates();
 
   void createDialog();
 };
 
-#endif // DIALOGGRAPH_HPP
+}  // namespace s21
+
+#endif  // INCLUDES_VIEW_DIALOGGRAPH_HPP_

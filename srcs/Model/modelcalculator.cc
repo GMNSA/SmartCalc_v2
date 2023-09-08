@@ -40,7 +40,7 @@ void ModelCalculator::Calculate(QString const &str, QString const &x) {
   if (polish_notation_->get_error()) {
     polish_notation_->Reset();
     validator_text_->Reset();
-    calculated_text_ = "0";
+    // calculated_text_ = "0";
     repeat_text_ = "error";
   } else {
     validator_text_->set_text(calculated_text_);

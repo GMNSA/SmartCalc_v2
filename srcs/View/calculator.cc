@@ -8,6 +8,8 @@
 
 // *******************************************
 
+namespace s21 {
+
 Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
                        QWidget *parent)
     : QMainWindow(parent),
@@ -24,7 +26,7 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
   ui->lineEdit_x_2->clear();
   ui->lineEdit_x_3->clear();
 
-  if (!(m_graph = new DialogGraph(this))) ui->menubar->close();
+  if (!(m_graph = new DialogGraph(controller, this))) ui->menubar->close();
 
   settingsCredit();
   settingsGraph();
@@ -36,7 +38,10 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
 
 // -------------------------------------------
 
-Calculator::~Calculator() { delete ui; }
+Calculator::~Calculator() {
+  if (m_graph) delete m_graph;
+  if (ui) delete ui;
+}
 
 // -------------------------------------------
 
@@ -213,43 +218,6 @@ void Calculator::on_buttonLogClicked() {
 // -------------------------------------------
 
 void Calculator::on_buttonChangeClicked() {
-  //  QString tmp;
-  //  QRegularExpression re;
-  //  QRegularExpressionMatch reMatch = re.match("\\d");
-
-  //  if (!display_text_.isEmpty()) {
-  //    if (display_text_.size() == 1) {
-  //      if (display_text_[0].isDigit()) {
-  //        tmp = "-" + display_text_;
-  //      } else {
-  //        tmp = "-(" + display_text_ + ")";
-  //      }
-  //      display_text_ = tmp;
-  //    } else if (display_text_.size() >= 4) {
-  //      if (display_text_[0] == '-' && display_text_[1] == '(' &&
-  //          display_text_[display_text_.size() - 1] == ')') {
-  //        display_text_.remove(display_text_.size() - 1, 1);
-  //        display_text_.remove(1, 1);
-  //        display_text_.remove(0, 1);
-  //      } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
-  //                 display_text_[display_text_.size() - 1].isDigit()) {
-  //        display_text_.remove(0, 1);
-  //      } else {
-  //        tmp = "-(" + display_text_ + ")";
-  //        display_text_ = tmp;
-  //      }
-  //    } else if (display_text_[0] != '-') {
-  //      if (reMatch.hasMatch()) {
-  //        tmp = "-" + display_text_;
-  //        display_text_ = tmp;
-  //      } else {
-  //        tmp = "-(" + display_text_ + ")";
-  //        display_text_ = tmp;
-  //      }
-  //    } else if (display_text_[0] == '-') {
-  //      display_text_.remove(0, 1);
-  //    }
-  //  }
   calculator_->ChangeSign();
   ui->display->setText(calculator_->GetTextDisplay());
 }
@@ -313,6 +281,7 @@ void Calculator::on_buttonEqualClicked() {
   ui->display_repeat->setText(calculator_->GetTextRepeatDisplay());
 
   if (calculator_->IsGraph()) openGraphic();
+  qDebug() << "result text: " << calculator_->GetData();
 }
 
 // -------------------------------------------
@@ -357,8 +326,6 @@ void Calculator::openGraphic() {
   checkXData();
   m_graph->show();
   m_graph->openGraphic();
-
-  qDebug() << "result text: " << calculator_->GetData();
 }
 
 // -------------------------------------------
@@ -540,3 +507,5 @@ void Calculator::connection_credit() {
   connect(ui->lineEdit_sumCredit, &QLineEdit::textEdited, this,
           &Calculator::formatText);
 }
+
+}  // namespace s21

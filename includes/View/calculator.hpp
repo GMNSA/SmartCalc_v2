@@ -13,6 +13,8 @@ class Calculator;
 }
 QT_END_NAMESPACE
 
+namespace s21 {
+
 class Calculator : public QMainWindow {
   Q_OBJECT
 
@@ -77,7 +79,7 @@ class Calculator : public QMainWindow {
   QString display_text_;
   QString m_strForGraph;
   ns_simple_controller::ICalculatorController *calculator_;
-  DialogGraph *m_graph;
+  s21::DialogGraph *m_graph;
   CreditCalculator m_credit;
   int min_x_;
   int max_x_;
@@ -90,22 +92,16 @@ class Calculator : public QMainWindow {
  private:
 #endif
 
-  // QString fixedString(QString str_);
-  // QString fixedForDisplay2(QString str_);
-
   void ResetDisplay(QString const &str);
   void ResetRepeatDisplay(QString const &str);
   void openGraphic();
   void checkXData();
 
-  // void add_text_to_str(QString str_);
   void settingsCredit();
   void settingsGraph();
 
   void CalculateSimple();
   void calculateCredit();
-
-  // void setBrackets(QString str_);
 
   void connection_configurations();
   void connection_num();
@@ -115,4 +111,6 @@ class Calculator : public QMainWindow {
 
   void connection_credit();
 };
+
+}  // namespace s21
 #endif  // INCLUDES_VIEW_CALCULATOR_HPP_

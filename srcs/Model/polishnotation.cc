@@ -71,7 +71,7 @@ QString PolishNotation::CalculateNotation(QString const &str) {
           tmp_num = p_one_arg.toDouble();
 
           tmp_num = CalculateNumbersMul(0, "-", tmp_num);
-          p_tmp = QString::number(tmp_num, 'g', 16);
+          p_tmp = QString::number(tmp_num, 'f', 12);
           sp_tmp_data_.push_back(p_tmp);
 
           p_one_arg.clear();
@@ -84,7 +84,7 @@ QString PolishNotation::CalculateNotation(QString const &str) {
 
           tmp_num = CalculateStrNumbersSingle(p_one_arg, p_sign_arg);
           if (std::isnan(tmp_num)) is_error_ = 1;
-          p_tmp = QString::number(tmp_num, 'g', 16);
+          p_tmp = QString::number(tmp_num, 'f', 12);
           sp_tmp_data_.push_back(p_tmp);
           p_sign_arg.clear();
           p_one_arg.clear();
@@ -128,7 +128,6 @@ QString PolishNotation::CalculateNotation(QString const &str) {
 
   p_result = p_result.left(p_result.indexOf('.') + 8);
   ZerosRemove(&p_result);
-  // if (p_result != "0") p_result.remove(QRegularExpression("[.][^1-9]?0+$"));
 
   return (p_result);
 }

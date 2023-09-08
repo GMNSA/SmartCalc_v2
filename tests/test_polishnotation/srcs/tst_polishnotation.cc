@@ -153,10 +153,8 @@ TEST_F(PolishNotationTest, TestRemoveZeros) {
 // ----------------------------------------------------------------------------
 TEST_F(PolishNotationTest, TestFirstTest) {
   QString res = StrToPostfix("(-3 + 4) * ((-2.8) / (1 - 5) ^ 2)");
-  qDebug() << "1: " << res;
   EXPECT_EQ(res, "3 ~ 4 + 2.8 ~ 1 5 - 2 ^ / *");
   QString pols = CalculateNotation(res);
-  qDebug() << "2: " << pols;
   EXPECT_EQ(pols, "-0.175");
 }
 
@@ -1065,15 +1063,12 @@ TEST_F(PolishNotationTest, TestArifmeticOperation) {
 
 TEST_F(PolishNotationTest, TestXCoordinates) {
   QString res = StrToPostfix("2 * 2");
-  qDebug() << "str_to_post: " << res;
   EXPECT_EQ(res, "2 2 *");
 
   QString pol = CalculateNotation(res);
-  qDebug() << "calculate_notation: " << pol;
   EXPECT_EQ(pol, "4");
 
   res = StrToPostfix("2 * 2 + x");
-  qDebug() << "str_to_post: " << res;
   EXPECT_EQ(res, "2 2 * x +");
 }
 

@@ -146,7 +146,6 @@ TEST_F(ModalCalculatorTest, TestChangeSign) {
   EXPECT_EQ(res, "832");
   ChangeSign();
   res = FixTextDisplay();
-  qDebug() << "res: " << res;
   EXPECT_EQ(res, "-832");
 }
 
@@ -155,14 +154,23 @@ TEST_F(ModalCalculatorTest, TestChangeSign) {
 TEST_F(ModalCalculatorTest, TestXCoordinates) {
   // TODO(_who): release test
 
-  QString res = Calculate("2 * 2");
+  QString res;
 
   // -- -- -- --
 
   res = Calculate("2 + 2 * x", "2");
+  EXPECT_EQ(res, "2");
 
   res = Calculate("x");
-  EXPECT_EQ(res, "0");
+  EXPECT_EQ(res, "error");
+
+  // -- -- -- --
+
+  Reset();
+  res = Calculate("log(0)");
+  EXPECT_EQ(res, "-inf");
+  res = Calculate("log(0)");
+  EXPECT_EQ(res, "-inf");
 }
 
 // -- -- -- --

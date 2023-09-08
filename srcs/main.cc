@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   ns_simple_controller::ICalculatorController *controller =
       new ns_simple_controller::CalculatorController(model);
 
-  Calculator w(controller);
+  s21::Calculator w(controller);
   w.show();
 
   qWarning() << "three";
