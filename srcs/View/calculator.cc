@@ -4,7 +4,9 @@
 #include <QRegularExpressionValidator>
 #include <QtDebug>
 
+#include "../../includes/Controller/creditcontroller.hpp"
 #include "../../includes/Controller/depositcontroller.hpp"
+#include "../../includes/Model/modelcredit.hpp"
 #include "../../includes/Model/modeldeposit.hpp"
 #include "../../includes/custom_types.hpp"
 #include "./ui_calculator.h"
@@ -21,8 +23,8 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
       display_text_(),
       calculator_(controller),
       m_graph(nullptr),
-      m_credit(),
       deposit_calculator_(new DepositController(new ModelDeposit)),
+      credit_calculator_(new CreditController(new ModelCredit)),
       min_x_(-10),
       max_x_(10) {
   ui->setupUi(this);
@@ -288,7 +290,6 @@ void Calculator::on_buttonEqualClicked() {
   ui->display_repeat->setText(calculator_->GetTextRepeatDisplay());
 
   if (calculator_->IsGraph()) openGraphic();
-  qDebug() << "result text: " << calculator_->GetData();
 }
 
 // -------------------------------------------
@@ -309,8 +310,6 @@ void Calculator::on_buttonCalculationCredit() { calculateCredit(); }
 // Credit Calculator ----------------------------------------------------------
 
 void Calculator::on_buttonDepositDelLeft() {
-  // TODO(_who): release
-  qDebug() << "Del left";
   qint64 n_list = ui->listWidget_deposits->count() - 1;
   if (n_list != -1) delete ui->listWidget_deposits->takeItem(n_list);
 }
@@ -318,8 +317,6 @@ void Calculator::on_buttonDepositDelLeft() {
 // -- -- -- --
 
 void Calculator::on_buttonDepositDelRigth() {
-  // TODO(_who): release
-  qDebug() << "Del right";
   qint64 n_list = ui->listWidget_withdrawal->count() - 1;
   if (n_list != -1) delete ui->listWidget_withdrawal->takeItem(n_list);
 }
@@ -327,8 +324,6 @@ void Calculator::on_buttonDepositDelRigth() {
 // -- -- -- --
 
 void Calculator::on_buttonDepositAddLeft() {
-  // TODO(_who): release
-  qDebug() << "Add left";
   QString tmp_str = ui->lineEdit_deposit->text();
   if (!tmp_str.isEmpty()) ui->listWidget_deposits->addItem(tmp_str);
 }
@@ -336,8 +331,6 @@ void Calculator::on_buttonDepositAddLeft() {
 // -- -- -- --
 
 void Calculator::on_buttonDepositAddRigth() {
-  // TODO(_who): release
-  qDebug() << "Add right";
   QString tmp_str = ui->lineEdit_partial_withdrawal->text();
   if (!tmp_str.isEmpty()) ui->listWidget_withdrawal->addItem(tmp_str);
 }
@@ -345,7 +338,6 @@ void Calculator::on_buttonDepositAddRigth() {
 // -- -- -- --
 
 void Calculator::on_buttonDepositEqual() {
-  // TODO(_who): release
   deposit_calculator_->set_capitalization(
       (Capitalization)ui->comboBox_capital_2->currentIndex());
   deposit_calculator_->set_tax_rate(ui->lineEdit_tax_rate->text());
@@ -472,17 +464,16 @@ void Calculator::SettingsGraph() {
 // -------------------------------------------
 
 void Calculator::calculateCredit() {
-  m_credit.setSum(ui->lineEdit_sumCredit->text().replace(" ", ""));
-  m_credit.setTime(ui->lineEdit_timeCredit->text());
-  m_credit.setProcent(ui->lineEdit_procent->text());
-  m_credit.setIsMount(!ui->comboBox_time->currentIndex());
-  m_credit.setDifferent(ui->rb_differ->isChecked());
+  credit_calculator_->set_sum(ui->lineEdit_sumCredit->text().replace(" ", ""));
+  credit_calculator_->set_time(ui->lineEdit_timeCredit->text());
+  credit_calculator_->set_procent(ui->lineEdit_procent->text());
+  credit_calculator_->set_is_mount(!ui->comboBox_time->currentIndex());
+  credit_calculator_->set_different(ui->rb_differ->isChecked());
+  credit_calculator_->Calculate();
 
-  m_credit.calculate();
-
-  ui->label_one->setText(m_credit.infoMonthlyPayment());
-  ui->label_two->setText(m_credit.infoAccruedInterest());
-  ui->label_three->setText(m_credit.infoDebgAndInterest());
+  ui->label_one->setText(credit_calculator_->MonthlyPayment());
+  ui->label_two->setText(credit_calculator_->AccruedInterest());
+  ui->label_three->setText(credit_calculator_->DebgAndInterest());
 }
 
 // -------------------------------------------

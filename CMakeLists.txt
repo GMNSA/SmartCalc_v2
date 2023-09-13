@@ -26,17 +26,27 @@ set(PROJECT_HEADERS
     includes/Model/modelcalculator.hpp
     includes/Model/polishnotation.hpp
     includes/Model/validatetext.hpp
+
     includes/Model/imodeldeposit.hpp
     includes/Model/modeldeposit.hpp
 
+    includes/Model/imodelcredit.hpp
+    includes/Model/modelcredit.hpp
+
+
     includes/Controller/icalculatorcontroller.hpp
     includes/Controller/calculatorcontroller.hpp
+
     includes/Controller/idepositcontroller.hpp
     includes/Controller/depositcontroller.hpp
 
-    includes/creditcalculator.hpp
+    includes/Controller/icreditcontroller.hpp
+    includes/Controller/creditcontroller.hpp
+
     includes/View/dialoggraph.hpp
     includes/View/calculator.hpp
+
+    # includes/creditcalculator.hpp
     # includes/calculationsmartcalc.hpp
 
     includes/custom_types.hpp
@@ -50,18 +60,26 @@ set(PROJECT_SOURCES
     srcs/Model/modelcalculator.cc
     srcs/Model/polishnotation.cc
     srcs/Model/validatetext.cc
+
     srcs/Model/modeldeposit.cc
+
+    srcs/Model/modelcredit.cc
+
 
     srcs/Controller/calculatorcontroller.cc
     srcs/Controller/depositcontroller.cc
+    srcs/Controller/creditcontroller.cc
 
     srcs/View/dialoggraph.cc
     srcs/View/calculator.cc
-    srcs/creditcalculator.cc
+
+    # srcs/creditcalculator.cc
     # srcs/calculationsmartcalc.cc
+
     srcs/main.cc
     srcs/View/dialoggraph.ui
     srcs/View/calculator.ui
+
     code_c/s21_credit_calc.c
     code_c/s21_smart_calc.c
     code_c/s21_stack.c

@@ -4,8 +4,8 @@
 #include <QMainWindow>
 
 #include "../Controller/icalculatorcontroller.hpp"
+#include "../Controller/icreditcontroller.hpp"
 #include "../Controller/idepositcontroller.hpp"
-#include "../creditcalculator.hpp"
 #include "./dialoggraph.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -89,8 +89,8 @@ class Calculator : public QMainWindow {
   QString m_strForGraph;
   ns_simple_controller::ICalculatorController *calculator_;
   s21::DialogGraph *m_graph;
-  CreditCalculator m_credit;
   IDepositController *deposit_calculator_;
+  ICreditController *credit_calculator_;
   int min_x_;
   int max_x_;
 
