@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>754</width>
-    <height>424</height>
+    <height>521</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>754</width>
-    <height>424</height>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>2</number>
@@ -1114,85 +1114,218 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </layout>
       </widget>
       <widget class="QWidget" name="Deposit">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="whatsThis">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <property name="font">
+        <font>
+         <stylestrategy>PreferDefault</stylestrategy>
+        </font>
        </property>
        <attribute name="title">
         <string>Page</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_12">
-        <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item row="0" column="0" rowspan="3">
+         <layout class="QVBoxLayout" name="verticalLayout_22">
           <item>
-           <layout class="QVBoxLayout" name="vl_deposit_amount">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="label_27">
-              <property name="text">
-               <string>Сумма вклада:</string>
+             <layout class="QVBoxLayout" name="vl_deposit_amount">
+              <item>
+               <widget class="QLabel" name="label_27">
+                <property name="text">
+                 <string>Сумма вклада:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_deposits_amount"/>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>руб.</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="vl_interest_rate">
+              <item>
+               <widget class="QLabel" name="label_29">
+                <property name="text">
+                 <string>Процентная ставка:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_21">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_interest_rate"/>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_23">
+                  <property name="text">
+                   <string>%</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
              </widget>
             </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <layout class="QVBoxLayout" name="vl_placement_period">
               <item>
-               <widget class="QLineEdit" name="lineEdit_deposits_amount"/>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_5">
+               <widget class="QLabel" name="label_26">
                 <property name="text">
-                 <string>руб.</string>
+                 <string>Срок размещения:</string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_23">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_placemen_period"/>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_25">
+                  <property name="text">
+                   <string>мес.</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="vl_tax_rate">
+              <item>
+               <widget class="QLabel" name="label_28">
+                <property name="text">
+                 <string>Налоговая ставка</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_22">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_tax_rate"/>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_24">
+                  <property name="text">
+                   <string>%</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vl_interest_rate">
-            <item>
-             <widget class="QLabel" name="label_29">
-              <property name="text">
-               <string>Процентная ставка:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_21">
-              <item>
-               <widget class="QLineEdit" name="lineEdit_interest_rate"/>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_23">
-                <property name="text">
-                 <string>%</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line">
+           <widget class="Line" name="line_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
+          <item>
+           <spacer name="verticalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="vl_frequency_of_payments">
+            <item>
+             <widget class="QLabel" name="label_31">
+              <property name="text">
+               <string>Периодичность выплат:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_frequency_of_payments">
+              <item>
+               <property name="text">
+                <string>Единовременно</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Ежемесячно</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="vl_capitalization">
+            <item>
+             <widget class="QLabel" name="label_capitalization">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'VTB Group UI','sans-serif'; font-size:18px; color:#19aede; background-color:#f3f7fa;&quot;&gt;Капитализация процентов по вкладу — прибавление начисленных процентов к основной сумме вклада, после чего начисление процентов происходит на увеличенный остаток. Простыми словами — это начисление процентов на проценты.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Капитализация:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_capital_2">
+              <item>
+               <property name="text">
+                <string>Нет</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Ежемесячно</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
-        <item row="0" column="1" rowspan="6" colspan="2">
+        <item row="0" column="1" rowspan="3" colspan="2">
          <widget class="Line" name="line_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
          </widget>
         </item>
-        <item row="0" column="3" rowspan="2">
+        <item row="0" column="3">
          <layout class="QHBoxLayout" name="horizontalLayout_28">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1210,7 +1343,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_24">
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_4"/>
+                   <widget class="QLineEdit" name="lineEdit_deposit"/>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_33">
@@ -1238,12 +1371,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit"/>
+               <widget class="QLabel" name="label_38">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_26">
                 <item>
                  <widget class="QPushButton" name="pb_deposits_delete">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(184, 117, 131);</string>
+                  </property>
                   <property name="text">
                    <string>Удалить</string>
                   </property>
@@ -1251,6 +1391,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </item>
                 <item>
                  <widget class="QPushButton" name="pb_deposits_add">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(166, 189, 164)</string>
+                  </property>
                   <property name="text">
                    <string>Добавить</string>
                   </property>
@@ -1278,7 +1421,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_25">
                   <item>
-                   <widget class="QLineEdit" name="lineEdit_9"/>
+                   <widget class="QLineEdit" name="lineEdit_partial_withdrawal"/>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_35">
@@ -1306,12 +1449,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="label_total_wtdw_amount"/>
+               <widget class="QLabel" name="label_39">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_27">
                 <item>
                  <widget class="QPushButton" name="pb_partial_wtds_delete">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(184, 117, 131);</string>
+                  </property>
                   <property name="text">
                    <string>Удалить</string>
                   </property>
@@ -1319,6 +1469,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </item>
                 <item>
                  <widget class="QPushButton" name="pb_partial_wtds_add">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(166, 189, 164)</string>
+                  </property>
                   <property name="text">
                    <string>Добавить</string>
                   </property>
@@ -1332,155 +1485,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </item>
          </layout>
         </item>
-        <item row="1" column="0" rowspan="2">
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <layout class="QVBoxLayout" name="vl_placement_period">
-            <item>
-             <widget class="QLabel" name="label_26">
-              <property name="text">
-               <string>Срок размещения:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_23">
-              <item>
-               <widget class="QLineEdit" name="lineEdit_placemen_period"/>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_25">
-                <property name="text">
-                 <string>мес.</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="vl_tax_rate">
-            <item>
-             <widget class="QLabel" name="label_28">
-              <property name="text">
-               <string>Налоговая ставка</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_22">
-              <item>
-               <widget class="QLineEdit" name="lineEdit_tax_rate"/>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>%</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0" rowspan="2">
-         <layout class="QVBoxLayout" name="vl_frequency_of_payments">
-          <item>
-           <widget class="QLabel" name="label_31">
-            <property name="text">
-             <string>Периодичность выплат:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_frequency_of_payments">
-            <item>
-             <property name="text">
-              <string>Единовременно</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Ежемесячно</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="2" rowspan="2" colspan="2">
-         <layout class="QVBoxLayout" name="verticalLayout_11">
-          <item>
-           <widget class="QLabel" name="label_deposit_1">
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>one</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_deposit_2">
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>two</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_deposit_3">
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>three</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="5" column="0">
-         <layout class="QVBoxLayout" name="vl_capitalization">
-          <item>
-           <widget class="QLabel" name="label_30">
-            <property name="text">
-             <string>Капитализация:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_capital_2">
-            <item>
-             <property name="text">
-              <string>Нет</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Ежемесячно</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="2" column="3" rowspan="2">
-         <widget class="QPushButton" name="deposit_equal">
+        <item row="1" column="3">
+         <widget class="QPushButton" name="pb_deposit_equal">
           <property name="font">
            <font>
             <pointsize>11</pointsize>
@@ -1494,6 +1500,112 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <string>Рассчитать</string>
           </property>
          </widget>
+        </item>
+        <item row="2" column="2" colspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_46">
+            <item>
+             <widget class="QLabel" name="label_deposit_sample_1">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string>Начисленные проценты:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_deposit_1">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_47">
+            <item>
+             <widget class="QLabel" name="label_deposit_sample_2">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string>Сумма налогов:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_deposit_2">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_48">
+            <item>
+             <widget class="QLabel" name="label_deposit_4">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string>Общая сумма:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_deposit_3">
+              <property name="font">
+               <font>
+                <family>Open Sans</family>
+                <pointsize>11</pointsize>
+                <bold>true</bold>
+                <stylestrategy>PreferDefault</stylestrategy>
+               </font>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

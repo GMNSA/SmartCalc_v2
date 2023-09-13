@@ -9,12 +9,12 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror --coverage")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror --coverage -fsanitize=address")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -26,12 +26,21 @@ set(PROJECT_HEADERS
     includes/Model/modelcalculator.hpp
     includes/Model/polishnotation.hpp
     includes/Model/validatetext.hpp
+    includes/Model/imodeldeposit.hpp
+    includes/Model/modeldeposit.hpp
+
     includes/Controller/icalculatorcontroller.hpp
     includes/Controller/calculatorcontroller.hpp
+    includes/Controller/idepositcontroller.hpp
+    includes/Controller/depositcontroller.hpp
+
     includes/creditcalculator.hpp
     includes/View/dialoggraph.hpp
     includes/View/calculator.hpp
-    includes/calculationsmartcalc.hpp
+    # includes/calculationsmartcalc.hpp
+
+    includes/custom_types.hpp
+
     code_c/s21_credit_calc.h
     code_c/s21_smart_calc.h
     code_c/s21_stack.h
@@ -41,11 +50,15 @@ set(PROJECT_SOURCES
     srcs/Model/modelcalculator.cc
     srcs/Model/polishnotation.cc
     srcs/Model/validatetext.cc
+    srcs/Model/modeldeposit.cc
+
     srcs/Controller/calculatorcontroller.cc
+    srcs/Controller/depositcontroller.cc
+
     srcs/View/dialoggraph.cc
     srcs/View/calculator.cc
     srcs/creditcalculator.cc
-    srcs/calculationsmartcalc.cc
+    # srcs/calculationsmartcalc.cc
     srcs/main.cc
     srcs/View/dialoggraph.ui
     srcs/View/calculator.ui
@@ -60,11 +73,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_HEADERS}
         ${PROJECT_SOURCES}
     )
-else()
-    add_executable(SmartCalc
-        ${PROJECT_SOURCES}
-        ${PROJECT_HEADERS}
-        )
 endif()
 
 # add_subdirectory(lib)

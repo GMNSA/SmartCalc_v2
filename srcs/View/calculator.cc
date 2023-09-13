@@ -4,6 +4,9 @@
 #include <QRegularExpressionValidator>
 #include <QtDebug>
 
+#include "../../includes/Controller/depositcontroller.hpp"
+#include "../../includes/Model/modeldeposit.hpp"
+#include "../../includes/custom_types.hpp"
 #include "./ui_calculator.h"
 
 // *******************************************
@@ -19,6 +22,7 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
       calculator_(controller),
       m_graph(nullptr),
       m_credit(),
+      deposit_calculator_(new DepositController(new ModelDeposit)),
       min_x_(-10),
       max_x_(10) {
   ui->setupUi(this);
@@ -28,8 +32,9 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
 
   if (!(m_graph = new DialogGraph(controller, this))) ui->menubar->close();
 
-  settingsCredit();
-  settingsGraph();
+  SettingsCredit();
+  SettingsGraph();
+  SettingDeposit();
 
   connection_configurations();
 
@@ -40,6 +45,8 @@ Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
 
 Calculator::~Calculator() {
   if (m_graph) delete m_graph;
+  if (calculator_) delete calculator_;
+  if (deposit_calculator_) delete deposit_calculator_;
   if (ui) delete ui;
 }
 
@@ -299,6 +306,65 @@ void Calculator::CalculateSimple() {
 
 void Calculator::on_buttonCalculationCredit() { calculateCredit(); }
 
+// Credit Calculator ----------------------------------------------------------
+
+void Calculator::on_buttonDepositDelLeft() {
+  // TODO(_who): release
+  qDebug() << "Del left";
+  qint64 n_list = ui->listWidget_deposits->count() - 1;
+  if (n_list != -1) delete ui->listWidget_deposits->takeItem(n_list);
+}
+
+// -- -- -- --
+
+void Calculator::on_buttonDepositDelRigth() {
+  // TODO(_who): release
+  qDebug() << "Del right";
+  qint64 n_list = ui->listWidget_withdrawal->count() - 1;
+  if (n_list != -1) delete ui->listWidget_withdrawal->takeItem(n_list);
+}
+
+// -- -- -- --
+
+void Calculator::on_buttonDepositAddLeft() {
+  // TODO(_who): release
+  qDebug() << "Add left";
+  QString tmp_str = ui->lineEdit_deposit->text();
+  if (!tmp_str.isEmpty()) ui->listWidget_deposits->addItem(tmp_str);
+}
+
+// -- -- -- --
+
+void Calculator::on_buttonDepositAddRigth() {
+  // TODO(_who): release
+  qDebug() << "Add right";
+  QString tmp_str = ui->lineEdit_partial_withdrawal->text();
+  if (!tmp_str.isEmpty()) ui->listWidget_withdrawal->addItem(tmp_str);
+}
+
+// -- -- -- --
+
+void Calculator::on_buttonDepositEqual() {
+  // TODO(_who): release
+  deposit_calculator_->set_capitalization(
+      (Capitalization)ui->comboBox_capital_2->currentIndex());
+  deposit_calculator_->set_tax_rate(ui->lineEdit_tax_rate->text());
+  deposit_calculator_->set_deposit_sum(ui->lineEdit_deposits_amount->text());
+  deposit_calculator_->set_percent_rate(ui->lineEdit_interest_rate->text());
+  deposit_calculator_->set_placement_period(
+      ui->lineEdit_placemen_period->text());
+  deposit_calculator_->set_frequency_payments(
+      (PeriodicityPayments)ui->comboBox_frequency_of_payments->currentIndex());
+  deposit_calculator_->Calculate();
+
+  ui->label_deposit_1->setText(deposit_calculator_->get_accrued_interest() +
+                               " руб.");
+  ui->label_deposit_2->setText(deposit_calculator_->get_amount_taxes() +
+                               " руб.");
+  ui->label_deposit_3->setText(deposit_calculator_->get_total_amount() +
+                               " руб.");
+}
+
 // ----------------------------------------------------------------------------
 
 void Calculator::formatText() {
@@ -307,6 +373,16 @@ void Calculator::formatText() {
   str = str.replace(",", " ");
 
   ui->lineEdit_sumCredit->setText(str);
+}
+
+// ----------------------------------------------------------------------------
+
+void Calculator::FormatTextDeposit() {
+  QString num = ui->lineEdit_deposits_amount->text().replace(" ", "");
+  QString str = QString("%L1").arg(num.toLongLong());
+  str = str.replace(",", " ");
+
+  ui->lineEdit_deposits_amount->setText(str);
 }
 
 // -------------------------------------------
@@ -348,7 +424,7 @@ void Calculator::checkXData() {
 
 // -------------------------------------------
 
-void Calculator::settingsCredit() {
+void Calculator::SettingsCredit() {
   ui->rb_annuit->setToolTip(
       "Аннуительный платеж - вариант ежемесячного платежа по кредиту, когда "
       "размер"
@@ -368,7 +444,26 @@ void Calculator::settingsCredit() {
 
 // -------------------------------------------
 
-void Calculator::settingsGraph() {
+void Calculator::SettingDeposit() {
+  ui->comboBox_capital_2->setEnabled(false);
+  ui->lineEdit_deposits_amount->setValidator(new QIntValidator(this));
+  ui->lineEdit_interest_rate->setValidator(new QDoubleValidator(this));
+  ui->lineEdit_placemen_period->setValidator(new QDoubleValidator(this));
+  ui->lineEdit_tax_rate->setValidator(new QDoubleValidator(this));
+
+  ui->lineEdit_deposit->setValidator(new QDoubleValidator(this));
+
+  ui->lineEdit_partial_withdrawal->setValidator(new QDoubleValidator(this));
+
+  if (deposit_calculator_) {
+    deposit_calculator_->set_top_up_account(ui->listWidget_deposits);
+    deposit_calculator_->set_widthdraw_from_account(ui->listWidget_withdrawal);
+  }
+}
+
+// -------------------------------------------
+
+void Calculator::SettingsGraph() {
   ui->lineEdit_x->setValidator(new QIntValidator(this));
   ui->lineEdit_x_2->setValidator(new QDoubleValidator(this));
   ui->lineEdit_x_3->setValidator(new QDoubleValidator(this));
@@ -398,6 +493,7 @@ void Calculator::connection_configurations() {
   connection_functions();
   connection_graphic();
   connection_credit();
+  ConnectionsDeposit();
 }
 
 // -------------------------------------------
@@ -506,6 +602,32 @@ void Calculator::connection_credit() {
 
   connect(ui->lineEdit_sumCredit, &QLineEdit::textEdited, this,
           &Calculator::formatText);
+}
+
+// -------------------------------------------
+
+void Calculator::ConnectionsDeposit() {
+  connect(ui->pb_deposits_add, &QPushButton::clicked, this,
+          &Calculator::on_buttonDepositAddLeft);
+  connect(ui->pb_deposits_delete, &QPushButton::clicked, this,
+          &Calculator::on_buttonDepositDelLeft);
+  connect(ui->pb_partial_wtds_add, &QPushButton::clicked, this,
+          &Calculator::on_buttonDepositAddRigth);
+  connect(ui->pb_partial_wtds_delete, &QPushButton::clicked, this,
+          &Calculator::on_buttonDepositDelRigth);
+  connect(ui->pb_deposit_equal, &QPushButton::clicked, this,
+          &Calculator::on_buttonDepositEqual);
+  connect(ui->lineEdit_deposits_amount, &QLineEdit::textEdited, this,
+          &Calculator::FormatTextDeposit);
+
+  connect(ui->comboBox_frequency_of_payments, &QComboBox::activated, [&] {
+    if (ui->comboBox_frequency_of_payments->currentIndex() ==
+        (int)PeriodicityPayments::kOnce) {
+      ui->comboBox_capital_2->setEnabled(false);
+    } else {
+      ui->comboBox_capital_2->setEnabled(true);
+    }
+  });
 }
 
 }  // namespace s21

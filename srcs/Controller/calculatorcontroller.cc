@@ -7,7 +7,12 @@ CalculatorController::CalculatorController(ns_model::IModel *model)
   // TODO(_who): reslese
 }
 
-CalculatorController::~CalculatorController() {}
+CalculatorController::~CalculatorController() {
+  if (model_) delete model_;
+}
+
+// ----------------------------------------------------------------------------
+
 void CalculatorController::Calculate(QString const &str, QString const &x) {
   model_->Calculate(str, x);
 }

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "../Controller/icalculatorcontroller.hpp"
+#include "../Controller/idepositcontroller.hpp"
 #include "../creditcalculator.hpp"
 #include "./dialoggraph.hpp"
 
@@ -65,12 +66,20 @@ class Calculator : public QMainWindow {
   void on_buttonBracketRightClicked();
 
   void on_buttonEqualClicked();
-
   void on_buttonGraphClicked();
 
   void on_buttonCalculationCredit();
 
+  // --- credit ---
+
+  void on_buttonDepositDelLeft();
+  void on_buttonDepositDelRigth();
+  void on_buttonDepositAddLeft();
+  void on_buttonDepositAddRigth();
+  void on_buttonDepositEqual();
+
   void formatText();
+  void FormatTextDeposit();
 
  private:
   Ui::Calculator *ui;
@@ -81,6 +90,7 @@ class Calculator : public QMainWindow {
   ns_simple_controller::ICalculatorController *calculator_;
   s21::DialogGraph *m_graph;
   CreditCalculator m_credit;
+  IDepositController *deposit_calculator_;
   int min_x_;
   int max_x_;
 
@@ -97,8 +107,9 @@ class Calculator : public QMainWindow {
   void openGraphic();
   void checkXData();
 
-  void settingsCredit();
-  void settingsGraph();
+  void SettingsCredit();
+  void SettingDeposit();
+  void SettingsGraph();
 
   void CalculateSimple();
   void calculateCredit();
@@ -110,6 +121,7 @@ class Calculator : public QMainWindow {
   void connection_graphic();
 
   void connection_credit();
+  void ConnectionsDeposit();
 };
 
 }  // namespace s21
