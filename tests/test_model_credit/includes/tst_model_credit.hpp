@@ -6,7 +6,6 @@
 #include <QDebug>
 
 #include "../../../includes/Model/modelcredit.hpp"
-#include "../../../includes/custom_types.hpp"
 
 class ModelCreditTest : public ::testing::Test {
  public:
@@ -27,7 +26,19 @@ class ModelCreditTest : public ::testing::Test {
     // cleanup any pending stuff, but no exceptions allowed
     if (model_credit_) delete model_credit_;
   }
-  // put in any custom data members that you need
+
+  void CalculatorDifferent();
+  void CalculatorAnnuit();
+  long double get_mount() const;
+  long double get_mount_last() const;
+  long double get_procents() const;
+  long double get_total() const;
+  void set_sum(QString const &count);
+  void set_different(bool const &is_dif);
+  void set_is_mount(bool const &is_mount);
+  void set_procent(QString const &count);
+  void set_time(QString const &count);
+
  private:
   s21::ModelCredit *model_credit_;
 };

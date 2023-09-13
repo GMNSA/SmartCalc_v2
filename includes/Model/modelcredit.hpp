@@ -3,6 +3,13 @@
 
 #include "./imodelcredit.hpp"
 
+/**
+ * @brief Class for tests.
+ */
+class ModelCreditTest;
+
+// ----------------------------------------------------------------------------
+
 namespace s21 {
 
 class ModelCredit : public IModelCredit {
@@ -41,6 +48,10 @@ class ModelCredit : public IModelCredit {
   long double mount_last_;
   long double procents_;
   long double total_;
+
+  // -- -- -- --
+
+  friend ModelCreditTest;
 };
 
 }  // namespace s21

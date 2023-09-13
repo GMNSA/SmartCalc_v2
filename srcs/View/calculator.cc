@@ -471,9 +471,9 @@ void Calculator::calculateCredit() {
   credit_calculator_->set_different(ui->rb_differ->isChecked());
   credit_calculator_->Calculate();
 
-  ui->label_one->setText(credit_calculator_->MonthlyPayment());
-  ui->label_two->setText(credit_calculator_->AccruedInterest());
-  ui->label_three->setText(credit_calculator_->DebgAndInterest());
+  ui->label_one->setText(credit_calculator_->MonthlyPayment() + " руб.");
+  ui->label_two->setText(credit_calculator_->AccruedInterest() + " руб.");
+  ui->label_three->setText(credit_calculator_->DebgAndInterest() + " руб.");
 }
 
 // -------------------------------------------
