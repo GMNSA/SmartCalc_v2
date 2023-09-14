@@ -16,9 +16,6 @@ class ICreditController {
   virtual void set_is_mount(bool is_mount) = 0;
   virtual void set_different(bool is_diff) = 0;
 
-  // QString infoMonthlyPayment() const;
-  // QString infoAccruedInterest() const;
-  // QString infoDebgAndInterest() const;
   virtual QString MonthlyPayment() const = 0;
   virtual QString AccruedInterest() const = 0;
   virtual QString DebgAndInterest() const = 0;
