@@ -2,7 +2,6 @@
 #define INCLUDES_MODEL_IMODELDEPOSIT_HPP_
 
 #include <QListWidget>
-#include <QtPlugin>
 
 #include "../custom_types.hpp"
 
@@ -35,7 +34,5 @@ class IModelDeposit {
 };
 
 }  // namespace s21
-
-// Q_DECLARE_INTERFACE(s21::IModelDeposit, "s21.IModelDeposit");
 
 #endif  // INCLUDES_MODEL_IMODELDEPOSIT_HPP_

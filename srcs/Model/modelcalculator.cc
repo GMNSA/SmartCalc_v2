@@ -1,9 +1,10 @@
 #include "../../includes/Model/modelcalculator.hpp"
 
+#include <QRegularExpression>
 #include <QString>
 #include <cmath>
 
-namespace ns_model {
+namespace s21 {
 
 ModelCalculator::ModelCalculator()
     : display_text_(),
@@ -79,8 +80,6 @@ void ModelCalculator::SetBrackets(QString const &str, bool const is_smart,
 // ----------------------------------------------------------------------------
 
 void ModelCalculator::Reset() {
-  // TODO(_who): release reset ...
-  qDebug() << "RESET MODEL CALCULATOR.";
   validator_text_->Reset();
   polish_notation_->Reset();
   calculated_text_.clear();
@@ -251,4 +250,4 @@ void ModelCalculator::RemoveMinux(QString *str) {
 
 // ----------------------------------------------------------------------------
 
-}  // namespace ns_model
+}  // namespace s21

@@ -4,11 +4,11 @@
 #include "../Model/imodel.hpp"
 #include "./icalculatorcontroller.hpp"
 
-namespace ns_simple_controller {
+namespace s21 {
 
 class CalculatorController : public ICalculatorController {
  public:
-  explicit CalculatorController(ns_model::IModel *model);
+  explicit CalculatorController(IModel *model);
   virtual ~CalculatorController();
 
   void Calculate(QString const &str = "", QString const &x = "") override;
@@ -25,9 +25,9 @@ class CalculatorController : public ICalculatorController {
   void ChangeSign() override;
 
  private:
-  ns_model::IModel *model_;
+  IModel *model_;
 };
 
-}  // namespace ns_simple_controller
+}  // namespace s21
 
 #endif  // INCLUDES_CONTROLLER_CALCULATORCONTROLLER_HPP_

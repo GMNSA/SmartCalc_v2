@@ -1,9 +1,8 @@
 #include "../../includes/Controller/calculatorcontroller.hpp"
 
-namespace ns_simple_controller {
+namespace s21 {
 
-CalculatorController::CalculatorController(ns_model::IModel *model)
-    : model_(model) {
+CalculatorController::CalculatorController(IModel *model) : model_(model) {
   // TODO(_who): reslese
 }
 
@@ -68,4 +67,4 @@ bool CalculatorController::IsGraph() const { return model_->IsGraph(); }
 
 void CalculatorController::ChangeSign() { model_->ChangeSign(); }
 
-}  // namespace ns_simple_controller
+}  // namespace s21

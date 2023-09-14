@@ -1,13 +1,13 @@
 #ifndef INCLUDES_MODEL_IMODEL_HPP_
 #define INCLUDES_MODEL_IMODEL_HPP_
 
-#include <QtPlugin>
+#include <QString>
 
-namespace ns_model {
+namespace s21 {
 
 class IModel {
  public:
-  virtual ~IModel() {}
+  virtual ~IModel() = default;
 
   virtual void Calculate(QString const &str = "", QString const &x = "") = 0;
   virtual QString GetResult() const = 0;
@@ -25,8 +25,6 @@ class IModel {
   virtual void ChangeSign() = 0;
 };
 
-}  // namespace ns_model
-
-Q_DECLARE_INTERFACE(ns_model::IModel, "ns_model.IModel");
+}  // namespace s21
 
 #endif  // INCLUDES_MODEL_IMODEL_HPP_

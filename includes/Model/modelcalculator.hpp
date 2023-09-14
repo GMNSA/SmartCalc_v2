@@ -8,7 +8,7 @@
 #include "./polishnotation.hpp"
 #include "./validatetext.hpp"
 
-namespace ns_model {
+namespace s21 {
 
 class ModelCalculator : public IModel {
  public:
@@ -51,6 +51,6 @@ class ModelCalculator : public IModel {
 
 // ----------------------------------------------------------------------------
 
-};  // namespace ns_model
+};  // namespace s21
 
 #endif  // INCLUDES_MODEL_MODELCALCULATOR_HPP_

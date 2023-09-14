@@ -1,19 +1,14 @@
 #include "../../includes/Model/validatetext.hpp"
 
-namespace ns_model {
+namespace s21 {
 
 ValidateText::ValidateText(QString const &str)
-    : text_(str), is_valid_(1), is_clear_(1), is_graph_(0) {}
+    : text_(str), is_valid_(1), is_clear_(1) {}
 
 // ----------------------------------------------------------------------------
 
 void ValidateText::AddTextToStr(QString const &str) {
   AddText(str);
-  // if (display_text_.indexOf("x") != -1) {
-  //   m_strForGraph = display_text_;
-  //   display_text_.replace(QString("x"), QString::number(m_graph->x()));
-  //   is_graph = true;
-  // }
   text_ = ReplaceDummyFunctions(text_);
   text_ = FixedText(text_);
 }
@@ -92,7 +87,6 @@ void ValidateText::Reset() {
   text_.clear();
   is_clear_ = 1;
   is_valid_ = 1;
-  // TODO(_who): perhaps you need to assign 0 to text
 }
 
 // ----------------------------------------------------------------------------
@@ -191,4 +185,4 @@ void ValidateText::set_clear(bool const is_clear) { is_clear_ = is_clear; }
 
 ValidateText::~ValidateText() {}
 
-}  // namespace ns_model
+}  // namespace s21

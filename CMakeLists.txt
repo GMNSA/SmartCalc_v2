@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-# project(SmartCalc VERSION 0.1 LANGUAGES CXX)
-project(SmartCalc LANGUAGES CXX C)
+project(SmartCalc VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -46,14 +45,8 @@ set(PROJECT_HEADERS
     includes/View/dialoggraph.hpp
     includes/View/calculator.hpp
 
-    # includes/creditcalculator.hpp
-    # includes/calculationsmartcalc.hpp
-
     includes/custom_types.hpp
 
-    code_c/s21_credit_calc.h
-    code_c/s21_smart_calc.h
-    code_c/s21_stack.h
 )
 
 set(PROJECT_SOURCES
@@ -73,16 +66,9 @@ set(PROJECT_SOURCES
     srcs/View/dialoggraph.cc
     srcs/View/calculator.cc
 
-    # srcs/creditcalculator.cc
-    # srcs/calculationsmartcalc.cc
-
     srcs/main.cc
     srcs/View/dialoggraph.ui
     srcs/View/calculator.ui
-
-    code_c/s21_credit_calc.c
-    code_c/s21_smart_calc.c
-    code_c/s21_stack.c
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -93,7 +79,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     )
 endif()
 
-# add_subdirectory(lib)
 add_subdirectory(tests)
 
 target_include_directories(SmartCalc

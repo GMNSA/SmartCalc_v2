@@ -6,7 +6,7 @@
 #include <QHash>
 #include <QStack>
 
-namespace ns_model {
+namespace s21 {
 
 class PolishNotation {
  public:
@@ -64,6 +64,6 @@ void PolishNotation::ReverseStack(QStack<T> *stack, qint64 const n_stack) {
   *stack = tmp;
 }
 
-}  // namespace ns_model
+}  // namespace s21
 
 #endif  // INCLUDES_MODEL_POLISHNOTATION_HPP_

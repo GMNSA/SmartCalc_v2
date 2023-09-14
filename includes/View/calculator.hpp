@@ -20,9 +20,8 @@ class Calculator : public QMainWindow {
   Q_OBJECT
 
  public:
-  explicit Calculator(
-      ns_simple_controller::ICalculatorController *controller = nullptr,
-      QWidget *parent = nullptr);
+  explicit Calculator(ICalculatorController *controller = nullptr,
+                      QWidget *parent = nullptr);
   ~Calculator();
 
  signals:
@@ -87,7 +86,7 @@ class Calculator : public QMainWindow {
   int m_is_clear;
   QString display_text_;
   QString m_strForGraph;
-  ns_simple_controller::ICalculatorController *calculator_;
+  ICalculatorController *calculator_;
   s21::DialogGraph *m_graph;
   IDepositController *deposit_calculator_;
   ICreditController *credit_calculator_;

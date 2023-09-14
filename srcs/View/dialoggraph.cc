@@ -7,30 +7,12 @@
 
 namespace s21 {
 
-// #define NUM_OF_GRID 12
-// #define GRID_ACCURACY_F "%.2f"
-// #define GRID_ACCURACY_E "%.1e"
-//
-#define OFFSET_WIDTH 18
-#define OFFSET_HEIGHT 26
-//
-//
-// #include <QGraphicsTextItem>
-// #include <QTransform>
-#define INF 1.0 / 0.0
-// #include <QLabel>
-// #include <QPainter>
-//
-// int equalDouble(double a_, double b_) { return (fabs(a_ - b_) < 1e-7); }
-//
-
 double DialogGraph::inf_ = 1.0 / 0.0;
 
 // -----------------------------------------------------------------------------
 
-DialogGraph::DialogGraph(
-    ns_simple_controller::ICalculatorController *calculator_controller,
-    QWidget *parent)
+DialogGraph::DialogGraph(ICalculatorController *calculator_controller,
+                         QWidget *parent)
     : QDialog(parent),
       ui(new Ui::DialogGraph),
       width_(0),
@@ -42,7 +24,9 @@ DialogGraph::DialogGraph(
       isError_(0),
       num_of_grid_(10),
       scene_(nullptr),
-      calculator_(calculator_controller) {
+      calculator_(calculator_controller),
+      offset_width_(18),
+      offset_height_(26) {
   ui->setupUi(this);
 
   CreateDialog();
@@ -71,10 +55,7 @@ void DialogGraph::ResetData() {
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::on_buttonCloseClicked() {
-  this->hide();
-  qDebug("HIDE");
-}
+void DialogGraph::on_buttonCloseClicked() { this->hide(); }
 
 // ----------------------------------------------------------------------------
 
@@ -86,10 +67,7 @@ void DialogGraph::SetWidth(double width) { width_ = width; }
 
 // ----------------------------------------------------------------------------
 
-void DialogGraph::SetStrNum(const QString &strNum) {
-  str_num_ = strNum;
-  qDebug() << "str num: " << str_num_;
-}
+void DialogGraph::SetStrNum(const QString &strNum) { str_num_ = strNum; }
 
 // ----------------------------------------------------------------------------
 
@@ -132,8 +110,8 @@ void DialogGraph::OpenGraphic() {
 // ----------------------------------------------------------------------------
 
 void DialogGraph::DataConversion() {
-  SetWidth((ui->graphicsView->width() - OFFSET_WIDTH) / 2.0);
-  SetHeight((ui->graphicsView->height() - OFFSET_HEIGHT) / 2.0);
+  SetWidth((ui->graphicsView->width() - offset_width_) / 2.0);
+  SetHeight((ui->graphicsView->height() - offset_height_) / 2.0);
   QString r = QString("((%1) + (%2)) / 2.0").arg(x_max_).arg(x_min_);
   m_res = CalculateX(str_num_, r).toDouble();
   int count = 0;

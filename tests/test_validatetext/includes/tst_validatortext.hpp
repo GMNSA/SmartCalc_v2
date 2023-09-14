@@ -9,7 +9,7 @@
 
 class ValidatorTextTest : public ::testing::Test {
  public:
-  ValidatorTextTest() : validator_text_(new ns_model::ValidateText()) {
+  ValidatorTextTest() : validator_text_(new s21::ValidateText()) {
     // initialization code here
   }
 
@@ -28,7 +28,7 @@ class ValidatorTextTest : public ::testing::Test {
 
   // put in any custom data members that you need
  public:
-  ns_model::ValidateText *validator_text_;
+  s21::ValidateText *validator_text_;
 };
 
 #endif  // TESTS_TEST_VALIDATETEXT_INCLUDES_TST_VALIDATORTEXT_HPP_

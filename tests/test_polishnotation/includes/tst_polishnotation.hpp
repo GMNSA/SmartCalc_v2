@@ -10,7 +10,7 @@
 
 class PolishNotationTest : public ::testing::Test {
  public:
-  PolishNotationTest() : polish_notation_(new ns_model::PolishNotation) {
+  PolishNotationTest() : polish_notation_(new s21::PolishNotation) {
     // initialization code here
   }
 
@@ -47,7 +47,7 @@ class PolishNotationTest : public ::testing::Test {
 
   // put in any custom data members that you need
  public:
-  ns_model::PolishNotation *polish_notation_;
+  s21::PolishNotation *polish_notation_;
 
   friend class PolishNotation;
 };

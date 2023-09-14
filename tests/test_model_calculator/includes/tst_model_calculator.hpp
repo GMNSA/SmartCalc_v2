@@ -9,7 +9,7 @@
 
 class ModalCalculatorTest : public ::testing::Test {
  public:
-  ModalCalculatorTest() : model_calculator_(new ns_model::ModelCalculator) {
+  ModalCalculatorTest() : model_calculator_(new s21::ModelCalculator) {
     // initialization code here
   }
 
@@ -35,7 +35,7 @@ class ModalCalculatorTest : public ::testing::Test {
   void Reset();
   // put in any custom data members that you need
  private:
-  ns_model::ModelCalculator *model_calculator_;
+  s21::ModelCalculator *model_calculator_;
 };
 
 #endif  // TESTS_TEST_MODEL_CALCULATOR_INCLUDES_TST_MODEL_CALCULATOR_HPP_

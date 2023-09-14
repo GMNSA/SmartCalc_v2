@@ -3,7 +3,7 @@
 #include <QRegularExpression>
 #include <cmath>
 
-namespace ns_model {
+namespace s21 {
 
 PolishNotation::PolishNotation() : is_error_(false) {}
 
@@ -45,8 +45,6 @@ QString PolishNotation::CalculateNotation(QString const &str) {
   QString p_result;
   is_error_ = 0;
   double tmp_num = 0;
-  Q_UNUSED(tmp_num);
-  Q_UNUSED(str);
   sp_tmp_data_.clear();
 
   if (!str.isEmpty()) {
@@ -489,4 +487,4 @@ void PolishNotation::ZerosRemove(QString *str) {
   }
 }
 
-}  // namespace ns_model
+}  // namespace s21

@@ -14,10 +14,9 @@ int main(int argc, char *argv[]) {
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
   qWarning() << "two";
 
-  ns_model::IModel *model = new ns_model::ModelCalculator;
+  s21::IModel *model = new s21::ModelCalculator;
 
-  ns_simple_controller::ICalculatorController *controller =
-      new ns_simple_controller::CalculatorController(model);
+  s21::ICalculatorController *controller = new s21::CalculatorController(model);
 
   s21::Calculator w(controller);
   w.show();

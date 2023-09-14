@@ -8,7 +8,7 @@ namespace s21 {
 
 class CreditController : public ICreditController {
  public:
-  CreditController(IModelCredit *model_credit = nullptr);
+  explicit CreditController(IModelCredit *model_credit = nullptr);
   CreditController(CreditController const &other);
   virtual ~CreditController();
 
@@ -19,9 +19,9 @@ class CreditController : public ICreditController {
   void set_is_mount(bool is_mount) override;
   void set_different(bool is_diff) override;
 
-  virtual QString MonthlyPayment() const override;
-  virtual QString AccruedInterest() const override;
-  virtual QString DebgAndInterest() const override;
+  QString MonthlyPayment() const override;
+  QString AccruedInterest() const override;
+  QString DebgAndInterest() const override;
 
  private:
   IModelCredit *model_credit_;

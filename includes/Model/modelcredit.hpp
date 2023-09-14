@@ -26,9 +26,9 @@ class ModelCredit : public IModelCredit {
   void set_is_mount(bool is_mount) override;
   void set_different(bool is_diff) override;
 
-  virtual QString MonthlyPayment() const override;
-  virtual QString AccruedInterest() const override;
-  virtual QString DebgAndInterest() const override;
+  QString MonthlyPayment() const override;
+  QString AccruedInterest() const override;
+  QString DebgAndInterest() const override;
 
  private:
   void ResetData();
@@ -37,7 +37,7 @@ class ModelCredit : public IModelCredit {
   void MyRound(long double *num);
 
  private:
-  unsigned long long sum_credit_;
+  quint64 sum_credit_;
   unsigned time_credit_;
   double procents_credit_;
 
@@ -55,4 +55,5 @@ class ModelCredit : public IModelCredit {
 };
 
 }  // namespace s21
+
 #endif  // INCLUDES_MODELCREDIT_HPP_

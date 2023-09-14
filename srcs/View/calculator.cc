@@ -15,8 +15,7 @@
 
 namespace s21 {
 
-Calculator::Calculator(ns_simple_controller::ICalculatorController *controller,
-                       QWidget *parent)
+Calculator::Calculator(ICalculatorController *controller, QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::Calculator),
       m_is_clear(1),

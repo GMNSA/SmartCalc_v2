@@ -3,7 +3,7 @@
 
 #include <QString>
 
-namespace ns_simple_controller {
+namespace s21 {
 
 class ICalculatorController {
  public:
@@ -24,6 +24,6 @@ class ICalculatorController {
  protected:
 };
 
-}  // namespace ns_simple_controller
+}  // namespace s21
 
 #endif  // INCLUDES_CONTROLLER_ICALCULATORCONTROLLER_HPP_

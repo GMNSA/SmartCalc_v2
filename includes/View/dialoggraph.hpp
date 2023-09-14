@@ -19,9 +19,8 @@ class DialogGraph : public QDialog {
   Q_OBJECT
 
  public:
-  explicit DialogGraph(
-      ns_simple_controller::ICalculatorController *calculator_controller,
-      QWidget *parent = nullptr);
+  explicit DialogGraph(ICalculatorController *calculator_controller,
+                       QWidget *parent = nullptr);
   ~DialogGraph();
 
   void ResetData();
@@ -63,7 +62,9 @@ class DialogGraph : public QDialog {
   double m_res;
   unsigned num_of_grid_;
   QGraphicsScene *scene_;
-  ns_simple_controller::ICalculatorController *calculator_;
+  ICalculatorController *calculator_;
+  int offset_width_;
+  int offset_height_;
   static double inf_;
 
 #ifdef FOR_TEST

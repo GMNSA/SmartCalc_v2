@@ -3,7 +3,7 @@
 
 #include <QString>
 
-namespace ns_model {
+namespace s21 {
 
 class ValidateText {
  public:
@@ -31,9 +31,8 @@ class ValidateText {
   QString text_;
   bool is_valid_;
   bool is_clear_;
-  bool is_graph_;
 };
 
-}  // namespace ns_model
+}  // namespace s21
 
 #endif  // INCLUDES_MODEL_VALIDATETEXT_HPP_

@@ -2,7 +2,6 @@
 #define INCLUDES_CONTROLLER_IDEPOSITCONTROLLER_HPP_
 
 #include <QListWidget>
-#include <QtPlugin>
 
 #include "../custom_types.hpp"
 
@@ -37,7 +36,5 @@ class IDepositController {
 };
 
 }  // namespace s21
-
-// Q_DECLARE_INTERFACE(s21::IDepositController, "s21.IDepositController");
 
 #endif  // INCLUDES_CONTROLLER_IDEPOSITCONTROLLER_HPP_
