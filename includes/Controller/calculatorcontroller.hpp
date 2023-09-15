@@ -9,6 +9,8 @@ namespace s21 {
 class CalculatorController : public ICalculatorController {
  public:
   explicit CalculatorController(IModel *model);
+  CalculatorController(CalculatorController const &other) = delete;
+  CalculatorController &operator=(CalculatorController const &other) = delete;
   virtual ~CalculatorController();
 
   QString get_data() const override;

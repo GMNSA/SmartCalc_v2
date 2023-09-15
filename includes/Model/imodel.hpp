@@ -19,7 +19,7 @@ class IModel {
   virtual void Calculate(QString const &str = "", QString const &x = "") = 0;
   virtual void AddValue(QString const &str) = 0;
   virtual void SetBrackets(QString const &str, bool const is_smart,
-                           bool is_checked) = 0;
+                           bool const &is_checked) = 0;
   virtual void Reset() = 0;
   virtual void DelOne() = 0;
   virtual void ReplaceX(QString *str, QString const &x) = 0;

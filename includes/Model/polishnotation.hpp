@@ -11,6 +11,9 @@ namespace s21 {
 class PolishNotation {
  public:
   PolishNotation();
+  PolishNotation(PolishNotation const &other) = delete;
+  PolishNotation &operator=(PolishNotation const &other) = delete;
+
   virtual ~PolishNotation();
 
   QString CalculateNotation(QString const &str);

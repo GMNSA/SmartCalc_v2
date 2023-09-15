@@ -10,12 +10,15 @@ namespace s21 {
 class ModelDeposit : public IModelDeposit {
  public:
   ModelDeposit();
+  ModelDeposit(ModelDeposit const &other) = delete;
+  ModelDeposit &operator=(ModelDeposit const &other) = delete;
+
   virtual ~ModelDeposit();
 
-  void set_deposit_sum(QString const deposit_sum) override;
-  void set_percent_rate(QString const percent_rate) override;
-  void set_placement_period(QString const placement_period) override;
-  void set_tax_rate(QString const tax_rate) override;
+  void set_deposit_sum(QString const &deposit_sum) override;
+  void set_percent_rate(QString const &percent_rate) override;
+  void set_placement_period(QString const &placement_period) override;
+  void set_tax_rate(QString const &tax_rate) override;
 
   void set_frequency_payments(PeriodicityPayments const &pp) override;
   void set_capitalization(Capitalization const &cap) override;

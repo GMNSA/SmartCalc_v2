@@ -28,29 +28,35 @@ void ModelCredit::Calculate() {
     else
       CalculatorAnnuit();
   }
-};
+}
 
 // ----------------------------------------------------------------------------
 
-void ModelCredit::set_sum(QString count) { sum_credit_ = count.toLongLong(); };
+void ModelCredit::set_sum(QString const &count) {
+  sum_credit_ = count.toLongLong();
+}
 
 // ----------------------------------------------------------------------------
 
-void ModelCredit::set_time(QString count) { time_credit_ = count.toInt(); };
+void ModelCredit::set_time(QString const &count) {
+  time_credit_ = count.toInt();
+}
 
 // ----------------------------------------------------------------------------
 
-void ModelCredit::set_procent(QString count) {
+void ModelCredit::set_procent(QString const &count) {
   procents_credit_ = count.toDouble();
-};
+}
 
 // ----------------------------------------------------------------------------
 
-void ModelCredit::set_is_mount(bool is_mount) { is_mount_ = is_mount; };
+void ModelCredit::set_is_mount(bool const &is_mount) { is_mount_ = is_mount; }
 
 // ----------------------------------------------------------------------------
 
-void ModelCredit::set_different(bool is_diff) { is_different_ = is_diff; };
+void ModelCredit::set_different(bool const &is_diff) {
+  is_different_ = is_diff;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -66,7 +72,7 @@ QString ModelCredit::MonthlyPayment() const {
   str = str.replace(",", " ");
 
   return (str);
-};
+}
 
 // ----------------------------------------------------------------------------
 
@@ -76,7 +82,7 @@ QString ModelCredit::AccruedInterest() const {
   str = QString("%L1").arg(procents_, 0, 'f', 2);
   str = str.replace(",", " ");
   return (str);
-};
+}
 
 // ----------------------------------------------------------------------------
 
@@ -87,7 +93,7 @@ QString ModelCredit::DebgAndInterest() const {
   str = str.replace(",", " ");
 
   return (str);
-};
+}
 
 // ----------------------------------------------------------------------------
 void ModelCredit::ResetData() {

@@ -11,10 +11,10 @@ class IModelDeposit {
  public:
   virtual ~IModelDeposit() = default;
 
-  virtual void set_deposit_sum(QString deposit_sum) = 0;
-  virtual void set_percent_rate(QString percent_rate) = 0;
-  virtual void set_placement_period(QString placement_period) = 0;
-  virtual void set_tax_rate(QString tax_rate) = 0;
+  virtual void set_deposit_sum(QString const &deposit_sum) = 0;
+  virtual void set_percent_rate(QString const &percent_rate) = 0;
+  virtual void set_placement_period(QString const &placement_period) = 0;
+  virtual void set_tax_rate(QString const &tax_rate) = 0;
 
   virtual void set_frequency_payments(PeriodicityPayments const &pp) = 0;
   virtual void set_capitalization(Capitalization const &cap) = 0;

@@ -70,7 +70,6 @@ void DialogGraph::DrawGraphic(QString const &str_num) {
     graph_->set_size_graph(ui->graphicsView->width(),
                            ui->graphicsView->height());
     graph_->DrawGraphic(str_num, scene_);
-    qDebug() << "End DrawGraphic";
   }
 }
 

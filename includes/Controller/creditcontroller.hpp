@@ -9,7 +9,8 @@ namespace s21 {
 class CreditController : public ICreditController {
  public:
   explicit CreditController(IModelCredit *model_credit = nullptr);
-  CreditController(CreditController const &other);
+  CreditController(CreditController const &other) = delete;
+  CreditController &operator=(CreditController const &other) = delete;
   virtual ~CreditController();
 
   void Calculate() override;

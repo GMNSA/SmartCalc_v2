@@ -128,9 +128,7 @@ void ModelGraph::DrawField(QGraphicsScene *scene_) {
     p_xp->setPos(gridP, height_);
     scene_->addLine(gridP, -height_, gridP, height_, grid_line);
     scene_->addLine(gridP, height_ - 10, gridP, height_, axis_line);
-    scene_->addItem((QGraphicsItem *)(p_xp));
-    // scene_->addItem(qobject_cast<QGraphicsItem *>(p_xp));
-    // (QGraphicsItem *)
+    scene_->addItem(qobject_cast<QGraphicsItem *>(p_xp));
   }
 
   grid_move = 2 * height_ / num_of_grid_;
@@ -174,8 +172,6 @@ void ModelGraph::DrawGraphic(QGraphicsScene *scene) {
       }
       y = y1;
     }
-
-    qDebug() << "END SCENE";
   }
   ResetData();
 }
@@ -236,11 +232,6 @@ QString ModelGraph::Calculate(QString const &num_str) {
 
 // ----------------------------------------------------------------------------
 
-void ModelGraph::AttachScene(QGraphicsScene *scene) {
-  // if (scene_ != nullptr) {
-  // delete scene_;
-  scene_ = scene;
-  // }
-}
+void ModelGraph::AttachScene(QGraphicsScene *scene) { scene_ = scene; }
 
 }  // namespace s21

@@ -28,26 +28,26 @@ ModelDeposit::~ModelDeposit() {}
 
 // ----------------------------------------------------------------------------
 
-void ModelDeposit::set_deposit_sum(QString const deposit_sum) {
+void ModelDeposit::set_deposit_sum(QString const &deposit_sum) {
   QString tmp = deposit_sum;
   deposit_sum_ = tmp.replace(" ", "").toLongLong();
 }
 
 // ----------------------------------------------------------------------------
 
-void ModelDeposit::set_percent_rate(QString const percent_rate) {
+void ModelDeposit::set_percent_rate(QString const &percent_rate) {
   percent_rate_ = percent_rate.toDouble();
 }
 
 // ----------------------------------------------------------------------------
 
-void ModelDeposit::set_placement_period(QString const placement_period) {
+void ModelDeposit::set_placement_period(QString const &placement_period) {
   placement_period_ = placement_period.toDouble();
 }
 
 // ----------------------------------------------------------------------------
 
-void ModelDeposit::set_tax_rate(QString const tax_rate) {
+void ModelDeposit::set_tax_rate(QString const &tax_rate) {
   tax_rate_ = tax_rate.toDouble();
 }
 

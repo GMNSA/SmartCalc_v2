@@ -30,7 +30,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Simple">
        <attribute name="title">
@@ -1107,6 +1107,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <property name="tabletTracking">
                  <bool>false</bool>
                 </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Аннуительный платеж - вариант ежемесячного платежа по кредиту, когда &lt;/p&gt;&lt;p&gt;размер ежемесячного платежа остается постоянный на всем периоде кредитования.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="text">
                  <string>Аннуитетные</string>
                 </property>
@@ -1117,6 +1120,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </item>
               <item>
                <widget class="QRadioButton" name="rb_differ">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дифференцированный платеж - вариант ежемесячного платежа по кредиту,&lt;/p&gt;&lt;p&gt;когда размер ежемесячного платежа по погашению кредита постепенно&lt;/p&gt;&lt;p&gt;уменьшается к концу периода&lt;/p&gt;&lt;p&gt;кредитования.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="text">
                  <string>Дифференцированные</string>
                 </property>
@@ -1339,7 +1345,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item>
              <widget class="QLabel" name="label_capitalization">
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'VTB Group UI','sans-serif'; font-size:18px; color:#19aede; background-color:#f3f7fa;&quot;&gt;Капитализация процентов по вкладу — прибавление начисленных процентов к основной сумме вклада, после чего начисление процентов происходит на увеличенный остаток. Простыми словами — это начисление процентов на проценты.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Капитализация процентов по вкладу — прибавление начисленных процентов к основной сумме вклада, после чего начисление процентов происходит на увеличенный остаток. Простыми словами — это начисление процентов на проценты.
+&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="whatsThis">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

@@ -1,7 +1,5 @@
 #include "../../includes/Controller/creditcontroller.hpp"
 
-#include <QDebug>
-
 namespace s21 {
 
 CreditController::CreditController(IModelCredit *model_credit)

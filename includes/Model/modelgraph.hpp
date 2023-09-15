@@ -9,6 +9,9 @@ namespace s21 {
 class ModelGraph : public IModelGraph {
  public:
   ModelGraph();
+  ModelGraph(ModelGraph const &other) = delete;
+  ModelGraph &operator=(ModelGraph const &other) = delete;
+
   virtual ~ModelGraph();
 
   void set_width(double const &width) override;

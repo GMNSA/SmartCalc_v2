@@ -18,27 +18,16 @@ class ModelCalculator : public IModel {
 
   virtual ~ModelCalculator();
 
-  // -- override --
-  // void set_x_min(double const &x_min);
-  // void set_x_max(double const &x_max);
-  // void set_x(double const &x);
-  // double get_x() const;
-  // void set_str_num_x(QString const &str);
-
-  // void DrawGraphic(QGraphicsScene *scene);
-
-  // // -- -- -- --
-
   QString get_result() const override;
-  QString get_result_graph() const override;         // ??
-  QString get_fix_text_display() const override;     // !!!
-  QString get_text_repeat_display() const override;  // OK
-  bool get_is_graph() const override;                // OK
+  QString get_result_graph() const override;
+  QString get_fix_text_display() const override;
+  QString get_text_repeat_display() const override;
+  bool get_is_graph() const override;
 
   void Calculate(QString const &str = "", QString const &x = "") override;
   void AddValue(QString const &str) override;
   void SetBrackets(QString const &str, bool const is_smart,
-                   bool is_checked) override;
+                   bool const &is_checked) override;
   void Reset() override;
   void DelOne() override;
   void ReplaceX(QString *str, QString const &x) override;

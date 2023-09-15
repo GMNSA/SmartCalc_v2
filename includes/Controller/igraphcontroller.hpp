@@ -7,7 +7,7 @@ namespace s21 {
 
 class IGraphController {
  public:
-  virtual ~IGraphController() {}
+  virtual ~IGraphController() = default;
 
   virtual void set_size_graph(double const &width, double const &height) = 0;
   virtual void set_x_range(double const &x_min = -10, double const &x_max = 10,

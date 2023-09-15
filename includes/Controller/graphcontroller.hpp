@@ -9,6 +9,9 @@ namespace s21 {
 class GraphController : public IGraphController {
  public:
   explicit GraphController(IModelGraph *model);
+  GraphController(GraphController const &other) = delete;
+  GraphController &operator=(GraphController const &other) = delete;
+
   virtual ~GraphController();
 
   void set_size_graph(double const &width, double const &height) override;

@@ -1,8 +1,6 @@
 #include "../../includes/View/calculator.hpp"
 
-#include <QDialog>
 #include <QRegularExpressionValidator>
-#include <QtDebug>
 
 #include "../../includes/Controller/creditcontroller.hpp"
 #include "../../includes/Controller/depositcontroller.hpp"
@@ -397,7 +395,6 @@ void Calculator::ResetRepeatDisplay(QString const &str) {
 // -------------------------------------------
 
 void Calculator::openGraphic() {
-  // graph_->SetStrNum(calculator_->get_data_graph());
   graph_->show();
   checkXData();
   graph_->DrawGraphic(calculator_->get_data_graph());
@@ -424,18 +421,6 @@ void Calculator::checkXData() {
 // -------------------------------------------
 
 void Calculator::SettingsCredit() {
-  ui->rb_annuit->setToolTip(
-      "Аннуительный платеж - вариант ежемесячного платежа по кредиту, когда "
-      "размер"
-      "ежемесячного платежа остается постоянный на всем периоде "
-      "кредитования.");
-
-  ui->rb_differ->setToolTip(
-      "Дифференцированный платеж - вариант ежемесячного платежа по кредиту,"
-      "когда размер ежемесячного платежа по погашению кредита постепенно "
-      "уменьшается к концу периода "
-      "кредитования");
-
   ui->lineEdit_sumCredit->setValidator(new QIntValidator(this));
   ui->lineEdit_timeCredit->setValidator(new QIntValidator(this));
   ui->lineEdit_procent->setValidator(new QDoubleValidator(this));
@@ -620,7 +605,7 @@ void Calculator::ConnectionsDeposit() {
 
   connect(ui->comboBox_frequency_of_payments, &QComboBox::activated, [&] {
     if (ui->comboBox_frequency_of_payments->currentIndex() ==
-        (int)PeriodicityPayments::kOnce) {
+        static_cast<int>(PeriodicityPayments::kOnce)) {
       ui->comboBox_capital_2->setEnabled(false);
     } else {
       ui->comboBox_capital_2->setEnabled(true);

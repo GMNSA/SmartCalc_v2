@@ -15,16 +15,16 @@ namespace s21 {
 class ModelCredit : public IModelCredit {
  public:
   ModelCredit();
-  // ModelCredit(ModelCredit const &other) = delete;
-  // ModelCredit &operator=(ModelCredit const &other) = delete;
+  ModelCredit(ModelCredit const &other) = delete;
+  ModelCredit &operator=(ModelCredit const &other) = delete;
   virtual ~ModelCredit();
 
   void Calculate() override;
-  void set_sum(QString count) override;
-  void set_time(QString count) override;
-  void set_procent(QString count) override;
-  void set_is_mount(bool is_mount) override;
-  void set_different(bool is_diff) override;
+  void set_sum(QString const &count) override;
+  void set_time(QString const &count) override;
+  void set_procent(QString const &count) override;
+  void set_is_mount(bool const &is_mount) override;
+  void set_different(bool const &is_diff) override;
 
   QString MonthlyPayment() const override;
   QString AccruedInterest() const override;
@@ -48,8 +48,6 @@ class ModelCredit : public IModelCredit {
   long double mount_last_;
   long double procents_;
   long double total_;
-
-  // -- -- -- --
 
   friend ModelCreditTest;
 };

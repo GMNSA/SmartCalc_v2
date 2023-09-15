@@ -9,6 +9,9 @@ namespace s21 {
 class DepositController : public IDepositController {
  public:
   explicit DepositController(IModelDeposit *model);
+  DepositController(DepositController const &other) = delete;
+  DepositController &operator=(DepositController const &other) = delete;
+
   virtual ~DepositController();
 
   void set_deposit_sum(QString const deposit_sum) override;

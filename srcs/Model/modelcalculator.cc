@@ -68,7 +68,7 @@ void ModelCalculator::AddValue(QString const &str) {
 // ----------------------------------------------------------------------------
 
 void ModelCalculator::SetBrackets(QString const &str, bool const is_smart,
-                                  bool is_checked) {
+                                  bool const &is_checked) {
   validator_text_->SetBrackets(str, is_smart, is_checked);
   display_text_ = validator_text_->get_text();
 }
@@ -181,10 +181,11 @@ void ModelCalculator::ChangeSign() {
         }
         if (!is_find) RemoveBrackets(&display_text_);
       } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
-                 display_text_[display_text_.size() - 1].isDigit())
+                 display_text_[display_text_.size() - 1].isDigit()) {
         display_text_.remove(0, 1);
-      else
+      } else {
         AddBrackets(&display_text_);
+      }
     } else if (display_text_[0] != '-') {
       if (reMatch.hasMatch())
         AddMinux(&display_text_);
