@@ -61,9 +61,7 @@ set(PROJECT_SOURCES
     srcs/Model/validatetext.cc
 
     srcs/Model/modeldeposit.cc
-
     srcs/Model/modelcredit.cc
-
     srcs/Model/modelgraph.cc
 
     srcs/Controller/calculatorcontroller.cc
@@ -75,8 +73,6 @@ set(PROJECT_SOURCES
     srcs/View/calculator.cc
 
     srcs/main.cc
-    srcs/View/dialoggraph.ui
-    srcs/View/calculator.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
