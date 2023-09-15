@@ -45,8 +45,8 @@ class PolishNotation {
   bool is_error_;
   QStack<QString> stack_;
   QString str_data_tmp_;
-  QStack<QString> sp_str_split_;
-  QStack<QString> sp_tmp_data_;
+  QStack<QString> str_split_;
+  QStack<QString> data_stack_;
   QString text_;
 
  private:

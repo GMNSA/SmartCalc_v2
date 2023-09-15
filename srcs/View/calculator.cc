@@ -6,8 +6,10 @@
 
 #include "../../includes/Controller/creditcontroller.hpp"
 #include "../../includes/Controller/depositcontroller.hpp"
+#include "../../includes/Controller/graphcontroller.hpp"
 #include "../../includes/Model/modelcredit.hpp"
 #include "../../includes/Model/modeldeposit.hpp"
+#include "../../includes/Model/modelgraph.hpp"
 #include "../../includes/custom_types.hpp"
 #include "./ui_calculator.h"
 
@@ -21,7 +23,7 @@ Calculator::Calculator(ICalculatorController *controller, QWidget *parent)
       m_is_clear(1),
       display_text_(),
       calculator_(controller),
-      m_graph(nullptr),
+      graph_(nullptr),
       deposit_calculator_(new DepositController(new ModelDeposit)),
       credit_calculator_(new CreditController(new ModelCredit)),
       min_x_(-10),
@@ -31,7 +33,8 @@ Calculator::Calculator(ICalculatorController *controller, QWidget *parent)
   ui->lineEdit_x_2->clear();
   ui->lineEdit_x_3->clear();
 
-  if (!(m_graph = new DialogGraph(controller, this))) ui->menubar->close();
+  if (!(graph_ = new DialogGraph(new GraphController(new ModelGraph), this)))
+    ui->menubar->close();
 
   SettingsCredit();
   SettingsGraph();
@@ -45,9 +48,10 @@ Calculator::Calculator(ICalculatorController *controller, QWidget *parent)
 // -------------------------------------------
 
 Calculator::~Calculator() {
-  if (m_graph) delete m_graph;
+  if (graph_) delete graph_;
   if (calculator_) delete calculator_;
   if (deposit_calculator_) delete deposit_calculator_;
+  if (credit_calculator_) delete credit_calculator_;
   if (ui) delete ui;
 }
 
@@ -55,87 +59,91 @@ Calculator::~Calculator() {
 
 void Calculator::on_button0Clicked() {
   calculator_->AddValue("0");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button1Clicked() {
   calculator_->AddValue("1");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button2Clicked() {
   calculator_->AddValue("2");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
+
+// ----------------------------------------------------------------------------
 
 void Calculator::on_button3Clicked() {
   calculator_->AddValue("3");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
+
+// ----------------------------------------------------------------------------
 
 void Calculator::on_button4Clicked() {
   calculator_->AddValue("4");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button5Clicked() {
   calculator_->AddValue("5");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button6Clicked() {
   calculator_->AddValue("6");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button7Clicked() {
   calculator_->AddValue("7");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button8Clicked() {
   calculator_->AddValue("8");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_button9Clicked() {
   calculator_->AddValue("9");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonDotClicked() {
   calculator_->AddValue(".");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonXClicked() {
   calculator_->AddValue("x");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonPClicked() {
   calculator_->AddValue("π");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
@@ -150,119 +158,119 @@ void Calculator::on_buttonCeClicked() {
 
 void Calculator::on_buttonDelClicked() {
   calculator_->DelOne();
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonCosClicked() {
   calculator_->AddValue("cos(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonSinClicked() {
   calculator_->AddValue("sin(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonTanClicked() {
   calculator_->AddValue("tan(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonAcosClicked() {
   calculator_->AddValue("acos(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonAsinClicked() {
   calculator_->AddValue("asin(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonAtanClicked() {
   calculator_->AddValue("atan(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonSqrtClicked() {
   calculator_->AddValue("sqrt(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonPowClicked() {
   calculator_->AddValue("^");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonLnClicked() {
   calculator_->AddValue("ln(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonLogClicked() {
   calculator_->AddValue("log(");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonChangeClicked() {
   calculator_->ChangeSign();
-  ui->display->setText(calculator_->GetTextDisplay());
+  ui->display->setText(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonSumClicked() {
   calculator_->AddValue(" + ");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonSubClicked() {
   calculator_->AddValue(" - ");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonMulClicked() {
   calculator_->AddValue(" * ");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonDivClicked() {
   calculator_->AddValue(" / ");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonModClicked() {
   calculator_->AddValue("%");
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // ----------------------------------------------------------------------------
@@ -270,7 +278,7 @@ void Calculator::on_buttonModClicked() {
 void Calculator::on_buttonBracketLeftClicked() {
   calculator_->SetBrackets("(", ui->checkBox_smart->checkState(),
                            ui->checkBox_smart->isChecked());
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // ----------------------------------------------------------------------------
@@ -278,28 +286,28 @@ void Calculator::on_buttonBracketLeftClicked() {
 void Calculator::on_buttonBracketRightClicked() {
   calculator_->SetBrackets(")", ui->checkBox_smart->checkState(),
                            ui->checkBox_smart->isChecked());
-  ResetDisplay(calculator_->GetTextDisplay());
+  ResetDisplay(calculator_->get_text_display());
 }
 
 // -------------------------------------------
 
 void Calculator::on_buttonEqualClicked() {
   CalculateSimple();
-  ResetDisplay(calculator_->GetData());
-  ui->display_repeat->setText(calculator_->GetTextRepeatDisplay());
+  ResetDisplay(calculator_->get_data());
+  ui->display_repeat->setText(calculator_->get_text_repeat_display());
 
-  if (calculator_->IsGraph()) openGraphic();
+  if (calculator_->get_is_graph()) openGraphic();
 }
 
 // -------------------------------------------
 
-void Calculator::on_buttonGraphClicked() { m_graph->show(); }
+void Calculator::on_buttonGraphClicked() { graph_->show(); }
 
 // -------------------------------------------
 
 void Calculator::CalculateSimple() {
-  calculator_->Calculate("", QString::number(m_graph->x()));
-  ui->display->setText(calculator_->GetData());
+  calculator_->Calculate("", QString::number(graph_->x()));
+  ui->display->setText(calculator_->get_data());
 }
 
 // ----------------------------------------------------------------------------
@@ -389,27 +397,27 @@ void Calculator::ResetRepeatDisplay(QString const &str) {
 // -------------------------------------------
 
 void Calculator::openGraphic() {
-  m_graph->SetStrNum(calculator_->GetDatatGraph());
+  // graph_->SetStrNum(calculator_->get_data_graph());
+  graph_->show();
   checkXData();
-  m_graph->show();
-  m_graph->OpenGraphic();
+  graph_->DrawGraphic(calculator_->get_data_graph());
 }
 
 // -------------------------------------------
 
 void Calculator::checkXData() {
-  m_graph->set_x(ui->lineEdit_x->text().toDouble());
+  graph_->set_x(ui->lineEdit_x->text().toDouble());
 
   if (!ui->lineEdit_x_2->text().isEmpty()) {
-    m_graph->set_x_min(ui->lineEdit_x_2->text().toDouble());
+    graph_->set_x_min(ui->lineEdit_x_2->text().toDouble());
   } else {
-    m_graph->set_x_min(min_x_);
+    graph_->set_x_min(min_x_);
   }
 
   if (!ui->lineEdit_x_3->text().isEmpty()) {
-    m_graph->set_x_max(ui->lineEdit_x_3->text().toDouble());
+    graph_->set_x_max(ui->lineEdit_x_3->text().toDouble());
   } else {
-    m_graph->set_x_max(max_x_);
+    graph_->set_x_max(max_x_);
   }
 }
 

@@ -7,7 +7,11 @@ namespace s21 {
 
 PolishNotation::PolishNotation() : is_error_(false) {}
 
+// -- -- -- --
+
 PolishNotation::~PolishNotation() {}
+
+// -- -- -- --
 
 void PolishNotation::ResetError() { is_error_ = 0; }
 
@@ -17,8 +21,8 @@ void PolishNotation::Reset() {
   ResetError();
   stack_.clear();
   str_data_tmp_.clear();
-  sp_str_split_.clear();
-  sp_tmp_data_.clear();
+  str_split_.clear();
+  data_stack_.clear();
   text_.clear();
 }
 
@@ -42,92 +46,83 @@ bool PolishNotation::IsNumber(QString const &str) const {
 // -- -- -- --
 
 QString PolishNotation::CalculateNotation(QString const &str) {
-  QString p_result;
-  is_error_ = 0;
+  QString result;
   double tmp_num = 0;
-  sp_tmp_data_.clear();
+  QString tmp_str;
+  QString one_arg;
+  QString two_arg;
+  QString sign_arg;
+  auto clear_tmp = [&sign_arg, &one_arg, &two_arg, &tmp_str]() {
+    sign_arg.clear();
+    one_arg.clear();
+    two_arg.clear();
+    tmp_str.clear();
+  };
 
-  if (!str.isEmpty()) {
-    sp_str_split_ = StringToStack(str);
-    QString p_tmp;
-    QString p_one_arg;
-    QString p_two_arg;
-    QString p_sign_arg;
+  is_error_ = false;
+  if (str.isEmpty()) is_error_ = true;
 
-    ReverseStack(&sp_str_split_, sp_str_split_.size());
+  if (!is_error_) {
+    str_split_ = StringToStack(str);
+    ReverseStack(&str_split_, str_split_.size());
+    data_stack_.clear();
+  }
 
-    for (auto const &word : sp_str_split_) {
-      Q_UNUSED(word);
+  for (unsigned i = 0, n_str = str_split_.length(); i < n_str && !is_error_;
+       ++i) {
+    tmp_str = str_split_.top();
+    data_stack_.push_back(tmp_str);
 
-      p_tmp = sp_str_split_.top();
-      sp_tmp_data_.push_back(p_tmp);
+    if (!(data_stack_.isEmpty())) {
+      if (data_stack_.size() >= 2 && tmp_str[0] == '~') {
+        data_stack_.pop();
+        one_arg = data_stack_.pop();
+        tmp_num = one_arg.toDouble();
 
-      if (!(sp_tmp_data_.isEmpty())) {
-        if (sp_tmp_data_.size() >= 2 && p_tmp[0] == '~') {
-          sp_tmp_data_.pop();
-          p_one_arg = sp_tmp_data_.pop();
-          tmp_num = p_one_arg.toDouble();
+        tmp_num = CalculateNumbersMul(0, "-", tmp_num);
+        tmp_str = QString::number(tmp_num, 'f', 12);
+        data_stack_.push_back(tmp_str);
 
-          tmp_num = CalculateNumbersMul(0, "-", tmp_num);
-          p_tmp = QString::number(tmp_num, 'f', 12);
-          sp_tmp_data_.push_back(p_tmp);
+        one_arg.clear();
+        tmp_str.clear();
+      } else if (data_stack_.size() >= 2 && IsMathFunction(tmp_str)) {
+        sign_arg = data_stack_.pop();
+        one_arg = data_stack_.pop();
 
-          p_one_arg.clear();
-          p_tmp.clear();
-        } else if (sp_tmp_data_.size() >= 2 && IsMathFunction(p_tmp)) {
-          p_sign_arg = sp_tmp_data_.pop();
-          p_one_arg = sp_tmp_data_.pop();
+        if (!IsNumber(one_arg)) is_error_ = true;
 
-          if (!IsNumber(p_one_arg)) is_error_ = 1;
+        tmp_num = CalculateStrNumbersSingle(one_arg, sign_arg);
+        if (std::isnan(tmp_num)) is_error_ = true;
+        tmp_str = QString::number(tmp_num, 'f', 12);
+        data_stack_.push_back(tmp_str);
+        clear_tmp();
 
-          tmp_num = CalculateStrNumbersSingle(p_one_arg, p_sign_arg);
-          if (std::isnan(tmp_num)) is_error_ = 1;
-          p_tmp = QString::number(tmp_num, 'f', 12);
-          sp_tmp_data_.push_back(p_tmp);
-          p_sign_arg.clear();
-          p_one_arg.clear();
-          p_two_arg.clear();
-          p_tmp.clear();
+      } else if (data_stack_.size() >= 3 && IsSign(tmp_str[0])) {
+        sign_arg = data_stack_.pop();
+        two_arg = data_stack_.pop();
+        one_arg = data_stack_.pop();
 
-        } else if (sp_tmp_data_.size() >= 3 && IsSign(p_tmp[0])) {
-          p_sign_arg = sp_tmp_data_.pop();
-          p_two_arg = sp_tmp_data_.pop();
-          p_one_arg = sp_tmp_data_.pop();
+        if (!IsNumber(two_arg) || !IsNumber(one_arg)) is_error_ = true;
 
-          if (!IsNumber(p_two_arg) || !IsNumber(p_one_arg)) is_error_ = 1;
-
-          tmp_num = CalculateNumbersMul(p_one_arg.toDouble(), p_sign_arg,
-                                        p_two_arg.toDouble());
-          p_tmp.setNum(tmp_num, 'f', 12);
-          sp_tmp_data_.push_back(p_tmp);
-
-          p_sign_arg.clear();
-          p_one_arg.clear();
-          p_two_arg.clear();
-          p_tmp.clear();
-        }
+        tmp_num = CalculateNumbersMul(one_arg.toDouble(), sign_arg,
+                                      two_arg.toDouble());
+        tmp_str.setNum(tmp_num, 'f', 12);
+        data_stack_.push_back(tmp_str);
+        clear_tmp();
       }
-
-      if (is_error_) {
-        break;
-      }
-      sp_str_split_.pop();
     }
-
-  } else {
-    is_error_ = 1;
+    str_split_.pop();
   }
 
-  if (sp_tmp_data_.size() == 1 && !is_error_) {
-    p_result = sp_tmp_data_.pop();
-  } else {
-    p_result = "error";
-  }
+  if (data_stack_.length() == 1 && !is_error_)
+    result = data_stack_.pop();
+  else
+    result = "error";
 
-  p_result = p_result.left(p_result.indexOf('.') + 8);
-  ZerosRemove(&p_result);
+  result = result.left(result.indexOf('.') + 8);
+  ZerosRemove(&result);
 
-  return (p_result);
+  return result;
 }
 
 // -- -- -- --
@@ -222,13 +217,9 @@ qint64 PolishNotation::FindStr(QString const &str, QString const &needle,
       unsigned i_str = i_begin;
       int i_needle = 0;
       for (; i_str < n_str; ++i_str, ++i_needle) {
-        if (needle[i_needle] == '\0' || (str[i_str] != needle[i_needle])) {
-          break;
-        }
+        if (needle[i_needle] == '\0' || (str[i_str] != needle[i_needle])) break;
       }
-      if ((unsigned)i_needle == n_needle) {
-        res = i_begin + i_needle - 1;
-      }
+      if ((unsigned)i_needle == n_needle) res = i_begin + i_needle - 1;
     }
   }
 
@@ -288,88 +279,73 @@ bool PolishNotation::IsFindInStackBrackets(QStack<QString> const &stack) {
 // -- -- -- --
 
 QString PolishNotation::StrToPostfix(QString const &str) {
-  QStack<QString> s;
   QString tmp = "";
   QString res = "";
+  unsigned n_str = str.length();
+  QChar prev_ch = '\0';
+  QChar c = '\0';
+  QChar op = '\0';
+  QHash<QString, qint64> tmp_data;
 
-  is_error_ = 0;
+  is_error_ = false;
 
-  if (str.isEmpty()) is_error_ = 1;
-
-  if (!is_error_) {
-    unsigned n_str = str.length();
-    QChar prev_ch = '\0';
-    QChar c = '\0';
-    QChar op = '\0';
-
-    for (unsigned i = 0; i < n_str; ++i) {
-      c = str[i];
-      if (c.isDigit() || c == 'x') {
-        if (c == 'x') {
-          if (!res.isEmpty()) res += " ";
-          res += c;
-        } else {
-          auto tmp_data = GetNumberFromString(str, i);
-          tmp = tmp_data.begin().key();
-          i = tmp_data.begin().value();
-          --i;
-          if (!res.isEmpty()) res += " ";
-          res += tmp;
-        }
-      } else if (c.isLetter()) {
-        i = AddMathFunction(str, i);
-      } else if (c == '(') {
-        stack_.push_back("(");
-      } else if (c == ')') {
-        if (c == ')' && prev_ch == '(') is_error_ = 1;
-        while (!stack_.isEmpty() && stack_.last() != "(" && !is_error_) {
-          tmp = stack_.pop();
-          res += " " + tmp;
-        }
-        if (stack_.isEmpty() || (stack_.last() != "(")) {
-          is_error_ = 1;
-        }
-        stack_.pop();
-      } else if (IsSign(c) && Priority(c)) {
-        op = c;
-
-        if (op == '-' &&
-            (i == 0 || (i >= 1 && (IsSign(prev_ch) || prev_ch == '(')))) {
-          op = '~';
-        }
-
-        while (!stack_.isEmpty() &&
-               (Priority(stack_.last()[0]) >= Priority(op)) &&
-               Priority(stack_.last()[0]) <= 5) {
-          tmp = stack_.pop();
-          res += " ";
-          res += tmp;
-        }
-        stack_.push_back(op);
-      }
-
-      if ((c == '-' && prev_ch == '-') ||
-          ((prev_ch.isLetter() && prev_ch != 'x') && c != '('))
-        is_error_ = 1;
-
-      if (c != ' ') prev_ch = c;
-
-      if (is_error_) break;
-    }
-
-    is_error_ = is_error_ ? is_error_ : IsFindInStackBrackets(stack_);
-
-    if (!is_error_) {
-      while (!stack_.isEmpty()) {
-        tmp = stack_.pop();
-        res += " ";
+  for (unsigned i = 0; i < n_str && !is_error_; ++i) {
+    c = str[i];
+    if (c.isDigit() || c == 'x') {
+      if (c == 'x') {
+        if (!res.isEmpty()) res += " ";
+        res += c;
+      } else {
+        tmp_data = GetNumberFromString(str, i);
+        tmp = tmp_data.begin().key();
+        i = tmp_data.begin().value();
+        --i;
+        if (!res.isEmpty()) res += " ";
         res += tmp;
       }
-    } else {
-      res.clear();
+    } else if (c.isLetter()) {
+      i = AddMathFunction(str, i);
+    } else if (c == '(') {
+      stack_.push_back("(");
+    } else if (c == ')') {
+      if (c == ')' && prev_ch == '(') is_error_ = 1;
+      while (!stack_.isEmpty() && stack_.last() != "(" && !is_error_) {
+        tmp = stack_.pop();
+        res += " " + tmp;
+      }
+      if (stack_.isEmpty() || (stack_.last() != "(")) is_error_ = 1;
+      stack_.pop();
+    } else if (IsSign(c) && Priority(c)) {
+      op = c;
+
+      if (op == '-' &&
+          (i == 0 || (i >= 1 && (IsSign(prev_ch) || prev_ch == '('))))
+        op = '~';
+
+      while (!stack_.isEmpty() &&
+             (Priority(stack_.last()[0]) >= Priority(op)) &&
+             Priority(stack_.last()[0]) <= 5) {
+        tmp = stack_.pop();
+        res += " " + tmp;
+      }
+      stack_.push_back(op);
     }
-    stack_.clear();
+
+    if ((c == '-' && prev_ch == '-') ||
+        ((prev_ch.isLetter() && prev_ch != 'x') && c != '('))
+      is_error_ = 1;
+    if (c != ' ') prev_ch = c;
   }
+
+  is_error_ = is_error_ ? is_error_ : IsFindInStackBrackets(stack_);
+
+  while (!stack_.isEmpty() && !is_error_) {
+    tmp = stack_.pop();
+    res += " " + tmp;
+  }
+
+  if (is_error_) res.clear();
+  stack_.clear();
 
   return (res);
 }
@@ -470,7 +446,7 @@ double PolishNotation::CalculateStrNumbersSingle(QString const &str_num,
   return res;
 }
 
-// ----------------------------------------------------------------------------
+// -- -- -- --
 
 void PolishNotation::ZerosRemove(QString *str) {
   if (str) {

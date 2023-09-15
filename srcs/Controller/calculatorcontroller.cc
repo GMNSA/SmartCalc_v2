@@ -6,6 +6,8 @@ CalculatorController::CalculatorController(IModel *model) : model_(model) {
   // TODO(_who): reslese
 }
 
+// ----------------------------------------------------------------------------
+
 CalculatorController::~CalculatorController() {
   if (model_) delete model_;
 }
@@ -18,12 +20,12 @@ void CalculatorController::Calculate(QString const &str, QString const &x) {
 
 // ----------------------------------------------------------------------------
 
-QString CalculatorController::GetData() const { return model_->GetResult(); }
+QString CalculatorController::get_data() const { return model_->get_result(); }
 
 // ----------------------------------------------------------------------------
 
-QString CalculatorController::GetDatatGraph() const {
-  return model_->GetResultGraph();
+QString CalculatorController::get_data_graph() const {
+  return model_->get_result_graph();
 }
 
 // ----------------------------------------------------------------------------
@@ -45,14 +47,14 @@ void CalculatorController::Reset() { model_->Reset(); }
 
 // ----------------------------------------------------------------------------
 
-QString CalculatorController::GetTextDisplay() const {
-  return model_->FixTextDisplay();
+QString CalculatorController::get_text_display() const {
+  return model_->get_fix_text_display();
 }
 
 // ----------------------------------------------------------------------------
 
-QString CalculatorController::GetTextRepeatDisplay() const {
-  return model_->TextRepeatDisplay();
+QString CalculatorController::get_text_repeat_display() const {
+  return model_->get_text_repeat_display();
 }
 
 // ----------------------------------------------------------------------------
@@ -61,7 +63,9 @@ void CalculatorController::DelOne() { model_->DelOne(); }
 
 // ----------------------------------------------------------------------------
 
-bool CalculatorController::IsGraph() const { return model_->IsGraph(); }
+bool CalculatorController::get_is_graph() const {
+  return model_->get_is_graph();
+}
 
 // ----------------------------------------------------------------------------
 

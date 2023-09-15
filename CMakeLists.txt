@@ -32,6 +32,9 @@ set(PROJECT_HEADERS
     includes/Model/imodelcredit.hpp
     includes/Model/modelcredit.hpp
 
+    includes/Model/imodelgraph.hpp
+    includes/Model/modelgraph.hpp
+
 
     includes/Controller/icalculatorcontroller.hpp
     includes/Controller/calculatorcontroller.hpp
@@ -41,6 +44,9 @@ set(PROJECT_HEADERS
 
     includes/Controller/icreditcontroller.hpp
     includes/Controller/creditcontroller.hpp
+
+    includes/Controller/igraphcontroller.hpp
+    includes/Controller/graphcontroller.hpp
 
     includes/View/dialoggraph.hpp
     includes/View/calculator.hpp
@@ -58,10 +64,12 @@ set(PROJECT_SOURCES
 
     srcs/Model/modelcredit.cc
 
+    srcs/Model/modelgraph.cc
 
     srcs/Controller/calculatorcontroller.cc
     srcs/Controller/depositcontroller.cc
     srcs/Controller/creditcontroller.cc
+    srcs/Controller/graphcontroller.cc
 
     srcs/View/dialoggraph.cc
     srcs/View/calculator.cc
@@ -88,9 +96,6 @@ target_include_directories(SmartCalc
   ${CMAKE_CURRENT_LIST_DIR}/View/
   ${CMAKE_CURRENT_LIST_DIR}/Model/
   ${CMAKE_CURRENT_LIST_DIR}/Controller/
-    ${CMAKE_CURRENT_LIST_DIR}/code_c/
-    ${CMAKE_CURRENT_LIST_DIR}/code_c/includes
-    ${CMAKE_CURRENT_LIST_DIR}/code_c/srcs
 )
 
 target_link_libraries(SmartCalc PRIVATE

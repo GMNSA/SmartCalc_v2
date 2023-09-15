@@ -87,7 +87,7 @@ class Calculator : public QMainWindow {
   QString display_text_;
   QString m_strForGraph;
   ICalculatorController *calculator_;
-  s21::DialogGraph *m_graph;
+  DialogGraph *graph_;
   IDepositController *deposit_calculator_;
   ICreditController *credit_calculator_;
   int min_x_;

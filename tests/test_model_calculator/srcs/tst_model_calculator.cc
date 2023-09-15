@@ -8,13 +8,13 @@
 
 QString ModalCalculatorTest::Calculate(QString const &str, QString const &x) {
   model_calculator_->Calculate(str, x);
-  return model_calculator_->GetResult();
+  return model_calculator_->get_result();
 }
 
 // -- -- -- --
 
 QString ModalCalculatorTest::GetResult() const {
-  return model_calculator_->GetResult();
+  return model_calculator_->get_result();
 }
 
 // -- -- -- --
@@ -30,7 +30,7 @@ void ModalCalculatorTest::AddValue(QString const &str) {
 // -- -- -- --
 
 QString ModalCalculatorTest::FixTextDisplay() const {
-  return model_calculator_->FixTextDisplay();
+  return model_calculator_->get_fix_text_display();
 }
 
 // -- -- -- --

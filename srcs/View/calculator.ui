@@ -30,7 +30,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Simple">
        <attribute name="title">
@@ -1140,6 +1140,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <property name="text">
              <string>Рассчитать</string>
             </property>
+            <property name="shortcut">
+             <string>Return</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -1166,7 +1169,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </font>
        </property>
        <attribute name="title">
-        <string>Page</string>
+        <string>Deposit</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_12">
         <item row="0" column="0" rowspan="3">
@@ -1545,6 +1548,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </property>
           <property name="text">
            <string>Рассчитать</string>
+          </property>
+          <property name="shortcut">
+           <string>Return</string>
           </property>
          </widget>
         </item>

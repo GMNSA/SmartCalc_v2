@@ -41,7 +41,6 @@ void ModelCalculator::Calculate(QString const &str, QString const &x) {
   if (polish_notation_->get_error()) {
     polish_notation_->Reset();
     validator_text_->Reset();
-    // calculated_text_ = "0";
     repeat_text_ = "error";
   } else {
     validator_text_->set_text(calculated_text_);
@@ -52,18 +51,15 @@ void ModelCalculator::Calculate(QString const &str, QString const &x) {
 
 // ----------------------------------------------------------------------------
 
-QString ModelCalculator::GetResult() const { return calculated_text_; }
+QString ModelCalculator::get_result() const { return calculated_text_; }
 
 // ----------------------------------------------------------------------------
 
-QString ModelCalculator::GetResultGraph() const { return graphic_text_; }
+QString ModelCalculator::get_result_graph() const { return graphic_text_; }
 
 // ----------------------------------------------------------------------------
 
 void ModelCalculator::AddValue(QString const &str) {
-  // TODO(_who): WARNING need to fix !!!!
-  // TODO(_who): I will need think about reset_text validator and reset text
-
   validator_text_->AddTextToStr(str);
   display_text_ = validator_text_->get_text();
   display_text_ = validator_text_->get_text();
@@ -89,11 +85,13 @@ void ModelCalculator::Reset() {
 
 // ----------------------------------------------------------------------------
 
-QString ModelCalculator::FixTextDisplay() const { return display_text_; }
+QString ModelCalculator::get_fix_text_display() const { return display_text_; }
 
 // ----------------------------------------------------------------------------
 
-QString ModelCalculator::TextRepeatDisplay() const { return repeat_text_; }
+QString ModelCalculator::get_text_repeat_display() const {
+  return repeat_text_;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -134,7 +132,7 @@ void ModelCalculator::DelOne() {
 
 // ----------------------------------------------------------------------------
 
-bool ModelCalculator::IsGraph() const { return is_graph_; }
+bool ModelCalculator::get_is_graph() const { return is_graph_; }
 
 // ----------------------------------------------------------------------------
 
@@ -182,21 +180,17 @@ void ModelCalculator::ChangeSign() {
             break;
           }
         }
-
         if (!is_find) RemoveBrackets(&display_text_);
-
       } else if (display_text_[0] == '-' && display_text_[1].isDigit() &&
-                 display_text_[display_text_.size() - 1].isDigit()) {
+                 display_text_[display_text_.size() - 1].isDigit())
         display_text_.remove(0, 1);
-      } else {
+      else
         AddBrackets(&display_text_);
-      }
     } else if (display_text_[0] != '-') {
-      if (reMatch.hasMatch()) {
+      if (reMatch.hasMatch())
         AddMinux(&display_text_);
-      } else {
+      else
         AddBrackets(&display_text_);
-      }
     } else if (display_text_[0] == '-') {
       RemoveMinux(&display_text_);
     }

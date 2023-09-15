@@ -11,17 +11,18 @@ class CalculatorController : public ICalculatorController {
   explicit CalculatorController(IModel *model);
   virtual ~CalculatorController();
 
+  QString get_data() const override;
+  QString get_data_graph() const override;
+  bool get_is_graph() const override;
+  QString get_text_display() const override;
+  QString get_text_repeat_display() const override;
+
   void Calculate(QString const &str = "", QString const &x = "") override;
-  QString GetData() const override;
-  QString GetDatatGraph() const override;
   void AddValue(QString const &str) override;
   void SetBrackets(QString const &str, bool const is_smart,
                    bool is_checked) override;
   void Reset() override;
-  QString GetTextDisplay() const override;
-  QString GetTextRepeatDisplay() const override;
   void DelOne() override;
-  bool IsGraph() const override;
   void ChangeSign() override;
 
  private:

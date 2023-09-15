@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QGraphicsScene>
 
-#include "../Controller/icalculatorcontroller.hpp"
+#include "../Controller/igraphcontroller.hpp"
 
 #define X_MIN -10
 #define X_MAX 10
@@ -19,7 +19,7 @@ class DialogGraph : public QDialog {
   Q_OBJECT
 
  public:
-  explicit DialogGraph(ICalculatorController *calculator_controller,
+  explicit DialogGraph(IGraphController *graphic_controller,
                        QWidget *parent = nullptr);
   ~DialogGraph();
 
@@ -34,15 +34,10 @@ class DialogGraph : public QDialog {
   double x() const;
   void set_x(double x);
 
-  void OpenGraphic();
+  void set_width(double width);
+  void set_height(double heigth);
 
-  void DataConversion();
-  void DrawField(QGraphicsScene *scene_);
-
-  void SetStrNum(const QString &strNum);
-
-  void SetWidth(double width);
-  void SetHeight(double heigth);
+  void DrawGraphic(QString const &str_num);
 
  private:
   Ui::DialogGraph *ui;
@@ -51,33 +46,16 @@ class DialogGraph : public QDialog {
   void on_buttonCloseClicked();
 
  private:
-  QString str_num_;
   double width_;
   double height_;
   double x_min_;
   double x_max_;
-  double m_x;
-  double scale_;
-  bool isError_;
-  double m_res;
-  unsigned num_of_grid_;
+  double x_;
   QGraphicsScene *scene_;
-  ICalculatorController *calculator_;
-  int offset_width_;
-  int offset_height_;
-  static double inf_;
-
-#ifdef FOR_TEST
-
- public:
-#else
+  IGraphController *graph_;
 
  private:
-#endif
   void ConnectionConfigurations();
-  QString CalculateX(QString str_, QString x_);
-  double CalculateXCustom(QString str_, double x_, double scale_);
-  void DataCoordinates();
   void CreateDialog();
 };
 
