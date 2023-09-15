@@ -2,9 +2,7 @@
 
 namespace s21 {
 
-DepositController::DepositController(IModelDeposit *model) : model_(model) {
-  // TODO(_who): release
-}
+DepositController::DepositController(IModelDeposit *model) : model_(model) {}
 
 // ----------------------------------------------------------------------------
 

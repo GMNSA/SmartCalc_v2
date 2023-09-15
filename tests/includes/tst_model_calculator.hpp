@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/modelcalculator.hpp"
+#include "../includes/Model/modelcalculator.hpp"
 
 class ModalCalculatorTest : public ::testing::Test {
  public:

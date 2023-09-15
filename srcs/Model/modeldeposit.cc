@@ -4,8 +4,10 @@
 
 namespace s21 {
 
-constexpr double AVERAGE_DAYS = 30.416666666666667851;
-constexpr double NDFL = 13.0 / 100.0;
+double const ModelDeposit::kAverage_days = 30.416666666666667851;
+double const ModelDeposit::kNDFL = 13.0 / 100.0;
+
+// ----------------------------------------------------------------------------
 
 ModelDeposit::ModelDeposit()
     : deposit_sum_(100000),
@@ -142,7 +144,7 @@ void ModelDeposit::Calculate() {
         amounts_deposits;
   } else {
     accrued_interest_ = (amounts_deposits * percent_rate_ * placement_period_ *
-                         AVERAGE_DAYS / 365) /
+                         kAverage_days / 365) /
                         100;
   }
 
@@ -151,7 +153,7 @@ void ModelDeposit::Calculate() {
   part_for_tax = accrued_interest_ - tax_rate;
 
   if (part_for_tax > 0 && tax_rate != 0.0)
-    tax_amount_ = part_for_tax * NDFL;
+    tax_amount_ = part_for_tax * kNDFL;
   else
     tax_amount_ = 0;
 

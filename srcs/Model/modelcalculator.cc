@@ -153,7 +153,6 @@ void ModelCalculator::ReplaceX(QString *str, QString const &x) {
 void ModelCalculator::ChangeSign() {
   QRegularExpression re;
   QRegularExpressionMatch reMatch = re.match("\\d");
-
   QString tmp;
   bool is_find = 0;
   unsigned n_str = 0;

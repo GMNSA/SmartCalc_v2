@@ -1,8 +1,5 @@
 #include "../includes/tst_model_credit.hpp"
 
-#include <QDebug>
-#include <iostream>
-
 void ModelCreditTest::CalculatorDifferent() {
   model_credit_->CalculatorDifferent();
 }
@@ -241,8 +238,3 @@ TEST_F(ModelCreditTest, TestCreditAnnuitYears) {
 }
 
 // ----------------------------------------------------------------------------
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

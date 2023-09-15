@@ -34,4 +34,4 @@ The expression written in Reverse Polish (bracketless) notation:
 
 ## Bonus. Deposit calculator
 
-![This is a alt text.](misc/main_credit.png "credit calculator")
+![This is a alt text.](misc/main_depos.png "deposit calculator")

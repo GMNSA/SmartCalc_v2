@@ -33,6 +33,9 @@ class ModelDeposit : public IModelDeposit {
   void Calculate() override;
 
  private:
+  static double const kAverage_days;
+  static double const kNDFL;
+
   double deposit_sum_;
   double percent_rate_;
   double placement_period_;

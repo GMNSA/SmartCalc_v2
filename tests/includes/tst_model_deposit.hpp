@@ -5,8 +5,8 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/modeldeposit.hpp"
-#include "../../../includes/custom_types.hpp"
+#include "../includes/Model/modeldeposit.hpp"
+#include "../includes/custom_types.hpp"
 
 class ModelDepositTest : public ::testing::Test {
  public:

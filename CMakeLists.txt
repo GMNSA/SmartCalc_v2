@@ -8,6 +8,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# -fsanitize=address
 set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror --coverage -fsanitize=address")
 
 set(CMAKE_CXX_STANDARD 17)
@@ -52,7 +53,6 @@ set(PROJECT_HEADERS
     includes/View/calculator.hpp
 
     includes/custom_types.hpp
-
 )
 
 set(PROJECT_SOURCES
@@ -82,8 +82,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
     )
 endif()
-
-add_subdirectory(tests)
 
 target_include_directories(SmartCalc
   PUBLIC

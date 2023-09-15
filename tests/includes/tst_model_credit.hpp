@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/modelcredit.hpp"
+#include "../includes/Model/modelcredit.hpp"
 
 class ModelCreditTest : public ::testing::Test {
  public:

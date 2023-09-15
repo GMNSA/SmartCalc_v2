@@ -2,9 +2,7 @@
 
 namespace s21 {
 
-CalculatorController::CalculatorController(IModel *model) : model_(model) {
-  // TODO(_who): reslese
-}
+CalculatorController::CalculatorController(IModel *model) : model_(model) {}
 
 // ----------------------------------------------------------------------------
 

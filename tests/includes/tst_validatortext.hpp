@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/validatetext.hpp"
+#include "../includes/Model/validatetext.hpp"
 
 class ValidatorTextTest : public ::testing::Test {
  public:

@@ -6,7 +6,7 @@
 
 #include <QDebug>
 
-#include "../../../includes/Model/polishnotation.hpp"
+#include "../includes/Model/polishnotation.hpp"
 
 class PolishNotationTest : public ::testing::Test {
  public:
