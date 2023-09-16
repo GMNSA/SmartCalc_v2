@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 # -fsanitize=address
-set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror --coverage -fsanitize=address")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror ")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

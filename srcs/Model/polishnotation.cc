@@ -210,16 +210,16 @@ qint64 PolishNotation::FindStr(QString const &str, QString const &needle,
   qint64 res = -1;
 
   if (!str.isEmpty() && !needle.isEmpty()) {
-    unsigned n_str = str.length();
-    unsigned n_needle = needle.length();
+    qint64 n_str = str.length();
+    qint64 n_needle = needle.length();
 
     if (n_str >= n_needle) {
-      unsigned i_str = i_begin;
-      int i_needle = 0;
-      for (; i_str < n_str; ++i_str, ++i_needle) {
-        if (needle[i_needle] == '\0' || (str[i_str] != needle[i_needle])) break;
+      qint64 i_str = i_begin;
+      qint64 i_needle = 0;
+      for (; i_str < n_str && i_needle < n_needle; ++i_str, ++i_needle) {
+        if ((str.at(i_str) != needle.at(i_needle))) break;
       }
-      if ((unsigned)i_needle == n_needle) res = i_begin + i_needle - 1;
+      if (i_needle == n_needle) res = i_begin + i_needle - 1;
     }
   }
 

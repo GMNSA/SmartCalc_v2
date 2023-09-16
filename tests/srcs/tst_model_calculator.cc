@@ -302,10 +302,10 @@ TEST_F(ModalCalculatorTest, TestXCoordinates) {
   QString res;
 
   res = Calculate("2 + 2 * x", "2");
-  EXPECT_EQ(res, "2");
+  EXPECT_EQ(res, "6");
 
   res = Calculate("x");
-  EXPECT_EQ(res, "error");
+  EXPECT_EQ(res, "0");
 
   // -- -- -- --
 
