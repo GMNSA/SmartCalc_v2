@@ -45,7 +45,7 @@ class ModelGraph : public IModelGraph {
  private:
   void ResetData();
   void DataConversion();
-  void DrawField(QGraphicsScene *scene_);
+  void DrawField();
   QString CalculateX(QString str_, QString x_);
   double CalculateXCustom(QString str_, double x_, double scale_);
   QString Calculate(QString const &num_str);

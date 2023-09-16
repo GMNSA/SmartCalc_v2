@@ -22,7 +22,7 @@ class Calculator : public QMainWindow {
  public:
   explicit Calculator(ICalculatorController *controller = nullptr,
                       QWidget *parent = nullptr);
-  ~Calculator();
+  virtual ~Calculator();
 
  signals:
   void signal_reset_data();

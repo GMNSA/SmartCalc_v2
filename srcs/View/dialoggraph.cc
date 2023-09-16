@@ -65,6 +65,8 @@ void DialogGraph::set_x(double x) { x_ = x; }
 // ----------------------------------------------------------------------------
 
 void DialogGraph::DrawGraphic(QString const &str_num) {
+  CreateDialog();
+
   if (graph_ && scene_) {
     graph_->set_x_range(x_min_, x_max_, x_);
     graph_->set_size_graph(ui->graphicsView->width(),

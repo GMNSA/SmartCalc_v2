@@ -81,7 +81,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_x_3"/>
+           <widget class="QLineEdit" name="lineEdit_x_3">
+            <property name="placeholderText">
+             <string>10</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -108,7 +112,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_x"/>
+           <widget class="QLineEdit" name="lineEdit_x">
+            <property name="placeholderText">
+             <string>0</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -122,7 +130,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_x_2"/>
+           <widget class="QLineEdit" name="lineEdit_x_2">
+            <property name="placeholderText">
+             <string>-10</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

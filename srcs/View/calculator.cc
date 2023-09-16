@@ -304,7 +304,7 @@ void Calculator::on_buttonGraphClicked() { graph_->show(); }
 // -------------------------------------------
 
 void Calculator::CalculateSimple() {
-  calculator_->Calculate("", QString::number(graph_->x()));
+  calculator_->Calculate("", ui->lineEdit_x->text());
   ui->display->setText(calculator_->get_data());
 }
 
@@ -395,8 +395,8 @@ void Calculator::ResetRepeatDisplay(QString const &str) {
 // -------------------------------------------
 
 void Calculator::openGraphic() {
-  graph_->show();
   checkXData();
+  graph_->show();
   graph_->DrawGraphic(calculator_->get_data_graph());
 }
 

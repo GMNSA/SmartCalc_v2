@@ -6,9 +6,6 @@
 
 #include "../Controller/igraphcontroller.hpp"
 
-#define X_MIN -10
-#define X_MAX 10
-
 namespace Ui {
 class DialogGraph;
 }

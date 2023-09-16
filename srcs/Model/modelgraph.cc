@@ -1,7 +1,7 @@
 #include "../../includes/Model/modelgraph.hpp"
 
-#include <QDebug>
 #include <QGraphicsTextItem>
+#include <cmath>
 
 namespace s21 {
 
@@ -21,9 +21,7 @@ ModelGraph::ModelGraph()
       scene_(nullptr),
       polish_notation_(new PolishNotation),
       offset_width_(18),
-      offset_height_(26) {
-  ResetData();
-}
+      offset_height_(26) {}
 
 // ----------------------------------------------------------------------------
 
@@ -37,14 +35,13 @@ ModelGraph::~ModelGraph() {
 // ----------------------------------------------------------------------------
 
 void ModelGraph::set_width(double const &width) {
-  Q_UNUSED(width);
-  width_ = (width - offset_width_) / 2.0;
+  width_ = (width - offset_width_) / 2;
 }
 
 // ----------------------------------------------------------------------------
 
 void ModelGraph::set_height(double const &height) {
-  height_ = (height - offset_height_) / 2.0;
+  height_ = (height - offset_height_) / 2;
 }
 
 // ----------------------------------------------------------------------------
@@ -71,12 +68,14 @@ void ModelGraph::set_str_number(const QString &str_num) { str_num_ = str_num; }
 
 void ModelGraph::DataConversion() {
   QString r = QString("((%1) + (%2)) / 2.0").arg(x_max_).arg(x_min_);
-  res_ = CalculateX(str_num_, r).toDouble();
-  int count = 0;
+  unsigned count = 0;
   double res0 = 0;
   double res1 = 0;
+  unsigned end_count = 1e8;
 
-  while (!std::isfinite(res_) && count < 1e8) {
+  res_ = CalculateX(str_num_, r).toDouble();
+
+  while ((!std::isfinite(res_)) != true && count < end_count && !is_error_) {
     if (count < 1e2)
       ++count;
     else if (count < 1e6)
@@ -110,40 +109,47 @@ void ModelGraph::DataConversion() {
 
 // ----------------------------------------------------------------------------
 
-void ModelGraph::DrawField(QGraphicsScene *scene_) {
-  QPen grid_line(Qt::black);
-  QPen axis_line(Qt::black);
-  axis_line.setWidthF(1.5);
-  scene_->addLine(x_min_, height_, x_max_, height_, axis_line);
-  scene_->addLine(x_min_, -height_, x_min_, height_, axis_line);
-  QString grid_txt;
-  double grid_move = 2 * width_ / num_of_grid_;
-  double gridP = x_min_ + grid_move;
-  grid_line.setWidthF(0.2);
+void ModelGraph::DrawField() {
+  if (!scene_) is_error_ = true;
 
-  for (unsigned count = 1; count < num_of_grid_; ++count, gridP += grid_move) {
-    grid_txt = QString::number(gridP / scale_, 'f', 2);
-    QGraphicsTextItem *p_xp =
-        new QGraphicsTextItem(grid_txt, qobject_cast<QGraphicsItem *>(scene_));
-    p_xp->setPos(gridP, height_);
-    scene_->addLine(gridP, -height_, gridP, height_, grid_line);
-    scene_->addLine(gridP, height_ - 10, gridP, height_, axis_line);
-    scene_->addItem(qobject_cast<QGraphicsItem *>(p_xp));
-  }
+  if (!is_error_) {
+    QPen grid_line(Qt::black);
+    QPen axis_line(Qt::black);
+    axis_line.setWidthF(1.5);
+    QString grid_txt;
+    double grid_move = 2 * width_ / num_of_grid_;
+    double gridP = x_min_ + grid_move;
+    Q_UNUSED(gridP);
 
-  grid_move = 2 * height_ / num_of_grid_;
-  gridP = height_ - grid_move;
+    scene_->addLine(x_min_, height_, x_max_, height_, axis_line);
+    scene_->addLine(x_min_, -height_, x_min_, height_, axis_line);
+    grid_line.setWidthF(0.2);
 
-  grid_line.setWidthF(0.2);
-  for (int count = num_of_grid_; count > 1; --count, gridP -= grid_move) {
-    grid_txt = QString::number((-gridP + res_) / scale_, 'f', 2);
-    QGraphicsTextItem *p_y =
-        new QGraphicsTextItem(grid_txt, qobject_cast<QGraphicsItem *>(scene_));
+    for (unsigned count = 1; count < num_of_grid_;
+         ++count, gridP += grid_move) {
+      grid_txt = QString::number(gridP / scale_, 'f', 2);
+      QGraphicsTextItem *p_xp = new QGraphicsTextItem(
+          grid_txt, qobject_cast<QGraphicsItem *>(scene_));
+      p_xp->setPos(gridP, height_);
+      scene_->addLine(gridP, -height_, gridP, height_, grid_line);
+      scene_->addLine(gridP, height_ - 10, gridP, height_, axis_line);
+      scene_->addItem(qobject_cast<QGraphicsItem *>(p_xp));
+    }
 
-    p_y->setPos(x_min_, gridP);
-    scene_->addLine(x_min_, gridP, x_max_, gridP, grid_line);
-    scene_->addLine(x_min_, gridP, x_min_ + 10, gridP, axis_line);
-    scene_->addItem(p_y);
+    grid_move = 2 * height_ / num_of_grid_;
+    gridP = height_ - grid_move;
+
+    grid_line.setWidthF(0.2);
+    for (int count = num_of_grid_; count > 1; --count, gridP -= grid_move) {
+      grid_txt = QString::number((-gridP + res_) / scale_, 'f', 2);
+      QGraphicsTextItem *p_y = new QGraphicsTextItem(
+          grid_txt, qobject_cast<QGraphicsItem *>(scene_));
+
+      p_y->setPos(x_min_, gridP);
+      scene_->addLine(x_min_, gridP, x_max_, gridP, grid_line);
+      scene_->addLine(x_min_, gridP, x_min_ + 10, gridP, axis_line);
+      scene_->addItem(p_y);
+    }
   }
 }
 
@@ -157,7 +163,7 @@ void ModelGraph::DrawGraphic(QGraphicsScene *scene) {
     scene_->clear();
     QPen graphLine(Qt::darkGreen);
     graphLine.setWidthF(0.5);
-    DrawField(scene_);
+    DrawField();
     double x = x_min_;
     double moveX = 0.02;
     double y = CalculateXCustom(str_num_, x, scale_) - res_;
@@ -196,7 +202,7 @@ QString ModelGraph::CalculateX(QString str_, QString x_) {
   } else {
     str_ = str_.replace("x", "( " + x_ + ")");
     res = Calculate(str_);
-    if (res == "na") is_error_ = 1;
+    if (res == "na") is_error_ = true;
   }
 
   return (res);

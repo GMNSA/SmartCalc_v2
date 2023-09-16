@@ -138,7 +138,7 @@ bool ModelCalculator::get_is_graph() const { return is_graph_; }
 
 void ModelCalculator::ReplaceX(QString *str, QString const &x) {
   if (str && str->indexOf("x") != -1) {
-    if (x.isEmpty())
+    if (!x.isEmpty())
       str->replace(QString("x"), x);
     else
       str->replace(QString("x"), "0");
