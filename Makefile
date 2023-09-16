@@ -30,9 +30,9 @@ checkdir :
 
 dvi:
 ifeq ($(OS), Linux)
-	open dvi.html
-else
 	firefox dvi.html
+else
+	open dvi.html
 endif
 
 start:
@@ -46,9 +46,9 @@ tests:
 
 tests_open:
 ifeq ($(OS), Linux)
-	open ./tests/BUILD/coverage_report/index.html
-else
 	firefox ./tests/BUILD/coverage_report/index.html
+else
+	open ./tests/BUILD/coverage_report/index.html
 endif
 
 check:
