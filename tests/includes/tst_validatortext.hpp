@@ -24,6 +24,7 @@ class ValidatorTextTest : public ::testing::Test {
 
   ~ValidatorTextTest() {
     // cleanup any pending stuff, but no exceptions allowed
+    if (validator_text_) delete validator_text_;
   }
 
   // put in any custom data members that you need

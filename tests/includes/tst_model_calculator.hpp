@@ -33,6 +33,9 @@ class ModalCalculatorTest : public ::testing::Test {
   QString Calculate(QString const &str = "", QString const &x = "");
   void ChangeSign();
   void Reset();
+  void SetBrackets(QString const &str, bool const is_smart,
+                   bool const &is_checked);
+  void DelOne();
   // put in any custom data members that you need
  private:
   s21::ModelCalculator *model_calculator_;

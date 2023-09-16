@@ -11,6 +11,11 @@ class ValidateText {
   ValidateText(ValidateText const &other) = default;
   ValidateText &operator=(ValidateText const &other) = default;
 
+  /**
+   * @brief Adding text to text and substituting values.
+   *
+   * @param str -> Text to add.
+   */
   void AddTextToStr(QString const &str);
   void Reset();
   void set_text(QString const &str);

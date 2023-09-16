@@ -4,10 +4,30 @@ void ModelCreditTest::CalculatorDifferent() {
   model_credit_->CalculatorDifferent();
 }
 
+void ModelCreditTest::Calculate() { model_credit_->Calculate(); }
+
 // -- -- -- --
 
 void ModelCreditTest::CalculatorAnnuit() { model_credit_->CalculatorAnnuit(); }
 long double ModelCreditTest::get_mount() const { return model_credit_->mount_; }
+
+// -- -- -- --
+
+QString ModelCreditTest::MonthlyPayment() const {
+  return model_credit_->MonthlyPayment();
+}
+
+// -- -- -- --
+
+QString ModelCreditTest::AccruedInterest() const {
+  return model_credit_->AccruedInterest();
+}
+
+// -- -- -- --
+
+QString ModelCreditTest::DebgAndInterest() const {
+  return model_credit_->DebgAndInterest();
+}
 
 // -- -- -- --
 
@@ -123,6 +143,42 @@ TEST_F(ModelCreditTest, TestCreditDifferentMount) {
 
   // -- -- -- --
 
+  set_sum("240000");
+  set_time("6");
+  set_is_mount(true);
+  set_procent("9");
+  CalculatorDifferent();
+
+  EXPECT_NEAR(get_mount(), 5133.33, 0.001);
+  EXPECT_NEAR(get_mount_last(), 3358.33, 0.001);
+  EXPECT_NEAR(get_procents(), 65700.00, 0.001);
+  EXPECT_NEAR(get_total(), 305700.00, 0.001);
+
+  set_different(true);
+  Calculate();
+
+  EXPECT_NEAR(get_mount(), 5133.33, 0.001);
+  EXPECT_NEAR(get_mount_last(), 3358.33, 0.001);
+  EXPECT_NEAR(get_procents(), 65700.00, 0.001);
+  EXPECT_NEAR(get_total(), 305700.00, 0.001);
+
+  set_different(false);
+  Calculate();
+
+  EXPECT_NEAR(get_mount(), 4326.13, 0.001);
+  EXPECT_NEAR(get_procents(), 71481.36, 0.001);
+  EXPECT_NEAR(get_total(), 311481.36, 0.001);
+
+  qDebug() << "month: " << MonthlyPayment();
+  qDebug() << "accrued: " << AccruedInterest();
+  qDebug() << "Debg: " << DebgAndInterest();
+
+  EXPECT_EQ(MonthlyPayment(), "4 326.13");
+  EXPECT_EQ(AccruedInterest(), "71 481.36");
+  EXPECT_EQ(DebgAndInterest(), "311 481.36");
+
+  // -- -- -- --
+
   set_sum("2300");
   set_time("6");
   set_is_mount(false);
@@ -235,6 +291,8 @@ TEST_F(ModelCreditTest, TestCreditAnnuitYears) {
   EXPECT_NEAR(get_mount(), 341.41, 0.001);
   EXPECT_NEAR(get_procents(), 19163.04, 0.001);
   EXPECT_NEAR(get_total(), 49163.04, 0.001);
+
+  // MonntlyPayment && AccruedInterest &&DebgAndIntereset
 }
 
 // ----------------------------------------------------------------------------

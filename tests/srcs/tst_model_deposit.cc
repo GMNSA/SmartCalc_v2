@@ -70,6 +70,44 @@ TEST_F(ModelDepositTest, TestBase) {
   EXPECT_EQ(get_total_amount(), "1080000.00");
   EXPECT_EQ(get_accrued_interest(), "80000.00");
   EXPECT_EQ(get_amount_taxes(), "0.00");
+
+  // -- -- -- --
+
+  // SettingOne("100000", "10", "12", "0");
+  // SettingTwo();
+  // QListWidget *w = new QListWidget;
+  // Q_UNUSED(w);
+  // w->addItem("8000");
+  // w->addItem("800");
+  // SettingThree(w);
+
+  // Calculate();
+  // EXPECT_EQ(get_accrued_interest(), "10880.00");
+  // EXPECT_EQ(get_amount_taxes(), "0.00");
+  // EXPECT_EQ(get_total_amount(), "119680.00");
+
+  // -- -- -- --
+
+  // SettingOne("100000", "10", "6", "0");
+  // w->addItem("700");
+  // w->addItem("333");
+  // SettingThree(nullptr, w);
+
+  // Calculate();
+  // EXPECT_EQ(get_accrued_interest(), "4948.35");
+  // EXPECT_EQ(get_amount_taxes(), "0.00");
+  // EXPECT_EQ(get_total_amount(), "103915.35");
+
+  // if (w) delete w;
+
+  // -- -- -- --
+
+  SettingOne("1000000", "8", "12", "0");
+
+  Calculate();
+  EXPECT_EQ(get_total_amount(), "1080000.00");
+  EXPECT_EQ(get_accrued_interest(), "80000.00");
+  EXPECT_EQ(get_amount_taxes(), "0.00");
 }
 
 // -- -- -- --

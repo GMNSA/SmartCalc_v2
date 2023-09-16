@@ -27,8 +27,13 @@ class ModelCreditTest : public ::testing::Test {
     if (model_credit_) delete model_credit_;
   }
 
+  void Calculate();
   void CalculatorDifferent();
   void CalculatorAnnuit();
+  QString MonthlyPayment() const;
+  QString AccruedInterest() const;
+  QString DebgAndInterest() const;
+
   long double get_mount() const;
   long double get_mount_last() const;
   long double get_procents() const;

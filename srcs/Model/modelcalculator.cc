@@ -192,7 +192,7 @@ void ModelCalculator::ChangeSign() {
       else
         AddBrackets(&display_text_);
     } else if (display_text_[0] == '-') {
-      RemoveMinux(&display_text_);
+      RemoveMinus(&display_text_);
     }
   }
 
@@ -235,7 +235,7 @@ void ModelCalculator::AddMinux(QString *str) {
 
 // ----------------------------------------------------------------------------
 
-void ModelCalculator::RemoveMinux(QString *str) {
+void ModelCalculator::RemoveMinus(QString *str) {
   if (str) {
     unsigned n_str = str->length() - 1;
     if (n_str > 0 && str->at(0) == '-') display_text_.remove(0, 1);

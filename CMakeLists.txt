@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(SmartCalc VERSION 0.1 LANGUAGES CXX)
+project(SmartCalc2 VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -77,13 +77,13 @@ set(PROJECT_SOURCES
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     message("\nGREATER_EQUAL 6\n")
-    qt_add_executable(SmartCalc
+    qt_add_executable(SmartCalc2
         ${PROJECT_HEADERS}
         ${PROJECT_SOURCES}
     )
 endif()
 
-target_include_directories(SmartCalc
+target_include_directories(SmartCalc2
   PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/srcs
   ${CMAKE_CURRENT_LIST_DIR}/includes
@@ -92,6 +92,6 @@ target_include_directories(SmartCalc
   ${CMAKE_CURRENT_LIST_DIR}/Controller/
 )
 
-target_link_libraries(SmartCalc PRIVATE
+target_link_libraries(SmartCalc2 PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
 )

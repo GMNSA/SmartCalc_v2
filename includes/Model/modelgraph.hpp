@@ -50,6 +50,13 @@ class ModelGraph : public IModelGraph {
   double CalculateXCustom(QString str_, double x_, double scale_);
   QString Calculate(QString const &num_str);
 
+  /**
+   * @brief A scene for drawing.
+   *            The scene is not deleted !
+   *            You need to monitor the deletion.
+   *
+   * @param scene -> attach scene.
+   */
   void AttachScene(QGraphicsScene *scene = nullptr);
 };
 

@@ -37,7 +37,7 @@ class ModelCalculator : public IModel {
   void RemoveBrackets(QString *str);
   void AddBrackets(QString *str);
   void AddMinux(QString *str);
-  void RemoveMinux(QString *str);
+  void RemoveMinus(QString *str);
 
  private:
   QString display_text_;

@@ -24,6 +24,15 @@ class PolishNotation {
   bool get_error() const;
   QStack<QString> get_stack() const;
   bool IsNumber(QString const &str) const;
+
+  /**
+   * @brief Priority of operations.
+   *            The more importatn the operation, the higher the number.
+   *
+   * @param ch -> Sign.
+   *
+   * @return   -> from 0 -> 6.
+   */
   qint64 Priority(QChar const &ch);
   bool IsSign(QChar const &ch);
   bool IsMathFunction(QString const &str);
@@ -34,11 +43,37 @@ class PolishNotation {
   bool IsFindInStackBrackets(QStack<QString> const &stack);
   QString StrToPostfix(QString const &str);
   QStack<QString> StringToStack(QString const &str);
+
+  /**
+   * @brief Calculation of actions (multiplication, division, etc.).
+   *
+   * @param num1  -> First number.
+   * @param str   -> Action.
+   * @param num2  -> Second number.
+   *
+   * @return      -> Result number.
+   */
   double CalculateNumbersMul(double num1, QString const &str, double num2);
+
+  /**
+   * @brief  Calculation of functons (cos, sin, etc.).
+   *
+   * @param str_num -> String number.
+   * @param str     -> Function.
+   *
+   * @return  -> Result (double)
+   */
   double CalculateStrNumbersSingle(QString const &str_num, QString const &str);
+
+  /**
+   * @brief Removing extra zeros after the dot.
+   *
+   * @param str -> String number.
+   */
   void ZerosRemove(QString *str);
 
   // -- templates  --
+
   template <typename T>
   void ReverseStack(QStack<T> *stack, qint64 const n_stack);
 
