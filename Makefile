@@ -1,5 +1,14 @@
 kurrent_os := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
+ifeq ($(shell uname), Linux)
+  OS=Linux
+endif
+
+ifeq ($(shell uname), Darwin)
+  OS=Darwin
+endif
+
+
 .PHONY: all clean rebuild check test_model tests check fix open tests_open uninstall
 
 all: install start
